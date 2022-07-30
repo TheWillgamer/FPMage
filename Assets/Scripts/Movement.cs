@@ -47,7 +47,7 @@ public class Movement : NetworkBehaviour
     
     #region Serialized.
     [SerializeField]
-    private Transform playerCam;
+    private Transform orientation;
     [SerializeField]
     private float jumpForce = 15f;
     [SerializeField]
@@ -89,7 +89,8 @@ public class Movement : NetworkBehaviour
     /// </summary>
     private bool jumping = false;
     private bool readyToJump = true;
-    private float jumpCooldown = 0.4f;
+    private int jumpCharge = 1;
+    private float jumpCooldown = 0.2f;
 
     private float threshold = 0.01f;
     #endregion
@@ -116,7 +117,7 @@ public class Movement : NetworkBehaviour
     {
         if (base.IsOwner)
         {
-            if (Input.GetButton("Jump") && grounded && readyToJump)
+            if (Input.GetButton("Jump") && readyToJump && jumpCharge > 0)
             {
                 jumping = true;
             }
@@ -172,7 +173,7 @@ public class Movement : NetworkBehaviour
         //Look(md.HorCamera, md.VerCamera);
 
         //Extra gravity
-        _rigidbody.AddForce(Vector3.down * 10);
+        _rigidbody.AddForce(Vector3.down * 30);
 
         //Find actual velocity relative to where player is looking
         Vector2 mag = FindVelRelativeToLook();
@@ -201,14 +202,14 @@ public class Movement : NetworkBehaviour
         }
 
         //Apply forces to move player
-        _rigidbody.AddForce(Vector3.ProjectOnPlane(playerCam.transform.forward, Vector3.up).normalized * md.Vertical * moveSpeed * multiplier * multiplierV);
-        _rigidbody.AddForce(Vector3.ProjectOnPlane(playerCam.transform.right, Vector3.up).normalized * md.Horizontal * moveSpeed * multiplier);
+        _rigidbody.AddForce(orientation.transform.forward * md.Vertical * moveSpeed * multiplier * multiplierV);
+        _rigidbody.AddForce(orientation.transform.right * md.Horizontal * moveSpeed * multiplier);
     }
 
     private void Look(float mouseX, float mouseY)
     {
         //Find current look rotation
-        Vector3 rot = playerCam.transform.localRotation.eulerAngles;
+        Vector3 rot = orientation.transform.localRotation.eulerAngles;
         float desiredX = rot.y + mouseX * sensitivity * sensMultiplier;
 
         //Rotate, and also make sure we dont over- or under-rotate.
@@ -216,17 +217,18 @@ public class Movement : NetworkBehaviour
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
         //Perform the rotations
-        playerCam.transform.localRotation = Quaternion.Euler(xRotation, 0, 0);
+        orientation.transform.localRotation = Quaternion.Euler(xRotation, 0, 0);
         transform.localRotation = Quaternion.Euler(0, desiredX, 0);
     }
 
     private void Jump()
     {
         readyToJump = false;
+        if(!grounded)
+            jumpCharge--;
 
         //Add jump forces
-        _rigidbody.AddForce(Vector2.up * jumpForce * 1.5f);
-        _rigidbody.AddForce(normalVector * jumpForce * 0.5f);
+        _rigidbody.AddForce(new Vector3(0f, jumpForce, 0f), ForceMode.Impulse);
 
         //If jumping while falling, reset y velocity.
         Vector3 vel = _rigidbody.velocity;
@@ -245,16 +247,16 @@ public class Movement : NetworkBehaviour
 
     private void CounterMovement(float x, float y, Vector2 mag)
     {
-        if (!grounded || jumping) return;
+        if (!grounded || !readyToJump) return;
 
         //Counter movement
         if (Math.Abs(mag.x) > threshold && Math.Abs(x) < 0.05f || (mag.x < -threshold && x > 0) || (mag.x > threshold && x < 0))
         {
-            _rigidbody.AddForce(moveSpeed * Vector3.ProjectOnPlane(playerCam.transform.right, Vector3.up).normalized * -mag.x * counterMovement);
+            _rigidbody.AddForce(moveSpeed * orientation.transform.right * -mag.x * counterMovement);
         }
         if (Math.Abs(mag.y) > threshold && Math.Abs(y) < 0.05f || (mag.y < -threshold && y > 0) || (mag.y > threshold && y < 0))
         {
-            _rigidbody.AddForce(moveSpeed * Vector3.ProjectOnPlane(playerCam.transform.forward, Vector3.up).normalized * -mag.y * counterMovement);
+            _rigidbody.AddForce(moveSpeed * orientation.transform.forward * -mag.y * counterMovement);
         }
 
         //Limit diagonal running. This will also cause a full stop if sliding fast and un-crouching, so not optimal.
@@ -273,7 +275,7 @@ public class Movement : NetworkBehaviour
     // <returns></returns>
     public Vector2 FindVelRelativeToLook()
     {
-        float lookAngle = playerCam.transform.eulerAngles.y;
+        float lookAngle = orientation.transform.eulerAngles.y;
         float moveAngle = Mathf.Atan2(_rigidbody.velocity.x, _rigidbody.velocity.z) * Mathf.Rad2Deg;
 
         float u = Mathf.DeltaAngle(lookAngle, moveAngle);
@@ -311,6 +313,7 @@ public class Movement : NetworkBehaviour
             if (IsFloor(normal))
             {
                 grounded = true;
+                jumpCharge = 1;
                 cancellingGrounded = false;
                 normalVector = normal;
                 CancelInvoke(nameof(StopGrounded));

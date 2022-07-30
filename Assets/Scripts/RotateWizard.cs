@@ -11,7 +11,8 @@ public class RotateWizard : NetworkBehaviour
         base.OnStartClient();
         if (base.IsOwner)
         {
-            gameObject.SetActive(false);
+            transform.GetChild(0).gameObject.SetActive(false);
+            transform.GetChild(1).gameObject.SetActive(false);
         }
     }
 

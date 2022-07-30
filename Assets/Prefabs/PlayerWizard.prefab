@@ -282,10 +282,10 @@ MonoBehaviour:
   _componentIndexCache: 0
   _addedNetworkObject: {fileID: 8227743508398521442}
   _networkObjectCache: {fileID: 8227743508398521442}
-  playerCam: {fileID: 8227743508193196329}
-  jumpForce: 350
-  moveSpeed: 50
-  maxSpeed: 20
+  orientation: {fileID: 7928923847964066659}
+  jumpForce: 20
+  moveSpeed: 100
+  maxSpeed: 18
   grounded: 0
   counterMovement: 0.175
   whatIsGround:
@@ -376,7 +376,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7928923847964066659}
   - component: {fileID: 341256469546221778}
-  - component: {fileID: 9202808110182238591}
+  - component: {fileID: 4375131748505878639}
   - component: {fileID: 5825915112656996751}
   m_Layer: 0
   m_Name: Little Wizard1
@@ -415,10 +415,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _componentIndexCache: 0
-  _addedNetworkObject: {fileID: 9202808110182238591}
-  _networkObjectCache: {fileID: 9202808110182238591}
+  _addedNetworkObject: {fileID: 8227743508398521442}
+  _networkObjectCache: {fileID: 4375131748505878639}
   playerCam: {fileID: 8227743508193196329}
---- !u!114 &9202808110182238591
+--- !u!114 &4375131748505878639
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -458,8 +458,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _componentIndexCache: 1
-  _addedNetworkObject: {fileID: 9202808110182238591}
-  _networkObjectCache: {fileID: 9202808110182238591}
+  _addedNetworkObject: {fileID: 8227743508398521442}
+  _networkObjectCache: {fileID: 4375131748505878639}
   _synchronizeParent: 0
   _packing:
     Position: 1
@@ -581,7 +581,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8227743508193196329}
   - component: {fileID: 8227743508193196328}
-  - component: {fileID: 8162314867125753883}
   - component: {fileID: 9073898482919136242}
   m_Layer: 0
   m_Name: CameraHolder
@@ -624,35 +623,6 @@ MonoBehaviour:
   sensitivity: 50
   camSpeed: 20
   playerLoc: {fileID: 4790489275998527890}
---- !u!114 &8162314867125753883
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8227743508193196330}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26b716c41e9b56b4baafaf13a523ba2e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _networkBehaviours:
-  - {fileID: 8227743508193196328}
-  - {fileID: 9073898482919136242}
-  SceneTransformProperties:
-    Position: {x: 0, y: 0.8, z: 0}
-    Rotation: {x: -0, y: -0, z: -0, w: 1}
-    LocalScale: {x: 1, y: 1, z: 1}
-  _isNetworked: 1
-  _isGlobal: 0
-  _hasParentNetworkObjectAtEdit: 1
-  NetworkObserver: {fileID: 0}
-  _prefabId: -1
-  _scenePathHash: 0
-  _sceneId: 0
-  _sceneNetworkObjects:
-  - {fileID: 8162314867125753883}
-  - {fileID: 8227743508398521442}
 --- !u!114 &9073898482919136242
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -666,7 +636,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _componentIndexCache: 5
-  _addedNetworkObject: {fileID: 8162314867125753883}
+  _addedNetworkObject: {fileID: 8227743508398521442}
   _networkObjectCache: {fileID: 8227743508398521442}
   _synchronizeParent: 0
   _packing:
@@ -760,5 +730,5 @@ MonoBehaviour:
   _scenePathHash: 0
   _sceneId: 0
   _sceneNetworkObjects:
-  - {fileID: 8162314867125753883}
+  - {fileID: 0}
   - {fileID: 8227743508398521442}

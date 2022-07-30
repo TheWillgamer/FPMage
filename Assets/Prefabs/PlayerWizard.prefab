@@ -217,7 +217,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8227743508193196329}
   - {fileID: 7928923847964066659}
   m_Father: {fileID: 8227743508398521441}
   m_RootOrder: 0
@@ -369,7 +368,7 @@ Transform:
   - {fileID: 4756007524078906077}
   - {fileID: 706117557101840799}
   m_Father: {fileID: 6383162011746621454}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &341256469546221778
 MonoBehaviour:
@@ -383,9 +382,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e67d99d202131714dae1e2d34c288fad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 0
+  _componentIndexCache: 2
   _addedNetworkObject: {fileID: 9202808110182238591}
-  _networkObjectCache: {fileID: 9202808110182238591}
+  _networkObjectCache: {fileID: 8227743508398521442}
   playerCam: {fileID: 8227743508193196329}
 --- !u!114 &9202808110182238591
 MonoBehaviour:
@@ -408,7 +407,7 @@ MonoBehaviour:
     LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   _isNetworked: 1
   _isGlobal: 0
-  _hasParentNetworkObjectAtEdit: 0
+  _hasParentNetworkObjectAtEdit: 1
   NetworkObserver: {fileID: 0}
   _prefabId: -1
   _scenePathHash: 0
@@ -426,9 +425,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2836e36774ca1c4bbbee976e17b649c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 1
+  _componentIndexCache: 3
   _addedNetworkObject: {fileID: 9202808110182238591}
-  _networkObjectCache: {fileID: 9202808110182238591}
+  _networkObjectCache: {fileID: 8227743508398521442}
   _synchronizeParent: 0
   _packing:
     Position: 1
@@ -572,8 +571,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8227743507018584223}
-  m_Father: {fileID: 6383162011746621454}
-  m_RootOrder: 0
+  m_Father: {fileID: 8227743508398521441}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8227743508193196328
 MonoBehaviour:
@@ -587,9 +586,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 044753e13dd3b2d47b94005fb3cdbcbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 2
+  _componentIndexCache: 4
   _addedNetworkObject: {fileID: 8227743508398521442}
   _networkObjectCache: {fileID: 8227743508398521442}
+  playerLoc: {fileID: 6383162011746621454}
 --- !u!114 &8162314867125753883
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -631,7 +631,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2836e36774ca1c4bbbee976e17b649c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 3
+  _componentIndexCache: 5
   _addedNetworkObject: {fileID: 8162314867125753883}
   _networkObjectCache: {fileID: 8227743508398521442}
   _synchronizeParent: 0
@@ -691,6 +691,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6383162011746621454}
+  - {fileID: 8227743508193196329}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -709,10 +710,10 @@ MonoBehaviour:
   _networkBehaviours:
   - {fileID: 6383162011746621453}
   - {fileID: 4835129120724136582}
-  - {fileID: 8227743508193196328}
-  - {fileID: 9073898482919136242}
   - {fileID: 341256469546221778}
   - {fileID: 5825915112656996751}
+  - {fileID: 8227743508193196328}
+  - {fileID: 9073898482919136242}
   SceneTransformProperties:
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0, w: 1}

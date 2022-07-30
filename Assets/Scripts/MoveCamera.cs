@@ -6,6 +6,8 @@ public class MoveCamera : NetworkBehaviour
     private float xRotation;
     private float sensitivity = 50f;
     private float sensMultiplier = 1f;
+    [SerializeField]
+    private Transform playerLoc;
 
     public override void OnStartClient()
     {
@@ -16,7 +18,7 @@ public class MoveCamera : NetworkBehaviour
         }
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         if (!base.IsOwner)
             return;
@@ -34,5 +36,8 @@ public class MoveCamera : NetworkBehaviour
 
         //Perform the rotations
         transform.localRotation = Quaternion.Euler(xRotation, desiredX, 0);
+
+        //Follows the player
+        transform.position = Vector3.Lerp(transform.position, playerLoc.position, .2f);
     }
 }

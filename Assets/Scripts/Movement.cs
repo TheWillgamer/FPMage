@@ -256,7 +256,6 @@ public class Movement : NetworkBehaviour
         {
             _rigidbody.AddForce(moveSpeed * Vector3.ProjectOnPlane(playerCam.transform.forward, Vector3.up).normalized * -mag.y * counterMovement);
         }
-        Debug.Log(playerCam.transform.forward);
 
         //Limit diagonal running. This will also cause a full stop if sliding fast and un-crouching, so not optimal.
         if (Mathf.Sqrt((Mathf.Pow(_rigidbody.velocity.x, 2) + Mathf.Pow(_rigidbody.velocity.z, 2))) > maxSpeed)

@@ -95,13 +95,14 @@ public class Movement : NetworkBehaviour
     private float threshold = 0.01f;
     #endregion
 
-
+    public bool disableCM;
 
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
         InstanceFinder.TimeManager.OnTick += TimeManager_OnTick;
         InstanceFinder.TimeManager.OnPostTick += TimeManager_OnPostTick;
+        disableCM = false;
     }
 
     private void OnDestroy()
@@ -247,7 +248,7 @@ public class Movement : NetworkBehaviour
 
     private void CounterMovement(float x, float y, Vector2 mag)
     {
-        if (!grounded || !readyToJump) return;
+        if (!grounded || !readyToJump || disableCM) return;
 
         //Counter movement
         if (Math.Abs(mag.x) > threshold && Math.Abs(x) < 0.05f || (mag.x < -threshold && x > 0) || (mag.x > threshold && x < 0))

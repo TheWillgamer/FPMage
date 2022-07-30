@@ -5,10 +5,10 @@ using UnityEngine.UI;
 public class PlayerHealth : MonoBehaviour
 {
     private int hp;  //keeps track of player health
-    public int maxHealth = 100;
     public Transform hpMeter;
     public Image dmgScreen;
     private Rigidbody rb;
+    private Movement mv;
 
     //Audio
     public AudioSource hit;
@@ -17,32 +17,29 @@ public class PlayerHealth : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        mv = GetComponent<Movement>();
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        hp = maxHealth;
+        hp = 0;
     }
 
     // Reduces hp based on the parameter amount
     public void TakeDamage(int amt)
     {
-        hp -= amt;
+        hp += amt;
         Debug.Log(hp);
         //UpdateUI();
     }
 
-    private void UpdateUI()
+    // Knocks back the player in a given direction: kb_growth determines how much percentage determines the knockback amount
+    public void Knockback(Vector3 direction, float base_kb, float kb_growth)
     {
-        hpMeter.GetComponent<Image>().fillAmount = (float)hp / maxHealth;
-    }
-
-    public void Knockback(float amount, Vector3 direction)
-    {
-        float startTime = Time.time;
-
-        rb.AddForce(direction * amount + transform.up * amount / 4, ForceMode.Impulse);
+        mv.disableCM = true;
+        rb.AddForce(direction * (((hp / kb_growth) + 1) * base_kb), ForceMode.Impulse);
+        Invoke("EnableCM", .5f);
     }
 
     IEnumerator Fade()
@@ -54,5 +51,10 @@ public class PlayerHealth : MonoBehaviour
             dmgScreen.color = c;
             yield return null;
         }
+    }
+
+    private void EnableCM()
+    {
+        mv.disableCM = false;
     }
 }

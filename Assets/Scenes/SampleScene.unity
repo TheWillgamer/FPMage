@@ -443,7 +443,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   explosion_radius: 1
-  knockback_amount: 10
+  knockback_amount: 20
 --- !u!1001 &910293095
 PrefabInstance:
   m_ObjectHideFlags: 0

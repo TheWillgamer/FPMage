@@ -14,8 +14,11 @@ public class MoveCamera : NetworkBehaviour
             gameObject.SetActive(true);
         }
     }
-    void Update()
-    {
-        transform.position = playerHead.transform.position;
-    }
+    //void Update()
+    //{
+    //    if (base.IsOwner)
+    //    {
+    //        transform.position = playerHead.transform.position;
+    //    }
+    //}
 }

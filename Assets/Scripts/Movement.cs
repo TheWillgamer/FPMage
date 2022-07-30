@@ -169,7 +169,7 @@ public class Movement : NetworkBehaviour
         if (md.Jump)
             Jump();
 
-        Look(md.HorCamera, md.VerCamera);
+        //Look(md.HorCamera, md.VerCamera);
 
         //Extra gravity
         _rigidbody.AddForce(Vector3.down * 10);
@@ -201,16 +201,15 @@ public class Movement : NetworkBehaviour
         }
 
         //Apply forces to move player
-        _rigidbody.AddForce(transform.forward * md.Vertical * moveSpeed * multiplier * multiplierV);
-        _rigidbody.AddForce(transform.right * md.Horizontal * moveSpeed * multiplier);
+        _rigidbody.AddForce(playerCam.transform.forward * md.Vertical * moveSpeed * multiplier * multiplierV);
+        _rigidbody.AddForce(playerCam.transform.right * md.Horizontal * moveSpeed * multiplier);
     }
 
-    private float desiredX;
     private void Look(float mouseX, float mouseY)
     {
         //Find current look rotation
         Vector3 rot = playerCam.transform.localRotation.eulerAngles;
-        desiredX = rot.y + mouseX * sensitivity * sensMultiplier;
+        float desiredX = rot.y + mouseX * sensitivity * sensMultiplier;
 
         //Rotate, and also make sure we dont over- or under-rotate.
         xRotation -= mouseY * sensitivity * sensMultiplier;
@@ -251,11 +250,11 @@ public class Movement : NetworkBehaviour
         //Counter movement
         if (Math.Abs(mag.x) > threshold && Math.Abs(x) < 0.05f || (mag.x < -threshold && x > 0) || (mag.x > threshold && x < 0))
         {
-            _rigidbody.AddForce(moveSpeed * transform.right * -mag.x * counterMovement);
+            _rigidbody.AddForce(moveSpeed * playerCam.transform.right * -mag.x * counterMovement);
         }
         if (Math.Abs(mag.y) > threshold && Math.Abs(y) < 0.05f || (mag.y < -threshold && y > 0) || (mag.y > threshold && y < 0))
         {
-            _rigidbody.AddForce(moveSpeed * transform.forward * -mag.y * counterMovement);
+            _rigidbody.AddForce(moveSpeed * playerCam.transform.forward * -mag.y * counterMovement);
         }
 
         //Limit diagonal running. This will also cause a full stop if sliding fast and un-crouching, so not optimal.
@@ -274,7 +273,7 @@ public class Movement : NetworkBehaviour
     // <returns></returns>
     public Vector2 FindVelRelativeToLook()
     {
-        float lookAngle = transform.eulerAngles.y;
+        float lookAngle = playerCam.transform.eulerAngles.y;
         float moveAngle = Mathf.Atan2(_rigidbody.velocity.x, _rigidbody.velocity.z) * Mathf.Rad2Deg;
 
         float u = Mathf.DeltaAngle(lookAngle, moveAngle);
@@ -338,6 +337,6 @@ public class Movement : NetworkBehaviour
         transform.position = rd.Position;
         transform.rotation = rd.Rotation;
         _rigidbody.velocity = rd.Velocity;
-        //_rigidbody.angularVelocity = rd.AngularVelocity;
+        _rigidbody.angularVelocity = rd.AngularVelocity;
     }
 }

@@ -89,7 +89,7 @@ public class Movement : NetworkBehaviour
     /// </summary>
     private bool jumping = false;
     private bool readyToJump = true;
-    private float jumpCooldown = 0.25f;
+    private float jumpCooldown = 0.4f;
 
     private float threshold = 0.01f;
     #endregion
@@ -201,8 +201,8 @@ public class Movement : NetworkBehaviour
         }
 
         //Apply forces to move player
-        _rigidbody.AddForce(playerCam.transform.forward * md.Vertical * moveSpeed * multiplier * multiplierV);
-        _rigidbody.AddForce(playerCam.transform.right * md.Horizontal * moveSpeed * multiplier);
+        _rigidbody.AddForce(Vector3.ProjectOnPlane(playerCam.transform.forward, Vector3.up).normalized * md.Vertical * moveSpeed * multiplier * multiplierV);
+        _rigidbody.AddForce(Vector3.ProjectOnPlane(playerCam.transform.right, Vector3.up).normalized * md.Horizontal * moveSpeed * multiplier);
     }
 
     private void Look(float mouseX, float mouseY)
@@ -250,12 +250,13 @@ public class Movement : NetworkBehaviour
         //Counter movement
         if (Math.Abs(mag.x) > threshold && Math.Abs(x) < 0.05f || (mag.x < -threshold && x > 0) || (mag.x > threshold && x < 0))
         {
-            _rigidbody.AddForce(moveSpeed * playerCam.transform.right * -mag.x * counterMovement);
+            _rigidbody.AddForce(moveSpeed * Vector3.ProjectOnPlane(playerCam.transform.right, Vector3.up).normalized * -mag.x * counterMovement);
         }
         if (Math.Abs(mag.y) > threshold && Math.Abs(y) < 0.05f || (mag.y < -threshold && y > 0) || (mag.y > threshold && y < 0))
         {
-            _rigidbody.AddForce(moveSpeed * playerCam.transform.forward * -mag.y * counterMovement);
+            _rigidbody.AddForce(moveSpeed * Vector3.ProjectOnPlane(playerCam.transform.forward, Vector3.up).normalized * -mag.y * counterMovement);
         }
+        Debug.Log(playerCam.transform.forward);
 
         //Limit diagonal running. This will also cause a full stop if sliding fast and un-crouching, so not optimal.
         if (Mathf.Sqrt((Mathf.Pow(_rigidbody.velocity.x, 2) + Mathf.Pow(_rigidbody.velocity.z, 2))) > maxSpeed)
@@ -318,7 +319,7 @@ public class Movement : NetworkBehaviour
         }
 
         //Invoke ground cancel, since we can't check normals with CollisionExit
-        float delay = .2f;
+        float delay = .1f;
         if (!cancellingGrounded)
         {
             cancellingGrounded = true;

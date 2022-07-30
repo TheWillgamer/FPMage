@@ -4,8 +4,11 @@ using UnityEngine;
 public class MoveCamera : NetworkBehaviour
 {
     private float xRotation;
+    [SerializeField]
     private float sensitivity = 50f;
     private float sensMultiplier = 1f;
+    [SerializeField]
+    private float camSpeed = 1f;
     [SerializeField]
     private Transform playerLoc;
 
@@ -38,6 +41,6 @@ public class MoveCamera : NetworkBehaviour
         transform.localRotation = Quaternion.Euler(xRotation, desiredX, 0);
 
         //Follows the player
-        transform.position = Vector3.Lerp(transform.position, playerLoc.position, .2f);
+        transform.position = Vector3.Lerp(transform.position, playerLoc.position, camSpeed * Time.fixedDeltaTime);
     }
 }

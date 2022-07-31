@@ -19,6 +19,6 @@ public class RotateWizard : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.localRotation = Quaternion.Euler(0.0f, playerCam.eulerAngles.y, 0.0f);
+        transform.rotation = Quaternion.Euler(0.0f, playerCam.eulerAngles.y, 0.0f);
     }
 }

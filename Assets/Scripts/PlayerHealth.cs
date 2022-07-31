@@ -28,7 +28,6 @@ public class PlayerHealth : NetworkBehaviour
     }
 
     // Reduces hp based on the parameter amount
-    [ServerRpc]
     public void TakeDamage(int amt)
     {
         hp += amt;
@@ -41,7 +40,7 @@ public class PlayerHealth : NetworkBehaviour
     {
         mv.disableCM = true;
         rb.AddForce(direction * (((hp / kb_growth) + 1) * base_kb), ForceMode.Impulse);
-        Invoke("EnableCM", .5f);
+        Invoke("EnableCM", .3f);
     }
 
     IEnumerator Fade()

@@ -93,6 +93,12 @@ public class Movement : NetworkBehaviour
 
     public bool disableCM;
 
+    private void Start()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();

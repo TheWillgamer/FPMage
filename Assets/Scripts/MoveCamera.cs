@@ -11,6 +11,7 @@ public class MoveCamera : NetworkBehaviour
     private float camSpeed = 1f;
     [SerializeField]
     private Transform playerLoc;
+    private float _movingTime = 0f;
 
     public override void OnStartClient()
     {
@@ -23,6 +24,9 @@ public class MoveCamera : NetworkBehaviour
 
     private void LateUpdate()
     {
+        if (base.IsServer && !base.IsOwner)
+            transform.position = playerLoc.position;
+
         if (!base.IsOwner)
             return;
 
@@ -41,6 +45,17 @@ public class MoveCamera : NetworkBehaviour
         transform.localRotation = Quaternion.Euler(xRotation, desiredX, 0);
 
         //Follows the player
-        transform.position = Vector3.Lerp(transform.position, playerLoc.position, camSpeed * Time.fixedDeltaTime);
+        float distance = Mathf.Max(0.1f, Vector3.Distance(transform.position, playerLoc.position));
+        if (transform.position != playerLoc.position)
+        {
+            _movingTime += Time.deltaTime;
+            float smoothingPercent = (_movingTime / 0.75f);
+            float smoothingRate = Mathf.Lerp(60f, 40f, smoothingPercent);
+            transform.position = Vector3.MoveTowards(transform.position, playerLoc.position, smoothingRate * distance * Time.deltaTime);
+        }
+        else
+        {
+            _movingTime = 0f;
+        }
     }
 }

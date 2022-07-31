@@ -8,7 +8,7 @@ public class AbilityManager : NetworkBehaviour
     private bool firing = false;
     [SerializeField] private GameObject fb;
     [SerializeField] private Transform proj_spawn;
-    [SerializeField] private float proj_speed;
+    [SerializeField] private float proj_force;
 
     private void Update()
     {
@@ -26,8 +26,8 @@ public class AbilityManager : NetworkBehaviour
     {
         GameObject spawned = Instantiate(fb, proj_spawn.position, proj_spawn.rotation);
         base.Spawn(spawned);
-
-        Projectile throwable = spawned.GetComponent<Projectile>();
-        throwable.Initialize(new PreciseTick(), proj_spawn.forward * proj_speed);
+        
+        Projectile throwable = spawned.transform.GetChild(0).GetComponent<Projectile>();
+        throwable.Initialize(new PreciseTick(), proj_spawn.forward * proj_force);
     }
 }

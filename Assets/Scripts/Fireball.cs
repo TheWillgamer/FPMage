@@ -55,21 +55,11 @@ public class Fireball : NetworkBehaviour, Projectile
     public virtual void Initialize(PreciseTick pt, Vector3 force)
     {
         velocity = force;
-        //Move ellapsed time from when fireball was 'thrown' on thrower.
-        float timePassed = (float)base.TimeManager.TimePassed(pt.Tick);
-        if (timePassed > 0.1f)
-            timePassed = 0.1f;
-
-        Move(timePassed);
-        Invoke("MakeActive", .2f);
     }
 
     [Server(Logging = LoggingType.Off)]
     private void Move(float deltaTime)
     {
-        //Determine how far object should travel this frame.
-        float travelDistance = (velocity.magnitude * Time.deltaTime);
-
         transform.position += (velocity * Time.deltaTime);
     }
 
@@ -86,7 +76,7 @@ public class Fireball : NetworkBehaviour, Projectile
             ph.TakeDamage(15);
             ph.Knockback(Vector3.ProjectOnPlane(transform.forward, Vector3.up).normalized + Vector3.up, knockback_amount, knockback_growth);
         }
-        Destroy(gameObject);
+        Destroy(transform.parent.gameObject);
     }
 
     [Server(Logging = LoggingType.Off)]

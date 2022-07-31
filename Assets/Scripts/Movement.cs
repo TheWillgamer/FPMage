@@ -18,15 +18,11 @@ public class Movement : NetworkBehaviour
         public bool Jump;
         public float Horizontal;
         public float Vertical;
-        public float HorCamera;
-        public float VerCamera;
-        public MoveData(bool jump, float horizontal, float vertical, float hcam, float vcam)
+        public MoveData(bool jump, float horizontal, float vertical)
         {
             Jump = jump;
             Horizontal = horizontal;
             Vertical = vertical;
-            HorCamera = hcam;
-            VerCamera = vcam;
         }
     }
     public struct ReconcileData
@@ -95,13 +91,14 @@ public class Movement : NetworkBehaviour
     private float threshold = 0.01f;
     #endregion
 
-
+    public bool disableCM;
 
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
         InstanceFinder.TimeManager.OnTick += TimeManager_OnTick;
         InstanceFinder.TimeManager.OnPostTick += TimeManager_OnPostTick;
+        disableCM = false;
     }
 
     private void OnDestroy()
@@ -154,13 +151,11 @@ public class Movement : NetworkBehaviour
 
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
-        float hcam = Input.GetAxis("Mouse X");
-        float vcam = Input.GetAxis("Mouse Y");
 
-        if (horizontal == 0f && vertical == 0f && !jumping && hcam == 0f && vcam == 0f)
+        if (horizontal == 0f && vertical == 0f && !jumping)
             return;
 
-        md = new MoveData(jumping, horizontal, vertical, hcam, vcam);
+        md = new MoveData(jumping, horizontal, vertical);
         jumping = false;
     }
 
@@ -169,8 +164,6 @@ public class Movement : NetworkBehaviour
     {
         if (md.Jump)
             Jump();
-
-        //Look(md.HorCamera, md.VerCamera);
 
         //Extra gravity
         _rigidbody.AddForce(Vector3.down * 30);
@@ -206,21 +199,6 @@ public class Movement : NetworkBehaviour
         _rigidbody.AddForce(orientation.transform.right * md.Horizontal * moveSpeed * multiplier);
     }
 
-    private void Look(float mouseX, float mouseY)
-    {
-        //Find current look rotation
-        Vector3 rot = orientation.transform.localRotation.eulerAngles;
-        float desiredX = rot.y + mouseX * sensitivity * sensMultiplier;
-
-        //Rotate, and also make sure we dont over- or under-rotate.
-        xRotation -= mouseY * sensitivity * sensMultiplier;
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
-
-        //Perform the rotations
-        orientation.transform.localRotation = Quaternion.Euler(xRotation, 0, 0);
-        transform.localRotation = Quaternion.Euler(0, desiredX, 0);
-    }
-
     private void Jump()
     {
         readyToJump = false;
@@ -247,7 +225,7 @@ public class Movement : NetworkBehaviour
 
     private void CounterMovement(float x, float y, Vector2 mag)
     {
-        if (!grounded || !readyToJump) return;
+        if (!grounded || !readyToJump || disableCM) return;
 
         //Counter movement
         if (Math.Abs(mag.x) > threshold && Math.Abs(x) < 0.05f || (mag.x < -threshold && x > 0) || (mag.x > threshold && x < 0))

@@ -53,8 +53,6 @@ public class Movement : NetworkBehaviour
     [SerializeField]
     private float jumpSpeedModifier = .4f;
     [SerializeField]
-    private float jumpCancelMultiplier = 4f;
-    [SerializeField]
     private bool grounded;
     [SerializeField]
     private float counterMovement = 0.175f;

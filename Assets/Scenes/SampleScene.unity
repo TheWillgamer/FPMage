@@ -422,7 +422,7 @@ MonoBehaviour:
   _attackResponseType: 1
   _ipv4BindAddress: 
   _ipv6BindAddress: 
-  _port: 22078
+  _port: 22074
   _maximumClients: 4095
   _clientAddress: 25.83.74.163
   _timeout: 15

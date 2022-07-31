@@ -353,7 +353,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   explosion_radius: 1
   knockback_amount: 3
-  knockback_growth: 20
+  knockback_growth: 40
 --- !u!54 &451198065
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -673,7 +673,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   explosion_radius: 1
   knockback_amount: 3
-  knockback_growth: 20
+  knockback_growth: 40
 --- !u!1 &848766417
 GameObject:
   m_ObjectHideFlags: 0
@@ -1111,7 +1111,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   explosion_radius: 1
   knockback_amount: 3
-  knockback_growth: 20
+  knockback_growth: 40
 --- !u!54 &1319776249
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1273,7 +1273,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   explosion_radius: 1
   knockback_amount: 3
-  knockback_growth: 20
+  knockback_growth: 40
 --- !u!54 &1468685438
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1501,7 +1501,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   explosion_radius: 1
   knockback_amount: 3
-  knockback_growth: 100
+  knockback_growth: 40
 --- !u!54 &1698917867
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1729,7 +1729,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   explosion_radius: 1
   knockback_amount: 3
-  knockback_growth: 20
+  knockback_growth: 40
 --- !u!54 &2068043626
 Rigidbody:
   m_ObjectHideFlags: 0

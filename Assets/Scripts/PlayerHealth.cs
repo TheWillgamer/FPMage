@@ -1,8 +1,9 @@
+using FishNet.Object;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerHealth : MonoBehaviour
+public class PlayerHealth : NetworkBehaviour
 {
     private int hp;  //keeps track of player health
     public Transform hpMeter;
@@ -27,6 +28,7 @@ public class PlayerHealth : MonoBehaviour
     }
 
     // Reduces hp based on the parameter amount
+    [ServerRpc]
     public void TakeDamage(int amt)
     {
         hp += amt;

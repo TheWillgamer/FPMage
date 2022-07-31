@@ -120,7 +120,7 @@ public class Movement : NetworkBehaviour
     {
         if (base.IsOwner)
         {
-            if (Input.GetButton("Jump") && readyToJump && jumpCharge > 0)
+            if (Input.GetButtonDown("Jump") && readyToJump && jumpCharge > 0)
             {
                 jumping = true;
             }

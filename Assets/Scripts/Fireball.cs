@@ -10,6 +10,7 @@ public class Fireball : NetworkBehaviour, Projectile
     [SerializeField] private float knockback_growth = 20f;
     private Vector3 velocity = Vector3.zero;
     private bool active = false;
+    private float lastDistance = Mathf.Infinity;
 
     public override void OnStartServer()
     {
@@ -49,6 +50,23 @@ public class Fireball : NetworkBehaviour, Projectile
         float delta = (onTick) ? (float)base.TimeManager.TickDelta : Time.deltaTime;
         //If host move every update for smooth movement. Otherwise move OnTick.
         Move(delta);
+
+        //Explode bullet if it goes through the wall
+        int layerMask = 1 << 6;
+        RaycastHit hit;
+        // Does the ray intersect any objects excluding the player layer
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, layerMask))
+        {
+            if(hit.distance>lastDistance)
+            {
+                explode();
+            }
+            lastDistance = hit.distance;
+        }
+        else if(lastDistance < 100000f)
+        {
+            explode();
+        }
     }
 
     [Server(Logging = LoggingType.Off)]
@@ -76,13 +94,19 @@ public class Fireball : NetworkBehaviour, Projectile
             ph.TakeDamage(15);
             ph.Knockback(Vector3.ProjectOnPlane(transform.forward, Vector3.up).normalized + Vector3.up, knockback_amount, knockback_growth);
         }
-        Destroy(transform.parent.gameObject);
+        explode();
     }
 
     [Server(Logging = LoggingType.Off)]
     private void OnCollisionExit(Collision collision)
     {
         MakeActive();
+    }
+
+    [Server(Logging = LoggingType.Off)]
+    private void explode()
+    {
+        Destroy(transform.parent.gameObject);
     }
 
     [Server(Logging = LoggingType.Off)]

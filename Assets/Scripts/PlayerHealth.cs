@@ -1,4 +1,5 @@
 using FishNet.Object;
+using FishNet.Object.Synchronizing;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -30,9 +31,12 @@ public class PlayerHealth : NetworkBehaviour
     // Reduces hp based on the parameter amount
     public void TakeDamage(int amt)
     {
+        int oldHp = hp;
         hp += amt;
         Debug.Log(hp);
         //UpdateUI();
+        if (base.IsServer)
+            ObserversTakeDamage(amt, oldHp);
     }
 
     // Knocks back the player in a given direction: kb_growth determines how much percentage determines the knockback amount
@@ -40,7 +44,22 @@ public class PlayerHealth : NetworkBehaviour
     {
         mv.disableCM = true;
         rb.AddForce(direction * (((hp / kb_growth) + 1) * base_kb), ForceMode.Impulse);
-        Invoke("EnableCM", .3f);
+        Invoke("EnableCM", .2f);
+    }
+
+    [ObserversRpc]
+    private void ObserversTakeDamage(int value, int priorHealth)
+    {
+        //Prevents endless loop
+        if (base.IsServer)
+            return;
+
+        /* Set current health to prior health so that
+         * in case client somehow magically got out of sync
+         * this will fix it before trying to remove health. */
+        hp = priorHealth;
+
+        TakeDamage(value);
     }
 
     IEnumerator Fade()

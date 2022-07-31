@@ -9,6 +9,7 @@ public class Fireball : NetworkBehaviour, Projectile
     [SerializeField] private float knockback_amount = 1f;
     [SerializeField] private float knockback_growth = 20f;
     private Vector3 velocity = Vector3.zero;
+    private bool active = false;
 
     public override void OnStartServer()
     {
@@ -59,8 +60,8 @@ public class Fireball : NetworkBehaviour, Projectile
         if (timePassed > 0.1f)
             timePassed = 0.1f;
 
-        //Debug.Log(timePassed);
         Move(timePassed);
+        Invoke("MakeActive", .2f);
     }
 
     [Server(Logging = LoggingType.Off)]
@@ -75,6 +76,10 @@ public class Fireball : NetworkBehaviour, Projectile
     [Server(Logging = LoggingType.Off)]
     private void OnCollisionEnter(Collision collision)
     {
+        // Prevents shooting yourself
+        if (!active)
+            return;
+
         if (collision.gameObject.tag == "Player")
         {
             PlayerHealth ph = collision.gameObject.GetComponent<PlayerHealth>();
@@ -82,5 +87,17 @@ public class Fireball : NetworkBehaviour, Projectile
             ph.Knockback(Vector3.ProjectOnPlane(transform.forward, Vector3.up).normalized + Vector3.up, knockback_amount, knockback_growth);
         }
         Destroy(gameObject);
+    }
+
+    [Server(Logging = LoggingType.Off)]
+    private void OnCollisionExit(Collision collision)
+    {
+        MakeActive();
+    }
+
+    [Server(Logging = LoggingType.Off)]
+    private void MakeActive()
+    {
+        active = true;
     }
 }

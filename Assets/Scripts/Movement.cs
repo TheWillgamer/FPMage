@@ -51,6 +51,10 @@ public class Movement : NetworkBehaviour
     [SerializeField]
     private float maxSpeed = 20;
     [SerializeField]
+    private float jumpSpeedModifier = .4f;
+    [SerializeField]
+    private float jumpCancelMultiplier = 4f;
+    [SerializeField]
     private bool grounded;
     [SerializeField]
     private float counterMovement = 0.175f;
@@ -169,7 +173,7 @@ public class Movement : NetworkBehaviour
     private void Move(MoveData md, bool asServer, bool replaying = false)
     {
         if (md.Jump)
-            Jump();
+            Jump(md.Horizontal, md.Vertical);
 
         //Extra gravity
         _rigidbody.AddForce(Vector3.down * 30);
@@ -205,14 +209,14 @@ public class Movement : NetworkBehaviour
         _rigidbody.AddForce(orientation.transform.right * md.Horizontal * moveSpeed * multiplier);
     }
 
-    private void Jump()
+    private void Jump(float x, float y)
     {
         readyToJump = false;
         if(!grounded)
             jumpCharge--;
 
         //Add jump forces
-        _rigidbody.AddForce(new Vector3(0f, jumpForce, 0f), ForceMode.Impulse);
+        _rigidbody.AddForce(new Vector3(x * jumpSpeedModifier, jumpForce, y * jumpSpeedModifier), ForceMode.Impulse);
 
         //If jumping while falling, reset y velocity.
         Vector3 vel = _rigidbody.velocity;

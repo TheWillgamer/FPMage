@@ -14,7 +14,7 @@ namespace FirstGearGames.LobbyAndWorld.Demos.KingOfTheHill
         /// <summary>
         /// PhysicsScene this object is in. Required for scene stacking.
         /// </summary>
-        private PhysicsScene _physicsScene;
+        public PhysicsScene _physicsScene;
         /// <summary>
         /// TimeManager subscribed to.
         /// </summary>

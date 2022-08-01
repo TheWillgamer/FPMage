@@ -54,8 +54,9 @@ public class Fireball : NetworkBehaviour, Projectile
         //Explode bullet if it goes through the wall
         int layerMask = 1 << 6;
         RaycastHit hit;
-        // Does the ray intersect any objects excluding the player layer
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, layerMask))
+        // Does the ray intersect any walls
+        
+        if (GameObject.Find("PhysSim").GetComponent<PhysSim>()._physicsScene.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, layerMask))
         {
             if(hit.distance>lastDistance)
             {

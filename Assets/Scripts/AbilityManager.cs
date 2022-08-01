@@ -2,6 +2,7 @@ using FishNet.Object;
 using FishNet.Managing.Logging;
 using FishNet.Managing.Timing;
 using UnityEngine;
+using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
 
 public class AbilityManager : NetworkBehaviour
 {
@@ -25,6 +26,7 @@ public class AbilityManager : NetworkBehaviour
     private void shootFireball()
     {
         GameObject spawned = Instantiate(fb, proj_spawn.position, proj_spawn.rotation);
+        UnitySceneManager.MoveGameObjectToScene(spawned.gameObject, gameObject.scene);
         base.Spawn(spawned);
         
         Projectile throwable = spawned.transform.GetChild(0).GetComponent<Projectile>();

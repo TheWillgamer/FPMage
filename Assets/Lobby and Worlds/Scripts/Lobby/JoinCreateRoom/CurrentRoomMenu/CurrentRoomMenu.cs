@@ -55,6 +55,24 @@ namespace FirstGearGames.LobbyAndWorld.Lobbies.JoinCreateRoomCanvases
         [Tooltip("Prefab to spawn for each member entry.")]
         [SerializeField]
         private MemberEntry _memberEntryPrefab;
+        /// <summary>
+        /// Button to join red team.
+        /// </summary>
+        [Tooltip("Button used to start the game.")]
+        [SerializeField]
+        private Button _joinRedButton;
+        /// <summary>
+        /// Button to join black team.
+        /// </summary>
+        [Tooltip("Button used to start the game.")]
+        [SerializeField]
+        private Button _joinBlackButton;
+        /// <summary>
+        /// Button to become an observer.
+        /// </summary>
+        [Tooltip("Button used to start the game.")]
+        [SerializeField]
+        private Button _joinObsButton;
         #endregion
 
         #region Private.

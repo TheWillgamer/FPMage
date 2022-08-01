@@ -277,9 +277,6 @@ public class WizardDuelManager : NetworkBehaviour
         UnitySceneManager.MoveGameObjectToScene(netIdent.gameObject, gameObject.scene);
 
         _spawnedPlayerObjects.Add(netIdent);
-        //Subscriber to kingtimer so we know when a player reaches 0.
-        KingTimer kt = netIdent.GetComponentInChildren<KingTimer>();
-        kt.OnTimerComplete += KingTimer_OnTimerComplete;
         base.Spawn(netIdent.gameObject, conn);
 
         //NetworkObject netIdent = conn.identity;            

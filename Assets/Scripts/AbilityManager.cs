@@ -10,6 +10,12 @@ public class AbilityManager : NetworkBehaviour
     [SerializeField] private GameObject fb;
     [SerializeField] private Transform proj_spawn;
     [SerializeField] private float proj_force;
+    AudioSource m_shootingSound;
+
+    void Start()
+    {
+        m_shootingSound = GetComponent<AudioSource>();
+    }
 
     private void Update()
     {
@@ -17,9 +23,15 @@ public class AbilityManager : NetworkBehaviour
         {
             if (Input.GetButtonDown("Fire1"))
             {
+                playShootSound();
                 shootFireball();
             }
         }
+    }
+
+    [ObserversRpc]
+    private void playShootSound(){
+        m_shootingSound.Play();
     }
 
     [ServerRpc]

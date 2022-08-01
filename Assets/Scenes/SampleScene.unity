@@ -297,14 +297,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 112696698}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -8.278411, y: 5.9185977, z: 17.50695}
+  m_LocalRotation: {x: 0.2588191, y: 0, z: 0, w: 0.9659258}
+  m_LocalPosition: {x: 0, y: 6.66, z: -16.12}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 30, y: 0, z: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -399,6 +399,142 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &798693545
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 798693547}
+  - component: {fileID: 798693546}
+  m_Layer: 0
+  m_Name: SimulatePhysics
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &798693546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 798693545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d57bca96230e78d4ea87540e7d3dab0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &798693547
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 798693545}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 400.8366, y: 310.7765, z: -206.34494}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &959843898
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 959843902}
+  - component: {fileID: 959843901}
+  - component: {fileID: 959843900}
+  - component: {fileID: 959843899}
+  m_Layer: 0
+  m_Name: WizardDuelManager (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &959843899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 959843898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39d235271a46ae24989731ec72d2360b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 0
+  _addedNetworkObject: {fileID: 959843901}
+  _networkObjectCache: {fileID: 959843901}
+  _spawnRegion: {x: 1, y: 1, z: 1}
+  _playerPrefab: {fileID: 2244062919840278017, guid: 6c8ad26f6db93a04da631d4060cee8ba, type: 3}
+  _deathDummy: {fileID: 1065909917182841894, guid: 567026d111c9c7c45b95157fc5ae09a8, type: 3}
+--- !u!65 &959843900
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 959843898}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 70, y: 20, z: 70}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &959843901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 959843898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26b716c41e9b56b4baafaf13a523ba2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _networkBehaviours:
+  - {fileID: 959843899}
+  SceneTransformProperties:
+    Position: {x: 0, y: 5.3, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    LocalScale: {x: 1, y: 1, z: 1}
+  _isNetworked: 1
+  _isGlobal: 0
+  _hasParentNetworkObjectAtEdit: 0
+  NetworkObserver: {fileID: 0}
+  _prefabId: -1
+  _scenePathHash: 584410112
+  _sceneId: 2510022320446408700
+  _sceneNetworkObjects:
+  - {fileID: 1220841595}
+--- !u!4 &959843902
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 959843898}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 5.3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1220841594
 GameObject:
   m_ObjectHideFlags: 0
@@ -409,9 +545,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1220841597}
   - component: {fileID: 1220841595}
+  - component: {fileID: 1220841599}
   - component: {fileID: 1220841598}
   m_Layer: 0
-  m_Name: GameplayManager
+  m_Name: WizardDuelManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -432,7 +569,7 @@ MonoBehaviour:
   _networkBehaviours:
   - {fileID: 1220841598}
   SceneTransformProperties:
-    Position: {x: -4.5219693, y: 5.2044616, z: 17.802452}
+    Position: {x: 0, y: 5.3, z: 0}
     Rotation: {x: 0, y: 0, z: 0, w: 1}
     LocalScale: {x: 1, y: 1, z: 1}
   _isNetworked: 1
@@ -441,7 +578,7 @@ MonoBehaviour:
   NetworkObserver: {fileID: 0}
   _prefabId: -1
   _scenePathHash: 584410112
-  _sceneId: 2510022319264132988
+  _sceneId: 2510022322384892412
   _sceneNetworkObjects:
   - {fileID: 1220841595}
 --- !u!4 &1220841597
@@ -452,7 +589,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1220841594}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.5219693, y: 5.2044616, z: 17.802452}
+  m_LocalPosition: {x: 0, y: 5.3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -474,9 +611,22 @@ MonoBehaviour:
   _componentIndexCache: 0
   _addedNetworkObject: {fileID: 1220841595}
   _networkObjectCache: {fileID: 1220841595}
-  _spawnRegion: {x: 1, y: 1, z: 1}
+  _spawnRegion: {x: 10, y: 10, z: 10}
   _playerPrefab: {fileID: 8227743508398521442, guid: 34ace2f7b3a47fc42b680ecf9882bf4b, type: 3}
   _deathDummy: {fileID: 8227743508398521443, guid: 34ace2f7b3a47fc42b680ecf9882bf4b, type: 3}
+--- !u!65 &1220841599
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1220841594}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 70, y: 20, z: 70}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1445278370
 GameObject:
   m_ObjectHideFlags: 0

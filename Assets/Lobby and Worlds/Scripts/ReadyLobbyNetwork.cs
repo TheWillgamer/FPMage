@@ -110,9 +110,9 @@ namespace FirstGearGames.LobbyAndWorld.Lobbies
                     for (int i = 0; i < gos.Length; i++)
                     {
                         //If found.
-                        if (gos[i].TryGetComponent<GameplayManager>(out GameplayManager gpm))
+                        if (gos[i].TryGetComponent<WizardDuelManager>(out WizardDuelManager wdm))
                         {
-                            gpm.FirstInitialize(rd, this);
+                            wdm.FirstInitialize(rd, this);
                             break;
                         }
 

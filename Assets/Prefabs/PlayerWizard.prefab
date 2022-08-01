@@ -256,6 +256,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6383162011746621454}
+  - component: {fileID: 4575299771133537037}
   - component: {fileID: 6383162011746621490}
   - component: {fileID: 6383162011746621453}
   - component: {fileID: 6675352565897393522}
@@ -287,6 +288,37 @@ Transform:
   m_Father: {fileID: 8227743508398521441}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4575299771133537037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6383162011746621452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26b716c41e9b56b4baafaf13a523ba2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _networkBehaviours:
+  - {fileID: 6383162011746621453}
+  - {fileID: 4835129120724136582}
+  - {fileID: 1392717416191338940}
+  - {fileID: 6813716162789506906}
+  - {fileID: 341256469546221778}
+  - {fileID: 5825915112656996751}
+  SceneTransformProperties:
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    LocalScale: {x: 1, y: 1, z: 1}
+  _isNetworked: 1
+  _isGlobal: 0
+  _hasParentNetworkObjectAtEdit: 0
+  NetworkObserver: {fileID: 0}
+  _prefabId: -1
+  _scenePathHash: 0
+  _sceneId: 0
+  _sceneNetworkObjects: []
 --- !u!136 &6383162011746621490
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -315,7 +347,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _componentIndexCache: 0
   _addedNetworkObject: {fileID: 8227743508398521442}
-  _networkObjectCache: {fileID: 8227743508398521442}
+  _networkObjectCache: {fileID: 4575299771133537037}
   orientation: {fileID: 7928923847964066659}
   jumpForce: 20
   moveSpeed: 90
@@ -359,7 +391,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _componentIndexCache: 1
   _addedNetworkObject: {fileID: 0}
-  _networkObjectCache: {fileID: 8227743508398521442}
+  _networkObjectCache: {fileID: 4575299771133537037}
   _graphicalObject: {fileID: 7928923847964066659}
   _smoothTicks: 0
   _durationType: 0
@@ -385,7 +417,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _componentIndexCache: 2
   _addedNetworkObject: {fileID: 8227743508398521442}
-  _networkObjectCache: {fileID: 8227743508398521442}
+  _networkObjectCache: {fileID: 4575299771133537037}
   hpMeter: {fileID: 0}
   dmgScreen: {fileID: 0}
   hit: {fileID: 0}
@@ -404,7 +436,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _componentIndexCache: 3
   _addedNetworkObject: {fileID: 8227743508398521442}
-  _networkObjectCache: {fileID: 8227743508398521442}
+  _networkObjectCache: {fileID: 4575299771133537037}
   fb: {fileID: 3637627862300843640, guid: ee6fbff84b0264d4894169a7613053d2, type: 3}
   proj_spawn: {fileID: 5682205087739296379}
   proj_force: 40
@@ -583,9 +615,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e67d99d202131714dae1e2d34c288fad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 0
+  _componentIndexCache: 4
   _addedNetworkObject: {fileID: 8227743508398521442}
-  _networkObjectCache: {fileID: 4867929021594578941}
+  _networkObjectCache: {fileID: 4575299771133537037}
   playerCam: {fileID: 8227743508193196329}
 --- !u!114 &4867929021594578941
 MonoBehaviour:
@@ -608,7 +640,7 @@ MonoBehaviour:
     LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   _isNetworked: 1
   _isGlobal: 0
-  _hasParentNetworkObjectAtEdit: 0
+  _hasParentNetworkObjectAtEdit: 1
   NetworkObserver: {fileID: 0}
   _prefabId: -1
   _scenePathHash: 0
@@ -626,9 +658,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2836e36774ca1c4bbbee976e17b649c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 1
+  _componentIndexCache: 5
   _addedNetworkObject: {fileID: 8227743508398521442}
-  _networkObjectCache: {fileID: 4867929021594578941}
+  _networkObjectCache: {fileID: 4575299771133537037}
   _synchronizeParent: 0
   _packing:
     Position: 1
@@ -749,6 +781,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8227743508193196329}
+  - component: {fileID: 3886377583055081699}
   - component: {fileID: 8227743508193196328}
   - component: {fileID: 9073898482919136242}
   m_Layer: 0
@@ -775,6 +808,33 @@ Transform:
   m_Father: {fileID: 8227743508398521441}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3886377583055081699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8227743508193196330}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26b716c41e9b56b4baafaf13a523ba2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _networkBehaviours:
+  - {fileID: 8227743508193196328}
+  - {fileID: 9073898482919136242}
+  SceneTransformProperties:
+    Position: {x: 0, y: 0.8, z: 0}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    LocalScale: {x: 1, y: 1, z: 1}
+  _isNetworked: 1
+  _isGlobal: 0
+  _hasParentNetworkObjectAtEdit: 0
+  NetworkObserver: {fileID: 0}
+  _prefabId: -1
+  _scenePathHash: 0
+  _sceneId: 0
+  _sceneNetworkObjects: []
 --- !u!114 &8227743508193196328
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -787,9 +847,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 044753e13dd3b2d47b94005fb3cdbcbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 6
+  _componentIndexCache: 0
   _addedNetworkObject: {fileID: 8227743508398521442}
-  _networkObjectCache: {fileID: 8227743508398521442}
+  _networkObjectCache: {fileID: 3886377583055081699}
   sensitivity: 50
   camSpeed: 20
   playerLoc: {fileID: 4790489275998527890}
@@ -805,9 +865,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2836e36774ca1c4bbbee976e17b649c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 7
+  _componentIndexCache: 1
   _addedNetworkObject: {fileID: 8227743508398521442}
-  _networkObjectCache: {fileID: 8227743508398521442}
+  _networkObjectCache: {fileID: 3886377583055081699}
   _synchronizeParent: 0
   _packing:
     Position: 0

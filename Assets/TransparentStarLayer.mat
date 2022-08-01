@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Cartoonwater effect
+  m_Name: TransparentStarLayer
   m_Shader: {fileID: -6465566751694194690, guid: aadf10a9bf30ccc4a9c6928e10ded383, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -79,27 +79,27 @@ Material:
     - _QueueOffset: 0
     - _RimEnabled: 0
     - _RippleDensity: 100
-    - _RippleSpeed: 8
+    - _RippleSpeed: 15
     - _SelfShadingSize: 0.5
     - _SelfShadingSizeExtra: 0.6
     - _ShadowEdgeSize: 0.05
     - _ShadowEdgeSizeExtra: 0.05
-    - _Slimness: 10
+    - _Slimness: 100
     - _SpecularEnabled: 0
     - _SrcBlend: 1
     - _Surface: 0
     - _TextureBlendingMode: 0
     - _TextureImpact: 1
-    - _Transparency: 0.8
+    - _Transparency: 0.5
     - _UnityShadowMode: 0
     - _UnityShadowPower: 0.2
     - _UnityShadowSharpness: 1
     - _VertexColorsEnabled: 0
-    - _WaveSize: 5
-    - _WaveSpeed: 0.2
+    - _WaveSize: 50
+    - _WaveSpeed: 15
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0, g: 1, b: 0.8329468, a: 1}
+    - _BaseColor: {r: 0.7422413, g: 0.0047169924, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _ColorDim: {r: 1, g: 1, b: 1, a: 1}
     - _ColorDimCurve: {r: 0.85023, g: 0.85034, b: 0.85045, a: 0.85056}

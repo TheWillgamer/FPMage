@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Cartoonwater effect
+  m_Name: WellWater
   m_Shader: {fileID: -6465566751694194690, guid: aadf10a9bf30ccc4a9c6928e10ded383, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -78,13 +78,13 @@ Material:
     - _OverrideLightmapDir: 0
     - _QueueOffset: 0
     - _RimEnabled: 0
-    - _RippleDensity: 100
-    - _RippleSpeed: 8
+    - _RippleDensity: 3
+    - _RippleSpeed: 1
     - _SelfShadingSize: 0.5
     - _SelfShadingSizeExtra: 0.6
     - _ShadowEdgeSize: 0.05
     - _ShadowEdgeSizeExtra: 0.05
-    - _Slimness: 10
+    - _Slimness: 1000
     - _SpecularEnabled: 0
     - _SrcBlend: 1
     - _Surface: 0
@@ -95,8 +95,8 @@ Material:
     - _UnityShadowPower: 0.2
     - _UnityShadowSharpness: 1
     - _VertexColorsEnabled: 0
-    - _WaveSize: 5
-    - _WaveSpeed: 0.2
+    - _WaveSize: 0.1
+    - _WaveSpeed: 0.1
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0, g: 1, b: 0.8329468, a: 1}

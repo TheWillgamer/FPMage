@@ -421,7 +421,7 @@ AudioSource:
   m_audioClip: {fileID: 8300000, guid: 97d76939771974b4f955990037809a70, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.574
-  m_Pitch: 0.54
+  m_Pitch: 0.7
   Loop: 0
   Mute: 0
   Spatialize: 0
@@ -583,9 +583,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e67d99d202131714dae1e2d34c288fad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 4
+  _componentIndexCache: 0
   _addedNetworkObject: {fileID: 8227743508398521442}
-  _networkObjectCache: {fileID: 8227743508398521442}
+  _networkObjectCache: {fileID: 4867929021594578941}
   playerCam: {fileID: 8227743508193196329}
 --- !u!114 &4867929021594578941
 MonoBehaviour:
@@ -608,7 +608,7 @@ MonoBehaviour:
     LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   _isNetworked: 1
   _isGlobal: 0
-  _hasParentNetworkObjectAtEdit: 1
+  _hasParentNetworkObjectAtEdit: 0
   NetworkObserver: {fileID: 0}
   _prefabId: -1
   _scenePathHash: 0
@@ -626,9 +626,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2836e36774ca1c4bbbee976e17b649c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 5
+  _componentIndexCache: 1
   _addedNetworkObject: {fileID: 8227743508398521442}
-  _networkObjectCache: {fileID: 8227743508398521442}
+  _networkObjectCache: {fileID: 4867929021594578941}
   _synchronizeParent: 0
   _packing:
     Position: 1

@@ -58,19 +58,19 @@ namespace FirstGearGames.LobbyAndWorld.Lobbies.JoinCreateRoomCanvases
         /// <summary>
         /// Button to join red team.
         /// </summary>
-        [Tooltip("Button used to start the game.")]
+        [Tooltip("Button to join red team.")]
         [SerializeField]
         private Button _joinRedButton;
         /// <summary>
         /// Button to join black team.
         /// </summary>
-        [Tooltip("Button used to start the game.")]
+        [Tooltip("Button to join black team.")]
         [SerializeField]
         private Button _joinBlackButton;
         /// <summary>
         /// Button to become an observer.
         /// </summary>
-        [Tooltip("Button used to start the game.")]
+        [Tooltip("Button to become an observer.")]
         [SerializeField]
         private Button _joinObsButton;
         #endregion

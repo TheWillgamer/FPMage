@@ -19,12 +19,16 @@ public class AbilityManager : NetworkBehaviour
 
     private void Update()
     {
-        if (base.IsOwner)
+        if (Input.GetButtonDown("Fire1"))
         {
-            if (Input.GetButtonDown("Fire1"))
+            if (IsOwner)
             {
-                playShootSound();
                 shootFireball();
+            }
+            if (IsServer)
+            {
+                Debug.Log("hi");
+                playShootSound();
             }
         }
     }
@@ -32,11 +36,13 @@ public class AbilityManager : NetworkBehaviour
     [ObserversRpc]
     private void playShootSound(){
         m_shootingSound.Play();
+        Debug.Log("hi");
     }
 
     [ServerRpc]
     private void shootFireball()
     {
+        playShootSound();
         GameObject spawned = Instantiate(fb, proj_spawn.position, proj_spawn.rotation);
         UnitySceneManager.MoveGameObjectToScene(spawned.gameObject, gameObject.scene);
         base.Spawn(spawned);

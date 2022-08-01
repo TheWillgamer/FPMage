@@ -47,16 +47,13 @@ public class Fireball : NetworkBehaviour, Projectile
         else if (!onTick && base.IsServerOnly)
             return;
 
-        float delta = (onTick) ? (float)base.TimeManager.TickDelta : Time.deltaTime;
-        //If host move every update for smooth movement. Otherwise move OnTick.
-        Move(delta);
-
         //Explode bullet if it goes through the wall
         int layerMask = 1 << 6;
         RaycastHit hit;
         // Does the ray intersect any walls
-        
-        if (GameObject.Find("PhysSim").GetComponent<PhysSim>()._physicsScene.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, layerMask))
+
+        //if (GameObject.Find("PhysSim").GetComponent<PhysSim>()._physicsScene.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, layerMask))
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, layerMask))
         {
             if(hit.distance>lastDistance)
             {
@@ -68,12 +65,17 @@ public class Fireball : NetworkBehaviour, Projectile
         {
             explode();
         }
+
+        float delta = (onTick) ? (float)base.TimeManager.TickDelta : Time.deltaTime;
+        //If host move every update for smooth movement. Otherwise move OnTick.
+        Move(delta);
     }
 
     [Server(Logging = LoggingType.Off)]
     public virtual void Initialize(PreciseTick pt, Vector3 force)
     {
         velocity = force;
+        Invoke("MakeActive", 0.1f);
     }
 
     [Server(Logging = LoggingType.Off)]

@@ -331,7 +331,7 @@ namespace FirstGearGames.LobbyAndWorld.Lobbies.JoinCreateRoomCanvases
 
         public void ChangeMap(Object obj)
         {
-            //GameObject.FindGameObjectWithTag("LobbyNetwork").GetComponent<GameSceneConfigurations>().changeScene(obj);
+            LobbyNetwork.ChangeMap(obj.name);
         }
 
     }

@@ -64,9 +64,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _physicsMode: 2
-  _scene: {fileID: 102900000, guid: 9fc0d4010bbf28b4594072e72b8655ab, type: 3}
+  _scenes:
+  - {fileID: 102900000, guid: 9fc0d4010bbf28b4594072e72b8655ab, type: 3}
+  - {fileID: 102900000, guid: b924374779913864c8079a1aa3a1383c, type: 3}
   _sceneNames:
   - SampleScene
+  - Game
 --- !u!114 &6443780140225780309
 MonoBehaviour:
   m_ObjectHideFlags: 0

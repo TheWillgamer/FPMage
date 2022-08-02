@@ -12,13 +12,14 @@ namespace FirstGearGames.LobbyAndWorld.Lobbies.JoinCreateRoomCanvases
     public class RoomDetails
     {
         public RoomDetails() { }
-        public RoomDetails(string name,string password, bool lockOnStart, int maxPlayers)
+        public RoomDetails(string name,string password, bool lockOnStart, int maxPlayers, string map)
         {
             Name = name;
             Password = password;
             IsPassworded = !string.IsNullOrEmpty(password);
             LockOnStart = lockOnStart;
             MaxPlayers = maxPlayers;
+            Map = map;
         }
 
         /// <summary>
@@ -37,6 +38,10 @@ namespace FirstGearGames.LobbyAndWorld.Lobbies.JoinCreateRoomCanvases
         /// True if this room requires a password.
         /// </summary>
         public bool IsPassworded;
+        /// <summary>
+        /// Currently selected map.
+        /// </summary>
+        public string Map;
         /// <summary>
         /// Password for this room. This will only exist on the server.
         /// </summary>

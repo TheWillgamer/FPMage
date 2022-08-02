@@ -19,9 +19,9 @@ public class WizardDuelManager : NetworkBehaviour
     /// <summary>
     /// Region players may spawn.
     /// </summary>
-    [Tooltip("Region players may spawn.")]
+    [Tooltip("Areas in which players may spawn.")]
     [SerializeField]
-    private Vector3 _spawnRegion = Vector3.one;
+    public Transform[] Spawns = new Transform[0];
     /// <summary>
     /// Prefab to spawn.
     /// </summary>
@@ -52,6 +52,10 @@ public class WizardDuelManager : NetworkBehaviour
     /// Currently spawned player objects. Only exist on the server.
     /// </summary>
     private List<NetworkObject> _spawnedPlayerObjects = new List<NetworkObject>();
+    /// <summary>
+    /// Next spawns to use.
+    /// </summary>
+    private int _nextSpawn;
 
     #region Initialization and Deinitialization.
     private void OnDestroy()
@@ -266,22 +270,20 @@ public class WizardDuelManager : NetworkBehaviour
     /// <param name="conn"></param>
     private void SpawnPlayer(NetworkConnection conn)
     {
-        //Move the player randomly within spawn region.
-        float x = Random.Range(-_spawnRegion.x / 2f, _spawnRegion.x / 2f);
-        float y = Random.Range(-_spawnRegion.y / 2f, _spawnRegion.y / 2f);
-        float z = Random.Range(-_spawnRegion.z / 2f, _spawnRegion.z / 2f);
-        Vector3 next = transform.position + new Vector3(x, y, z);
+        Vector3 position;
+        Quaternion rotation;
+        SetSpawn(_playerPrefab.transform, out position, out rotation);
 
         //Make object and move it to proper scene.
-        NetworkObject netIdent = Instantiate<NetworkObject>(_playerPrefab, next, Quaternion.identity);
+        NetworkObject netIdent = Instantiate<NetworkObject>(_playerPrefab, position, rotation);
         UnitySceneManager.MoveGameObjectToScene(netIdent.gameObject, gameObject.scene);
 
         _spawnedPlayerObjects.Add(netIdent);
         base.Spawn(netIdent.gameObject, conn);
 
         //NetworkObject netIdent = conn.identity;            
-        netIdent.transform.position = next;
-        RpcTeleport(netIdent, next);
+        netIdent.transform.position = position;
+        RpcTeleport(netIdent, position);
     }
     /// <summary>
     /// teleports a NetworkObject to a position.
@@ -293,13 +295,48 @@ public class WizardDuelManager : NetworkBehaviour
     {
         ident.transform.position = position;
     }
+    #endregion
 
     /// <summary>
-    /// Draw spawn region.
+    /// Sets a spawn position and rotation.
     /// </summary>
-    private void OnDrawGizmosSelected()
+    /// <param name="pos"></param>
+    /// <param name="rot"></param>
+    private void SetSpawn(Transform prefab, out Vector3 pos, out Quaternion rot)
     {
-        Gizmos.DrawWireCube(transform.position, _spawnRegion);
+        //No spawns specified.
+        if (Spawns.Length == 0)
+        {
+            SetSpawnUsingPrefab(prefab, out pos, out rot);
+            return;
+        }
+
+        Transform result = Spawns[_nextSpawn];
+        if (result == null)
+        {
+            SetSpawnUsingPrefab(prefab, out pos, out rot);
+        }
+        else
+        {
+            pos = result.position;
+            rot = result.rotation;
+        }
+
+        //Increase next spawn and reset if needed.
+        _nextSpawn++;
+        if (_nextSpawn >= Spawns.Length)
+            _nextSpawn = 0;
     }
-    #endregion
+
+    /// <summary>
+    /// Sets spawn using values from prefab.
+    /// </summary>
+    /// <param name="prefab"></param>
+    /// <param name="pos"></param>
+    /// <param name="rot"></param>
+    private void SetSpawnUsingPrefab(Transform prefab, out Vector3 pos, out Quaternion rot)
+    {
+        pos = prefab.position;
+        rot = prefab.rotation;
+    }
 }

@@ -442,13 +442,13 @@ namespace FirstGearGames.LobbyAndWorld.Lobbies
         /// <param name="roomName"></param>
         /// <param name="playerCount"></param>
         [Client]
-        public static void CreateRoom(string roomName, string password, bool lockOnStart, int playerCount)
+        public static void CreateRoom(string roomName, string password, bool lockOnStart, int playerCount, string map)
         {
-            _instance.CreateRoomInternal(roomName, password, lockOnStart, playerCount);
+            _instance.CreateRoomInternal(roomName, password, lockOnStart, playerCount, map);
         }
-        private void CreateRoomInternal(string roomName, string password, bool lockOnStart, int playerCount)
+        private void CreateRoomInternal(string roomName, string password, bool lockOnStart, int playerCount, string map)
         {
-            CmdCreateRoom(roomName, password, lockOnStart, playerCount);
+            CmdCreateRoom(roomName, password, lockOnStart, playerCount, map);
         }
 
         /// <summary>
@@ -456,7 +456,7 @@ namespace FirstGearGames.LobbyAndWorld.Lobbies
         /// </summary>
         /// <param name="username"></param>
         [ServerRpc(RequireOwnership = false)]
-        private void CmdCreateRoom(string roomName, string password, bool lockOnStart, int playerCount, NetworkConnection sender = null)
+        private void CmdCreateRoom(string roomName, string password, bool lockOnStart, int playerCount, string map, NetworkConnection sender = null)
         {
             ClientInstance ci;
             if (!FindClientInstance(sender, out ci))
@@ -476,7 +476,7 @@ namespace FirstGearGames.LobbyAndWorld.Lobbies
                 /* Make a new room details.
                  * Add creator to members and
                  * assign room name. */
-                RoomDetails roomDetails = new RoomDetails(roomName, password, lockOnStart, playerCount);
+                RoomDetails roomDetails = new RoomDetails(roomName, password, lockOnStart, playerCount, map);
                 roomDetails.AddMember(ci.NetworkObject);
                 CreatedRooms.Add(roomDetails);
                 ConnectionRooms[ci.Owner] = roomDetails;
@@ -1137,7 +1137,7 @@ namespace FirstGearGames.LobbyAndWorld.Lobbies
                 {
                     //Set started immediately.
                     roomDetails.IsStarted = true;
-                    SceneLoadData sld = new SceneLoadData(_gameSceneConfigurations.GetGameScenes());
+                    SceneLoadData sld = new SceneLoadData(roomDetails.Map);
                     LoadOptions loadOptions = new LoadOptions
                     {
                         LocalPhysics = _gameSceneConfigurations.PhysicsMode,
@@ -1525,7 +1525,24 @@ namespace FirstGearGames.LobbyAndWorld.Lobbies
         }
         #endregion
 
+        /// <summary>
+        /// Changes map
+        /// </summary>
+        [Client]
+        public static void ChangeMap(String map)
+        {
+            CurrentRoom.Map = map;
+            _instance.CmdChangeMap(map);
+        }
+        [ServerRpc(RequireOwnership = false)]
+        private void CmdChangeMap(String map, NetworkConnection sender = null)
+        {
+            ClientInstance ci;
+            if (!FindClientInstance(sender, out ci))
+                return;
+
+            RoomDetails roomDetails = ReturnRoomDetails(ci.NetworkObject);
+            roomDetails.Map = map;
+        }
     }
-
-
 }

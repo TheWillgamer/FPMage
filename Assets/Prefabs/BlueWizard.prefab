@@ -434,12 +434,12 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 5799011907501661999}
   _networkObjectCache: {fileID: 5799011907501661999}
   cam: {fileID: 5799011907501662018}
-  jumpForce: 1500
+  jumpForce: 3200
   moveSpeed: 70
   maxSpeed: 22
   jumpSpeedModifier: 0.4
   grounded: 0
-  counterMovement: 0.175
+  counterMovement: 0.15
   airReduceAmt: 0.01
   whatIsGround:
     serializedVersion: 2
@@ -479,7 +479,7 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 0}
   _networkObjectCache: {fileID: 5799011907501661999}
   _graphicalObject: {fileID: 1373249135401040302}
-  _smoothTicks: 1
+  _smoothTicks: 0
   _durationType: 0
   _smoothingDuration: 0.05
   _enableTeleport: 0

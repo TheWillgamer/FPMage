@@ -28,10 +28,12 @@ public class Movement : NetworkBehaviour
     public struct ReconcileData
     {
         public Vector3 Position;
+        public Quaternion Rotation;
         public Vector3 Velocity;
-        public ReconcileData(Vector3 position, Vector3 velocity)
+        public ReconcileData(Vector3 position, Quaternion rotation, Vector3 velocity)
         {
             Position = position;
+            Rotation = rotation;
             Velocity = velocity;
         }
     }
@@ -90,7 +92,7 @@ public class Movement : NetworkBehaviour
 
     private float threshold = 0.01f;
     private Vector2 mag;
-    private float xMag, yMag;
+    private bool reconsiled = false;        //To make it reconsile every other frame
     #endregion
 
     public bool disableCM;
@@ -136,7 +138,13 @@ public class Movement : NetworkBehaviour
         mag = FindVelRelativeToLook();
         if (base.IsOwner)
         {
-            Reconciliation(default, false);
+            if (!reconsiled)
+            {
+                Reconciliation(default, false);
+                reconsiled = true;
+            }
+            else
+                reconsiled = false;
             CheckInput(out MoveData md);
             Move(md, false);
         }
@@ -151,7 +159,7 @@ public class Movement : NetworkBehaviour
     {
         if (base.IsServer)
         {
-            ReconcileData rd = new ReconcileData(transform.position, _rigidbody.velocity);
+            ReconcileData rd = new ReconcileData(transform.position, transform.rotation, _rigidbody.velocity);
             Reconciliation(rd, true);
         }
     }
@@ -180,8 +188,7 @@ public class Movement : NetworkBehaviour
         _rigidbody.AddForce(Vector3.down * 30);
 
         //Find actual velocity relative to where player is looking
-        xMag = mag.x;
-        yMag = mag.y;
+        float xMag = mag.x, yMag = mag.y;
 
         //Counteract sliding and sloppy movement
         CounterMovement(md.Horizontal, md.Vertical, mag);
@@ -336,7 +343,7 @@ public class Movement : NetworkBehaviour
         }
 
         //Invoke ground cancel, since we can't check normals with CollisionExit
-        float delay = .2f;
+        float delay = .1f;
         if (!cancellingGrounded)
         {
             cancellingGrounded = true;
@@ -353,6 +360,7 @@ public class Movement : NetworkBehaviour
     private void Reconciliation(ReconcileData rd, bool asServer)
     {
         transform.position = rd.Position;
+        transform.rotation = rd.Rotation;
         _rigidbody.velocity = rd.Velocity;
     }
 }

@@ -12,6 +12,7 @@ public class BulletParticle : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Mouse0))
         {
+            Debug.Log("Fucked Up");
             particleSystem.Play();
         }
     }

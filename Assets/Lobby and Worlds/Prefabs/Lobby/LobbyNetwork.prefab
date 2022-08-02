@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6443780140225780299}
   m_Layer: 0
   m_Name: LobbyNetwork
-  m_TagString: Untagged
+  m_TagString: LobbyNetwork
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -64,8 +64,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _physicsMode: 2
-  _scenes:
-  - {fileID: 102900000, guid: 9fc0d4010bbf28b4594072e72b8655ab, type: 3}
+  _scene: {fileID: 102900000, guid: 9fc0d4010bbf28b4594072e72b8655ab, type: 3}
   _sceneNames:
   - SampleScene
 --- !u!114 &6443780140225780309

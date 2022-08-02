@@ -40,6 +40,9 @@ namespace FirstGearGames.LobbyAndWorld.Lobbies.JoinCreateRoomCanvases
         [Tooltip("Kick button.")]
         [SerializeField]
         private GameObject _kickButton;
+        /// <summary>
+        /// Current team: 1 for red, 2 for black, 0 for observer
+        /// </summary>
         #endregion
 
         #region Protected

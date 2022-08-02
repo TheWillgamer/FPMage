@@ -32,6 +32,10 @@ namespace FirstGearGames.LobbyAndWorld.Clients
         /// PlayerSettings reference.
         /// </summary>
         public PlayerSettings PlayerSettings { get; private set; }
+        /// <summary>
+        /// player team: 0 for observer, 1 for red, 2 for black
+        /// </summary>
+        public int team;
         #endregion
 
         #region Constants.
@@ -69,6 +73,7 @@ namespace FirstGearGames.LobbyAndWorld.Clients
         private void FirstInitialize()
         {
             PlayerSettings = GetComponent<PlayerSettings>();
+            team = 0;
         }
 
         /// <summary>

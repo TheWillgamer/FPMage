@@ -12,6 +12,7 @@ public class Fireball : NetworkBehaviour, Projectile
     private bool active = false;
     private float lastDistance = Mathf.Infinity;
 
+
     public override void OnStartServer()
     {
         base.OnStartServer();

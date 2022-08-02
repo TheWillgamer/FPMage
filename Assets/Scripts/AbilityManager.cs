@@ -27,7 +27,6 @@ public class AbilityManager : NetworkBehaviour
             }
             if (IsServer)
             {
-                Debug.Log("hi");
                 playShootSound();
             }
         }

@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Projectile
+  - LobbyCamera
+  - LobbyNetwork
   layers:
   - Default
   - TransparentFX

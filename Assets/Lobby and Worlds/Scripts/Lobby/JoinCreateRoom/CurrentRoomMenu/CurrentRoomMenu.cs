@@ -44,35 +44,17 @@ namespace FirstGearGames.LobbyAndWorld.Lobbies.JoinCreateRoomCanvases
         [SerializeField]
         private Button _startButton;
         /// <summary>
-        /// Content to hold room member listings.
+        /// Content to hold red team member listings.
         /// </summary>
-        [Tooltip("Content to hold room member listings.")]
+        [Tooltip("Content to hold red team member listings.")]
         [SerializeField]
-        private Transform _membersContent;
+        private Transform MembersContent;
         /// <summary>
         /// Prefab to spawn for each member entry.
         /// </summary>
         [Tooltip("Prefab to spawn for each member entry.")]
         [SerializeField]
         private MemberEntry _memberEntryPrefab;
-        /// <summary>
-        /// Button to join red team.
-        /// </summary>
-        [Tooltip("Button to join red team.")]
-        [SerializeField]
-        private Button _joinRedButton;
-        /// <summary>
-        /// Button to join black team.
-        /// </summary>
-        [Tooltip("Button to join black team.")]
-        [SerializeField]
-        private Button _joinBlackButton;
-        /// <summary>
-        /// Button to become an observer.
-        /// </summary>
-        [Tooltip("Button to become an observer.")]
-        [SerializeField]
-        private Button _joinObsButton;
         #endregion
 
         #region Private.
@@ -109,7 +91,7 @@ namespace FirstGearGames.LobbyAndWorld.Lobbies.JoinCreateRoomCanvases
             _awaitingStartResponse = false;
 
             //Destroy children of content. This is just to get rid of any placeholders.
-            foreach (Transform c in _membersContent)
+            foreach (Transform c in MembersContent)
                 Destroy(c.gameObject);
             MemberEntries.Clear();
             ProcessRoomStatus(RoomProcessingTypes.Unset, false, null, string.Empty);
@@ -243,7 +225,7 @@ namespace FirstGearGames.LobbyAndWorld.Lobbies.JoinCreateRoomCanvases
             //Add current members to content.
             for (int i = 0; i < roomDetails.MemberIds.Count; i++)
             {
-                MemberEntry entry = Instantiate(_memberEntryPrefab, _membersContent);
+                MemberEntry entry = Instantiate(_memberEntryPrefab, MembersContent);
                 entry.FirstInitialize(this, roomDetails.MemberIds[i], roomDetails.StartedMembers.Contains(roomDetails.MemberIds[i]));
                 /* Set kick active if member isnt self, match hasnt already started,
                  * and if host. */
@@ -345,6 +327,11 @@ namespace FirstGearGames.LobbyAndWorld.Lobbies.JoinCreateRoomCanvases
             _awaitingkickResponse = false;
             if (failedReason != string.Empty)
                 GlobalManager.CanvasesManager.MessagesCanvas.InfoMessages.ShowTimedMessage(failedReason, Color.red);
+        }
+
+        public void ChangeMap(Object obj)
+        {
+            //GameObject.FindGameObjectWithTag("LobbyNetwork").GetComponent<GameSceneConfigurations>().changeScene(obj);
         }
 
     }

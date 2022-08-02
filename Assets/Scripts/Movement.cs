@@ -92,7 +92,6 @@ public class Movement : NetworkBehaviour
 
     private float threshold = 0.01f;
     private Vector2 mag;
-    private bool reconsiled = false;        //To make it reconsile every other frame
     #endregion
 
     public bool disableCM;
@@ -138,13 +137,7 @@ public class Movement : NetworkBehaviour
         mag = FindVelRelativeToLook();
         if (base.IsOwner)
         {
-            if (!reconsiled)
-            {
-                Reconciliation(default, false);
-                reconsiled = true;
-            }
-            else
-                reconsiled = false;
+            Reconciliation(default, false);
             CheckInput(out MoveData md);
             Move(md, false);
         }

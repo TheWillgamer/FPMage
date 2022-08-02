@@ -8,8 +8,6 @@ public class MoveCamera : NetworkBehaviour
     private float sensitivity = 50f;
     private float sensMultiplier = 1f;
     [SerializeField]
-    private float camSpeed = 1f;
-    [SerializeField]
     private Transform playerLoc;
     private float _movingTime = 0f;
 
@@ -50,7 +48,7 @@ public class MoveCamera : NetworkBehaviour
         {
             _movingTime += Time.deltaTime;
             float smoothingPercent = (_movingTime / 0.75f);
-            float smoothingRate = Mathf.Lerp(40f, 20f, smoothingPercent);
+            float smoothingRate = Mathf.Lerp(30f, 20f, smoothingPercent);
             transform.position = Vector3.MoveTowards(transform.position, playerLoc.position, smoothingRate * distance * Time.deltaTime);
         }
         else

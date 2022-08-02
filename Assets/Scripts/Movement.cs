@@ -28,22 +28,18 @@ public class Movement : NetworkBehaviour
     public struct ReconcileData
     {
         public Vector3 Position;
-        public Quaternion Rotation;
         public Vector3 Velocity;
-        public Vector3 AngularVelocity;
-        public ReconcileData(Vector3 position, Quaternion rotation, Vector3 velocity, Vector3 angularVelocity)
+        public ReconcileData(Vector3 position, Vector3 velocity)
         {
             Position = position;
-            Rotation = rotation;
             Velocity = velocity;
-            AngularVelocity = angularVelocity;
         }
     }
     #endregion
     
     #region Serialized.
     [SerializeField]
-    private Transform orientation;
+    private Transform cam;
     [SerializeField]
     private float jumpForce = 15f;
     [SerializeField]
@@ -56,6 +52,8 @@ public class Movement : NetworkBehaviour
     private bool grounded;
     [SerializeField]
     private float counterMovement = 0.175f;
+    [SerializeField]
+    private float airReduceAmt = 0.1f;
     [SerializeField]
     private LayerMask whatIsGround;
     [SerializeField]
@@ -91,6 +89,8 @@ public class Movement : NetworkBehaviour
     private float jumpCooldown = 0.2f;
 
     private float threshold = 0.01f;
+    private Vector2 mag;
+    private float xMag, yMag;
     #endregion
 
     public bool disableCM;
@@ -107,6 +107,7 @@ public class Movement : NetworkBehaviour
         InstanceFinder.TimeManager.OnTick += TimeManager_OnTick;
         InstanceFinder.TimeManager.OnPostTick += TimeManager_OnPostTick;
         disableCM = false;
+        mag = new Vector2(0f, 0f);
     }
 
     private void OnDestroy()
@@ -131,6 +132,8 @@ public class Movement : NetworkBehaviour
 
     private void TimeManager_OnTick()
     {
+        transform.rotation = Quaternion.Euler(0.0f, cam.eulerAngles.y, 0.0f);
+        mag = FindVelRelativeToLook();
         if (base.IsOwner)
         {
             Reconciliation(default, false);
@@ -148,7 +151,7 @@ public class Movement : NetworkBehaviour
     {
         if (base.IsServer)
         {
-            ReconcileData rd = new ReconcileData(transform.position, transform.rotation, _rigidbody.velocity, _rigidbody.angularVelocity);
+            ReconcileData rd = new ReconcileData(transform.position, _rigidbody.velocity);
             Reconciliation(rd, true);
         }
     }
@@ -160,7 +163,7 @@ public class Movement : NetworkBehaviour
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
 
-        if (horizontal == 0f && vertical == 0f && !jumping)
+        if (horizontal == 0 && vertical == 0 && !jumping)
             return;
 
         md = new MoveData(jumping, horizontal, vertical);
@@ -177,11 +180,14 @@ public class Movement : NetworkBehaviour
         _rigidbody.AddForce(Vector3.down * 30);
 
         //Find actual velocity relative to where player is looking
-        Vector2 mag = FindVelRelativeToLook();
-        float xMag = mag.x, yMag = mag.y;
+        xMag = mag.x;
+        yMag = mag.y;
 
         //Counteract sliding and sloppy movement
         CounterMovement(md.Horizontal, md.Vertical, mag);
+
+        //Make it easier to change trajectory in air
+        AirReduction(md.Horizontal, md.Vertical, mag);
 
         //Set max speed
         float maxSpeed = this.maxSpeed;
@@ -203,8 +209,8 @@ public class Movement : NetworkBehaviour
         }
 
         //Apply forces to move player
-        _rigidbody.AddForce(orientation.transform.forward * md.Vertical * moveSpeed * multiplier * multiplierV);
-        _rigidbody.AddForce(orientation.transform.right * md.Horizontal * moveSpeed * multiplier);
+        _rigidbody.AddForce(transform.forward * md.Vertical * moveSpeed * multiplier * multiplierV);
+        _rigidbody.AddForce(transform.right * md.Horizontal * moveSpeed * multiplier);
     }
 
     private void Jump(float x, float y)
@@ -214,7 +220,7 @@ public class Movement : NetworkBehaviour
             jumpCharge--;
 
         //Add jump forces
-        _rigidbody.AddForce(new Vector3(x * jumpSpeedModifier, jumpForce, y * jumpSpeedModifier), ForceMode.Impulse);
+        _rigidbody.AddForce(new Vector3(x * jumpSpeedModifier, jumpForce, y * jumpSpeedModifier));
 
         //If jumping while falling, reset y velocity.
         Vector3 vel = _rigidbody.velocity;
@@ -238,11 +244,34 @@ public class Movement : NetworkBehaviour
         //Counter movement
         if (Math.Abs(mag.x) > threshold && Math.Abs(x) < 0.05f || (mag.x < -threshold && x > 0) || (mag.x > threshold && x < 0))
         {
-            _rigidbody.AddForce(moveSpeed * orientation.transform.right * -mag.x * counterMovement);
+            _rigidbody.AddForce(moveSpeed * transform.right * -mag.x * counterMovement);
         }
         if (Math.Abs(mag.y) > threshold && Math.Abs(y) < 0.05f || (mag.y < -threshold && y > 0) || (mag.y > threshold && y < 0))
         {
-            _rigidbody.AddForce(moveSpeed * orientation.transform.forward * -mag.y * counterMovement);
+            _rigidbody.AddForce(moveSpeed * transform.forward * -mag.y * counterMovement);
+        }
+
+        //Limit diagonal running. This will also cause a full stop if sliding fast and un-crouching, so not optimal.
+        if (Mathf.Sqrt((Mathf.Pow(_rigidbody.velocity.x, 2) + Mathf.Pow(_rigidbody.velocity.z, 2))) > maxSpeed)
+        {
+            float fallspeed = _rigidbody.velocity.y;
+            Vector3 n = _rigidbody.velocity.normalized * maxSpeed;
+            _rigidbody.velocity = new Vector3(n.x, fallspeed, n.z);
+        }
+    }
+
+    private void AirReduction(float x, float y, Vector2 mag)
+    {
+        if (grounded) return;
+
+        //Counter movement
+        if ((x > 0 && mag.x < 0) || (x < 0 && mag.x > 0))
+        {
+            _rigidbody.AddForce(moveSpeed * transform.right * x * airReduceAmt);
+        }
+        if ((y > 0 && mag.y < 0) || (y < 0 && mag.y > 0))
+        {
+            _rigidbody.AddForce(moveSpeed * transform.forward * y * airReduceAmt);
         }
 
         //Limit diagonal running. This will also cause a full stop if sliding fast and un-crouching, so not optimal.
@@ -261,7 +290,7 @@ public class Movement : NetworkBehaviour
     // <returns></returns>
     public Vector2 FindVelRelativeToLook()
     {
-        float lookAngle = orientation.transform.eulerAngles.y;
+        float lookAngle = transform.eulerAngles.y;
         float moveAngle = Mathf.Atan2(_rigidbody.velocity.x, _rigidbody.velocity.z) * Mathf.Rad2Deg;
 
         float u = Mathf.DeltaAngle(lookAngle, moveAngle);
@@ -307,7 +336,7 @@ public class Movement : NetworkBehaviour
         }
 
         //Invoke ground cancel, since we can't check normals with CollisionExit
-        float delay = .1f;
+        float delay = .2f;
         if (!cancellingGrounded)
         {
             cancellingGrounded = true;
@@ -324,8 +353,6 @@ public class Movement : NetworkBehaviour
     private void Reconciliation(ReconcileData rd, bool asServer)
     {
         transform.position = rd.Position;
-        transform.rotation = rd.Rotation;
         _rigidbody.velocity = rd.Velocity;
-        _rigidbody.angularVelocity = rd.AngularVelocity;
     }
 }

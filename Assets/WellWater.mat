@@ -52,6 +52,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _AlphaClip: 0
+    - _AmbientOcclusion: 1
     - _BUILTIN_QueueControl: 0
     - _BUILTIN_QueueOffset: 0
     - _Blend: 0
@@ -75,6 +76,7 @@ Material:
     - _LightContribution: 0
     - _LightmapDirectionPitch: 0
     - _LightmapDirectionYaw: 0
+    - _Metalic: 0
     - _OverrideLightmapDir: 0
     - _QueueOffset: 0
     - _RimEnabled: 0
@@ -84,7 +86,8 @@ Material:
     - _SelfShadingSizeExtra: 0.6
     - _ShadowEdgeSize: 0.05
     - _ShadowEdgeSizeExtra: 0.05
-    - _Slimness: 1000
+    - _Slimness: 500
+    - _Smoothness: 0.5
     - _SpecularEnabled: 0
     - _SrcBlend: 1
     - _Surface: 0
@@ -109,6 +112,6 @@ Material:
     - _FlatRimColor: {r: 0.85023, g: 0.85034, b: 0.85045, a: 0.85056}
     - _FlatSpecularColor: {r: 0.85023, g: 0.85034, b: 0.85045, a: 0.85056}
     - _LightmapDirection: {r: 0, g: 1, b: 0, a: 0}
-    - _RippleColor: {r: 0, g: 1.9784088, b: 0.024915578, a: 0}
+    - _RippleColor: {r: 2.641331, g: 2.641331, b: 2.641331, a: 0}
     - _UnityShadowColor: {r: 0.85023, g: 0.85034, b: 0.85045, a: 0.85056}
   m_BuildTextureStacks: []

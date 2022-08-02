@@ -259,9 +259,8 @@ MonoBehaviour:
   _componentIndexCache: 0
   _addedNetworkObject: {fileID: 3637627862300843641}
   _networkObjectCache: {fileID: 3637627862300843641}
-  explosion_radius: 1
-  knockback_amount: 3
-  knockback_growth: 20
+  knockback_amount: 5
+  knockback_growth: 40
 --- !u!54 &1362849343691916111
 Rigidbody:
   m_ObjectHideFlags: 0

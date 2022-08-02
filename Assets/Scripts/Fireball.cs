@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class Fireball : NetworkBehaviour, Projectile
 {
-    [SerializeField] private float explosion_radius = 1f;
     [SerializeField] private float knockback_amount = 1f;
     [SerializeField] private float knockback_growth = 20f;
     private Vector3 velocity = Vector3.zero;
@@ -96,7 +95,7 @@ public class Fireball : NetworkBehaviour, Projectile
         {
             PlayerHealth ph = collision.gameObject.GetComponent<PlayerHealth>();
             ph.TakeDamage(15);
-            ph.Knockback(Vector3.ProjectOnPlane(transform.forward, Vector3.up).normalized + Vector3.up, knockback_amount, knockback_growth);
+            ph.Knockback(Vector3.ProjectOnPlane(transform.forward, Vector3.up).normalized + Vector3.up/4, knockback_amount, knockback_growth);
         }
         explode();
     }

@@ -18,11 +18,13 @@ public class Movement : NetworkBehaviour
         public bool Jump;
         public float Horizontal;
         public float Vertical;
-        public MoveData(bool jump, float horizontal, float vertical)
+        public bool Hdash;
+        public MoveData(bool jump, float horizontal, float vertical, bool hdash)
         {
             Jump = jump;
             Horizontal = horizontal;
             Vertical = vertical;
+            Hdash = hdash;
         }
     }
     public struct ReconcileData
@@ -48,8 +50,6 @@ public class Movement : NetworkBehaviour
     private float moveSpeed = 4500f;
     [SerializeField]
     private float maxSpeed = 20;
-    [SerializeField]
-    private float jumpSpeedModifier = .4f;
     [SerializeField]
     private bool grounded;
     [SerializeField]
@@ -94,7 +94,15 @@ public class Movement : NetworkBehaviour
     private Vector2 mag;
     #endregion
 
-    public bool disableCM;
+    /// <summary>
+    /// Dashing
+    /// </summary>
+    public bool h_dashing = false;          // tells movement system to dash horizontally
+    public float dashModifier = 0f;         // speed of dash
+    public float dashDuration = 0f;         // duration of dash
+
+    public bool disableMV;      //Disable movement
+    public bool disableCM;      //Disable counter-movement
 
     private void Start()
     {
@@ -107,6 +115,7 @@ public class Movement : NetworkBehaviour
         _rigidbody = GetComponent<Rigidbody>();
         InstanceFinder.TimeManager.OnTick += TimeManager_OnTick;
         InstanceFinder.TimeManager.OnPostTick += TimeManager_OnPostTick;
+        disableMV = false;
         disableCM = false;
         mag = new Vector2(0f, 0f);
     }
@@ -164,16 +173,24 @@ public class Movement : NetworkBehaviour
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
 
-        if (horizontal == 0 && vertical == 0 && !jumping)
+        if (horizontal == 0 && vertical == 0 && !jumping && !h_dashing)
             return;
 
-        md = new MoveData(jumping, horizontal, vertical);
+        md = new MoveData(jumping, horizontal, vertical, h_dashing);
         jumping = false;
+        h_dashing = false;
     }
 
     [Replicate]
     private void Move(MoveData md, bool asServer, bool replaying = false)
     {
+        if (md.Hdash)
+        {
+            _rigidbody.velocity = new Vector3(0, 0, 0);
+            _rigidbody.AddForce(transform.forward * md.Vertical * dashModifier + transform.right * md.Horizontal * dashModifier);
+            Invoke(nameof(EndDash), dashDuration);
+        }
+
         if (md.Jump)
             Jump(md.Horizontal, md.Vertical);
 
@@ -220,7 +237,7 @@ public class Movement : NetworkBehaviour
             jumpCharge--;
 
         //Add jump forces
-        _rigidbody.AddForce(new Vector3(x * jumpSpeedModifier, jumpForce, y * jumpSpeedModifier));
+        _rigidbody.AddForce(transform.up * jumpForce);
 
         //If jumping while falling, reset y velocity.
         Vector3 vel = _rigidbody.velocity;
@@ -230,6 +247,13 @@ public class Movement : NetworkBehaviour
             _rigidbody.velocity = new Vector3(vel.x, vel.y / 2, vel.z);
 
         Invoke(nameof(ResetJump), jumpCooldown);
+    }
+
+    //reduces velocity by a factor of the parameter
+    private void EndDash()
+    {
+        Vector3 vel = _rigidbody.velocity;
+        _rigidbody.velocity = new Vector3(vel.x/2, vel.y/2, vel.z/2);
     }
 
     private void ResetJump()

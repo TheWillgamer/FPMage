@@ -11,8 +11,7 @@ public class Fireball : NetworkBehaviour, Projectile
     private Vector3 velocity = Vector3.zero;
     [SerializeField] private GameObject explosion;
     private float _colliderRadius;
-
-    private float lastDistance = Mathf.Infinity;
+    private bool isExploding = false;
 
 
     public override void OnStartServer()
@@ -50,25 +49,6 @@ public class Fireball : NetworkBehaviour, Projectile
         else if (!onTick && base.IsServerOnly)
             return;
 
-        ////Explode bullet if it goes through the wall
-        //int layerMask = 1 << 6;
-        //RaycastHit hit;
-        //// Does the ray intersect any walls
-
-        ////if (GameObject.Find("PhysSim").GetComponent<PhysSim>()._physicsScene.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, layerMask))
-        //if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, layerMask))
-        //{
-        //    if (hit.distance > lastDistance)
-        //    {
-        //        explode();
-        //    }
-        //    lastDistance = hit.distance;
-        //}
-        //else if (lastDistance < 100000f)
-        //{
-        //    explode();
-        //}
-
         float delta = (onTick) ? (float)base.TimeManager.TickDelta : Time.deltaTime;
         //If host move every update for smooth movement. Otherwise move OnTick.
         Move(delta);
@@ -105,9 +85,10 @@ public class Fireball : NetworkBehaviour, Projectile
         // Does the ray intersect any walls
 
         //if (GameObject.Find("PhysSim").GetComponent<PhysSim>()._physicsScene.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, layerMask))
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, traceDistance, layerMask))
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, traceDistance, layerMask) && !isExploding)
         {
             explode();
+            isExploding = true;
         }
 
         transform.position += (velocity * Time.deltaTime);
@@ -122,7 +103,11 @@ public class Fireball : NetworkBehaviour, Projectile
             ph.TakeDamage(15);
             ph.Knockback(Vector3.ProjectOnPlane(transform.forward, Vector3.up).normalized + Vector3.up/4, knockback_amount, knockback_growth);
         }
-        explode();
+        if(!isExploding)
+        {
+            explode();
+            isExploding = true;
+        }
     }
 
     [Server(Logging = LoggingType.Off)]
@@ -160,6 +145,6 @@ public class Fireball : NetworkBehaviour, Projectile
     {
         GameObject spawned = Instantiate(explosion, transform.position, transform.rotation);
         UnitySceneManager.MoveGameObjectToScene(spawned.gameObject, gameObject.scene);
-        base.Spawn(spawned);
+        //base.Spawn(spawned);
     }
 }

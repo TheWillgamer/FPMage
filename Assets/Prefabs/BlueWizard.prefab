@@ -437,7 +437,6 @@ MonoBehaviour:
   jumpForce: 3200
   moveSpeed: 70
   maxSpeed: 22
-  jumpSpeedModifier: 0.4
   grounded: 0
   counterMovement: 0.15
   airReduceAmt: 0.01
@@ -446,6 +445,10 @@ MonoBehaviour:
     m_Bits: 64
   airMovementMultiplier: 0.8
   maxSlopeAngle: 35
+  h_dashing: 0
+  dashModifier: 0
+  dashDuration: 0
+  disableMV: 0
   disableCM: 0
 --- !u!54 &5799011907501662054
 Rigidbody:
@@ -526,6 +529,8 @@ MonoBehaviour:
   fb: {fileID: 3637627862300843640, guid: ee6fbff84b0264d4894169a7613053d2, type: 3}
   proj_spawn: {fileID: 5799011907501662135}
   proj_force: 40
+  dashForce: 100000
+  dashDur: 0.2
 --- !u!82 &5799011907501662057
 AudioSource:
   m_ObjectHideFlags: 0

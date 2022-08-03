@@ -6,10 +6,11 @@ using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
 
 public class AbilityManager : NetworkBehaviour
 {
-    private bool firing = false;
     [SerializeField] private GameObject fb;
     [SerializeField] private Transform proj_spawn;
     [SerializeField] private float proj_force;
+    [SerializeField] private float dashForce;
+    [SerializeField] private float dashDur;
     AudioSource m_shootingSound;
 
     void Start()
@@ -28,6 +29,16 @@ public class AbilityManager : NetworkBehaviour
             if (IsServer)
             {
                 playShootSound();
+            }
+        }
+        if (Input.GetButtonDown("Fire3"))
+        {
+            if (IsOwner)
+            {
+                Movement mv = GetComponent<Movement>();
+                mv.h_dashing = true;
+                mv.dashModifier = dashForce;
+                mv.dashDuration = dashDur;
             }
         }
     }

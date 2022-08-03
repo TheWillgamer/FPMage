@@ -1,5 +1,6 @@
 using FishNet.Managing.Timing;
 using UnityEngine;
+using FishNet.Connection;
 
 public interface Projectile
 {
@@ -7,5 +8,5 @@ public interface Projectile
     /// Initializes projectile with force.
     /// </summary>
     /// <param name="force"></param>
-    void Initialize(PreciseTick pt, Vector3 force);
+    void Initialize(PreciseTick pt, Vector3 force, NetworkConnection owner);
 }

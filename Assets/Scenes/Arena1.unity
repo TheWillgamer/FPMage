@@ -1745,7 +1745,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh28570
+  m_Name: pb_Mesh29278
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -19913,7 +19913,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh28518
+  m_Name: pb_Mesh29226
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -20615,6 +20615,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maximumRollbackTime: 1.25
   Interpolation: 2
+--- !u!114 &1076874607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1076874600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f48f002b825cbd45a19bd96d90f9edb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _unreliableMTU: 1023
+  _attackResponseType: 1
+  _ipv4BindAddress: 
+  _ipv6BindAddress: 
+  _port: 7770
+  _maximumClients: 4095
+  _clientAddress: 25.83.74.163
+  _timeout: 15
 --- !u!1 &1078429961
 GameObject:
   m_ObjectHideFlags: 0
@@ -32129,6 +32149,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: MovingEnemyDemo
       objectReference: {fileID: 0}
+    - target: {fileID: 1898255312022311324, guid: 36fcb523dd1337f43bc2128b86686e47, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 1898255313430035302, guid: 36fcb523dd1337f43bc2128b86686e47, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 36fcb523dd1337f43bc2128b86686e47, type: 3}
 --- !u!43 &1430739283
@@ -33796,7 +33824,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh28802
+  m_Name: pb_Mesh29514
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2

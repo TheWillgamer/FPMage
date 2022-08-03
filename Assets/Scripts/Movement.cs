@@ -103,6 +103,7 @@ public class Movement : NetworkBehaviour
 
     public bool disableMV;      //Disable movement
     public bool disableCM;      //Disable counter-movement
+    public bool disableAR;      //Disable air-reduction
 
     private void Start()
     {
@@ -117,6 +118,7 @@ public class Movement : NetworkBehaviour
         InstanceFinder.TimeManager.OnPostTick += TimeManager_OnPostTick;
         disableMV = false;
         disableCM = false;
+        disableAR = false;
         mag = new Vector2(0f, 0f);
     }
 
@@ -188,6 +190,7 @@ public class Movement : NetworkBehaviour
         {
             _rigidbody.velocity = new Vector3(0, 0, 0);
             _rigidbody.AddForce(transform.forward * md.Vertical * dashModifier + transform.right * md.Horizontal * dashModifier);
+            disableAR = true;
             Invoke(nameof(EndDash), dashDuration);
         }
 
@@ -254,6 +257,7 @@ public class Movement : NetworkBehaviour
     {
         Vector3 vel = _rigidbody.velocity;
         _rigidbody.velocity = new Vector3(vel.x/2, vel.y/2, vel.z/2);
+        disableAR = false;
     }
 
     private void ResetJump()
@@ -286,7 +290,7 @@ public class Movement : NetworkBehaviour
 
     private void AirReduction(float x, float y, Vector2 mag)
     {
-        if (grounded) return;
+        if (grounded || disableAR) return;
 
         //Counter movement
         if ((x > 0 && mag.x < 0) || (x < 0 && mag.x > 0))

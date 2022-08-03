@@ -32153,6 +32153,14 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 1898255312022311325, guid: 36fcb523dd1337f43bc2128b86686e47, type: 3}
+      propertyPath: MoveRate
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1898255312022311325, guid: 36fcb523dd1337f43bc2128b86686e47, type: 3}
+      propertyPath: MoveDistance
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 1898255313430035302, guid: 36fcb523dd1337f43bc2128b86686e47, type: 3}
       propertyPath: m_TagString
       value: Player

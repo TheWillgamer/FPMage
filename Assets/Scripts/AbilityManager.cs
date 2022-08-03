@@ -35,7 +35,6 @@ public class AbilityManager : NetworkBehaviour
     [ObserversRpc]
     private void playShootSound(){
         m_shootingSound.Play();
-        Debug.Log("hi");
     }
 
     [ServerRpc]
@@ -46,7 +45,7 @@ public class AbilityManager : NetworkBehaviour
         UnitySceneManager.MoveGameObjectToScene(spawned.gameObject, gameObject.scene);
         base.Spawn(spawned);
         
-        Projectile throwable = spawned.transform.GetChild(0).GetComponent<Projectile>();
+        Projectile throwable = spawned.GetComponent<Projectile>();
         throwable.Initialize(new PreciseTick(), proj_spawn.forward * proj_force);
     }
 }

@@ -75,6 +75,7 @@ public class Fireball : NetworkBehaviour, Projectile
     public virtual void Initialize(PreciseTick pt, Vector3 force)
     {
         velocity = force;
+        Debug.Log(velocity);
         Invoke("MakeActive", 0.1f);
     }
 
@@ -109,7 +110,7 @@ public class Fireball : NetworkBehaviour, Projectile
     [Server(Logging = LoggingType.Off)]
     private void explode()
     {
-        Destroy(transform.parent.gameObject);
+        Destroy(gameObject);
     }
 
     [Server(Logging = LoggingType.Off)]

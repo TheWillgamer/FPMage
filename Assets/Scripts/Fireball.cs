@@ -2,13 +2,16 @@ using FishNet.Object;
 using FishNet.Managing.Logging;
 using FishNet.Managing.Timing;
 using UnityEngine;
+using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
 
 public class Fireball : NetworkBehaviour, Projectile
 {
     [SerializeField] private float knockback_amount = 1f;
     [SerializeField] private float knockback_growth = 20f;
     private Vector3 velocity = Vector3.zero;
-    private bool active = false;
+    [SerializeField] private GameObject explosion;
+    private float _colliderRadius;
+
     private float lastDistance = Mathf.Infinity;
 
 
@@ -47,24 +50,24 @@ public class Fireball : NetworkBehaviour, Projectile
         else if (!onTick && base.IsServerOnly)
             return;
 
-        //Explode bullet if it goes through the wall
-        int layerMask = 1 << 6;
-        RaycastHit hit;
-        // Does the ray intersect any walls
+        ////Explode bullet if it goes through the wall
+        //int layerMask = 1 << 6;
+        //RaycastHit hit;
+        //// Does the ray intersect any walls
 
-        //if (GameObject.Find("PhysSim").GetComponent<PhysSim>()._physicsScene.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, layerMask))
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, layerMask))
-        {
-            if(hit.distance>lastDistance)
-            {
-                explode();
-            }
-            lastDistance = hit.distance;
-        }
-        else if(lastDistance < 100000f)
-        {
-            explode();
-        }
+        ////if (GameObject.Find("PhysSim").GetComponent<PhysSim>()._physicsScene.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, layerMask))
+        //if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, layerMask))
+        //{
+        //    if (hit.distance > lastDistance)
+        //    {
+        //        explode();
+        //    }
+        //    lastDistance = hit.distance;
+        //}
+        //else if (lastDistance < 100000f)
+        //{
+        //    explode();
+        //}
 
         float delta = (onTick) ? (float)base.TimeManager.TickDelta : Time.deltaTime;
         //If host move every update for smooth movement. Otherwise move OnTick.
@@ -75,23 +78,44 @@ public class Fireball : NetworkBehaviour, Projectile
     public virtual void Initialize(PreciseTick pt, Vector3 force)
     {
         velocity = force;
-        Debug.Log(velocity);
-        Invoke("MakeActive", 0.1f);
+        SphereCollider sc = GetComponent<SphereCollider>();
+        _colliderRadius = sc.radius;
+
+        //Move ellapsed time from when grenade was 'thrown' on thrower.
+        float timePassed = (float)base.TimeManager.TimePassed(pt.Tick);
+        if (timePassed > 0.1f)
+            timePassed = 0.1f;
+
+        Debug.Log(timePassed);
+        Move(timePassed);
     }
 
     [Server(Logging = LoggingType.Off)]
     private void Move(float deltaTime)
     {
+        //Determine how far object should travel this frame.
+        float travelDistance = (velocity.magnitude * Time.deltaTime);
+        //Set trace distance to be travel distance + collider radius.
+        float traceDistance = travelDistance + _colliderRadius;
+
+        //Explode bullet if it goes through the wall
+        int layerMask = 1 << 6;
+
+        RaycastHit hit;
+        // Does the ray intersect any walls
+
+        //if (GameObject.Find("PhysSim").GetComponent<PhysSim>()._physicsScene.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, layerMask))
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, traceDistance, layerMask))
+        {
+            explode();
+        }
+
         transform.position += (velocity * Time.deltaTime);
     }
 
     [Server(Logging = LoggingType.Off)]
     private void OnCollisionEnter(Collision collision)
     {
-        // Prevents shooting yourself
-        if (!active)
-            return;
-
         if (collision.gameObject.tag == "Player")
         {
             PlayerHealth ph = collision.gameObject.GetComponent<PlayerHealth>();
@@ -102,20 +126,40 @@ public class Fireball : NetworkBehaviour, Projectile
     }
 
     [Server(Logging = LoggingType.Off)]
-    private void OnCollisionExit(Collision collision)
-    {
-        MakeActive();
-    }
-
-    [Server(Logging = LoggingType.Off)]
     private void explode()
     {
-        Destroy(gameObject);
+        if (base.IsServer)
+        {
+            ObserversSpawnExplodePrefab();
+
+            /* If server only then call destroy now. It will follow in order
+             * so clients will receive it after they get the RPC. 
+             * If client host destroy in the RPC. */
+            if (base.IsServerOnly)
+                base.Despawn();
+        }
     }
 
-    [Server(Logging = LoggingType.Off)]
-    private void MakeActive()
+    /// <summary>
+    /// Tells clients to spawn the detonate prefab.
+    /// </summary>
+    [ObserversRpc]
+    private void ObserversSpawnExplodePrefab()
     {
-        active = true;
+        SpawnDetonatePrefab();
+        //If also client host destroy here.
+        if (base.IsServer)
+            base.Despawn();
+    }
+
+    /// <summary>
+    /// Spawns the detonate prefab.
+    /// </summary>
+    [Client(Logging = LoggingType.Off)]
+    private void SpawnDetonatePrefab()
+    {
+        GameObject spawned = Instantiate(explosion, transform.position, transform.rotation);
+        UnitySceneManager.MoveGameObjectToScene(spawned.gameObject, gameObject.scene);
+        base.Spawn(spawned);
     }
 }

@@ -42,10 +42,12 @@ public class AbilityManager : NetworkBehaviour
     {
         playShootSound();
         GameObject spawned = Instantiate(fb, proj_spawn.position, proj_spawn.rotation);
+        Physics.IgnoreCollision(spawned.GetComponent<Collider>(), GetComponent<Collider>());
+
         UnitySceneManager.MoveGameObjectToScene(spawned.gameObject, gameObject.scene);
         base.Spawn(spawned);
         
-        Projectile throwable = spawned.GetComponent<Projectile>();
-        throwable.Initialize(new PreciseTick(), proj_spawn.forward * proj_force);
+        Projectile proj = spawned.GetComponent<Projectile>();
+        proj.Initialize(base.TimeManager.GetPreciseTick(TickType.Tick), proj_spawn.forward * proj_force);
     }
 }

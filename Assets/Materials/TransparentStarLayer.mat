@@ -98,8 +98,8 @@ Material:
     - _UnityShadowPower: 0.2
     - _UnityShadowSharpness: 1
     - _VertexColorsEnabled: 0
-    - _WaveSize: 10
-    - _WaveSpeed: 15
+    - _WaveSize: 15
+    - _WaveSpeed: 10
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.30527902, g: 0, b: 0.33962262, a: 1}

@@ -35,10 +35,14 @@ public class AbilityManager : NetworkBehaviour
         {
             if (IsOwner)
             {
-                Movement mv = GetComponent<Movement>();
-                mv.h_dashing = true;
-                mv.dashModifier = dashForce;
-                mv.dashDuration = dashDur;
+                setDashing();
+                if (!IsServer)
+                {
+                    Movement mv = GetComponent<Movement>();
+                    mv.h_dashing = true;
+                    mv.dashModifier = dashForce;
+                    mv.dashDuration = dashDur;
+                }
             }
         }
     }
@@ -60,5 +64,14 @@ public class AbilityManager : NetworkBehaviour
         
         Projectile proj = spawned.GetComponent<Projectile>();
         proj.Initialize(base.TimeManager.GetPreciseTick(TickType.Tick), proj_spawn.forward * proj_force);
+    }
+
+    [ServerRpc]
+    private void setDashing()
+    {
+        Movement mv = GetComponent<Movement>();
+        mv.h_dashing = true;
+        mv.dashModifier = dashForce;
+        mv.dashDuration = dashDur;
     }
 }

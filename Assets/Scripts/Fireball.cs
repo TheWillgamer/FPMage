@@ -15,6 +15,7 @@ public class Fireball : NetworkBehaviour, Projectile
     [SerializeField] private GameObject explosion;
     private float _colliderRadius;
     private bool isExploding = false;
+    NetworkConnection o;
 
 
     public override void OnStartServer()
@@ -69,7 +70,7 @@ public class Fireball : NetworkBehaviour, Projectile
         if (timePassed > 0.1f)
             timePassed = 0.1f;
 
-        GiveOwnership(owner);
+        o = owner;
         Debug.Log(timePassed);
         Move(timePassed);
     }
@@ -162,6 +163,7 @@ public class Fireball : NetworkBehaviour, Projectile
                 * the accuracy between where client hit and where
                 * shot will register on server. There is no reason to
                 * really know these results other than for testing. */
+            GiveOwnership(o);
             ServerFireDemo(pt, collision.transform.root.GetComponent<NetworkObject>(), collision.transform.position);
         }
         if (!isExploding)

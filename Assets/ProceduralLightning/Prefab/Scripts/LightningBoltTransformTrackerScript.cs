@@ -63,8 +63,7 @@ namespace DigitalRuby.ThunderAndLightning
             }
 
             Quaternion rotation;
-            if ((script.CameraMode == CameraMode.Auto && script.Camera.orthographic) ||
-                (script.CameraMode == CameraMode.OrthographicXY))
+            if (script.CameraMode == CameraMode.OrthographicXY)
             {
                 // 2D rotation delta (xy)
                 float startAngle = AngleBetweenVector2(state.BoltStartPosition, state.BoltEndPosition);

@@ -25,12 +25,6 @@ namespace DigitalRuby.ThunderAndLightning
     {
         #region Public variables
 
-        /// <summary>The camera the lightning should be shown in. Defaults to the current camera, or the main camera if current camera is null. If you are using a different camera, you may want to put the lightning in it's own layer and cull that layer out of any other cameras.</summary>
-        [Header("Lightning General Properties")]
-        [Tooltip("The camera the lightning should be shown in. Defaults to the current camera, or the main camera if current camera is null. If you are using a different " +
-            "camera, you may want to put the lightning in it's own layer and cull that layer out of any other cameras.")]
-        public Camera Camera;
-
         /// <summary>Type of camera mode. Auto detects the camera and creates appropriate lightning. Can be overriden to do something more specific regardless of camera.</summary>
         [Tooltip("Type of camera mode. Auto detects the camera and creates appropriate lightning. Can be overriden to do something more specific regardless of camera.")]
         public CameraMode CameraMode = CameraMode.Auto;
@@ -223,16 +217,7 @@ namespace DigitalRuby.ThunderAndLightning
         public virtual void CreateLightningBolt(LightningBoltParameters p)
         {
 
-#if UNITY_EDITOR
-
-            if (Camera == null)
-            {
-                UnityEngine.Debug.LogError("Camera not assigned to lightning script. Either set the camera or tag your camera as main camera.");
-            }
-
-#endif
-
-            if (p != null && Camera != null)
+            if (p != null)
             {
                 UpdateTexture();
                 oneParameterArray[0] = p;
@@ -249,16 +234,7 @@ namespace DigitalRuby.ThunderAndLightning
         public void CreateLightningBolts(ICollection<LightningBoltParameters> parameters)
         {
 
-#if UNITY_EDITOR
-
-            if (Camera == null)
-            {
-                UnityEngine.Debug.LogError("Camera not assigned to lightning script. Either set the camera or tag your camera as main camera.");
-            }
-
-#endif
-
-            if (parameters != null && parameters.Count != 0 && Camera != null)
+            if (parameters != null && parameters.Count != 0)
             {
                 UpdateTexture();
                 LightningBolt bolt = GetOrCreateLightningBolt();
@@ -294,7 +270,6 @@ namespace DigitalRuby.ThunderAndLightning
         /// </summary>
         protected virtual void Start()
         {
-            UpdateCamera();
             UpdateMaterialsForLastTexture();
             UpdateShaderParameters();
             CheckCompensateForParentTransform();
@@ -337,7 +312,6 @@ namespace DigitalRuby.ThunderAndLightning
 
             if (HasActiveBolts)
             {
-                UpdateCamera();
                 UpdateShaderParameters();
                 CheckCompensateForParentTransform();
                 UpdateActiveBolts();
@@ -452,8 +426,6 @@ namespace DigitalRuby.ThunderAndLightning
                 dependenciesCache.RemoveAt(i);
             }
 
-            d.CameraPos = Camera.transform.position;
-            d.CameraIsOrthographic = Camera.orthographic;
             d.CameraMode = calculatedCameraMode;
             d.LevelOfDetailDistance = LevelOfDetailDistance;
             d.DestParticleSystem = LightningDestinationParticleSystem;
@@ -612,24 +584,7 @@ namespace DigitalRuby.ThunderAndLightning
 
         private void SetupMaterialCamera()
         {
-            if (Camera == null && CameraMode == CameraMode.Auto)
-            {
-                SetMaterialPerspective();
-                return;
-            }
-
-            if (CameraMode == CameraMode.Auto)
-            {
-                if (Camera.orthographic)
-                {
-                    SetMaterialOrthographicXY();
-                }
-                else
-                {
-                    SetMaterialPerspective();
-                }
-            }
-            else if (CameraMode == CameraMode.Perspective)
+            if (CameraMode == CameraMode.Perspective)
             {
                 SetMaterialPerspective();
             }
@@ -678,11 +633,6 @@ namespace DigitalRuby.ThunderAndLightning
                     transform.rotation = p.rotation;
                 }
             }
-        }
-
-        private void UpdateCamera()
-        {
-            Camera = (Camera == null ? (Camera.current == null ? Camera.main : Camera.current) : Camera);
         }
 
         private LightningBolt GetOrCreateLightningBolt()

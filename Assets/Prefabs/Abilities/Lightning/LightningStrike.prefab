@@ -191,7 +191,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73e36b9ad63e5de4391fbd5982a475c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Camera: {fileID: 3306007884071107575, guid: 0514bb1907e44a249850bada16a9414a, type: 3}
+  Camera: {fileID: 0}
   CameraMode: 0
   UseWorldSpace: 1
   CompensateForParentTransform: 0

@@ -64,6 +64,11 @@ public class LightningStrike : NetworkBehaviour
                 }
             }
         }
+        else
+        {
+            SpellStart.position = start;
+            SpellEnd.position = start + direction * MaxDistance;
+        }
 
         base.RollbackManager.Return();
         spell.Trigger();

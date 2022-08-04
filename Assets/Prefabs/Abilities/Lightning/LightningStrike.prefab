@@ -50,7 +50,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _networkBehaviours:
   - {fileID: 4060215603889557328}
-  - {fileID: 0}
   SceneTransformProperties:
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: -0, y: -0, z: -0, w: 1}
@@ -84,7 +83,6 @@ MonoBehaviour:
   knockback_amount: 20
   knockback_growth: 60
   spell: {fileID: 1339397145782546505}
-  SpellStart: {fileID: 1335004856845135433}
   SpellEnd: {fileID: 1335023519310572239}
   MaxDistance: 200
 --- !u!1 &1338405149561377251
@@ -159,6 +157,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1339397145775781737}
   - component: {fileID: 1339397145782546505}
+  - component: {fileID: 7137947216204064199}
   m_Layer: 0
   m_Name: LightningBoltPrefab
   m_TagString: Untagged
@@ -285,3 +284,28 @@ MonoBehaviour:
   Destination: {fileID: 1338405149561377251}
   StartVariance: {x: 0, y: 0, z: 0}
   EndVariance: {x: 0.1, y: 0.1, z: 0.1}
+--- !u!114 &7137947216204064199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1339397145776044503}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26b716c41e9b56b4baafaf13a523ba2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _networkBehaviours: []
+  SceneTransformProperties:
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    LocalScale: {x: 1, y: 1, z: 1}
+  _isNetworked: 1
+  _isGlobal: 0
+  _hasParentNetworkObjectAtEdit: 0
+  NetworkObserver: {fileID: 0}
+  _prefabId: -1
+  _scenePathHash: 0
+  _sceneId: 0
+  _sceneNetworkObjects: []

@@ -35,12 +35,9 @@ public class LightningStrike : NetworkBehaviour
 
     private void ServerFire(Vector3 start, Vector3 direction)
     {
-        //base.RollbackManager.Rollback(pt, RollbackManager.PhysicsType.ThreeDimensional, base.IsOwner);
-
         Ray ray = new Ray(start, direction);
         RaycastHit hit;
         
-
         //If ray hits.
         if (Physics.Raycast(ray, out hit, MaxDistance))
         {
@@ -63,8 +60,6 @@ public class LightningStrike : NetworkBehaviour
             SpellEnd.position = start + direction * MaxDistance;
         }
         ShowLightning(SpellStart.position, SpellEnd.position);
-        //base.RollbackManager.Return();
-        spell.Trigger();
     }
 
     [ObserversRpc]

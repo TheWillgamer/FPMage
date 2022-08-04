@@ -67,8 +67,6 @@ public class Fireball : NetworkBehaviour, Projectile
         if (timePassed > 0.1f)
             timePassed = 0.1f;
 
-        //Debug.Log(Owner.ClientId);
-
         Debug.Log(timePassed);
         Move(timePassed);
     }
@@ -97,21 +95,21 @@ public class Fireball : NetworkBehaviour, Projectile
         transform.position += (velocity * Time.deltaTime);
     }
 
-    //[Server(Logging = LoggingType.Off)]
-    //private void OnCollisionEnter(Collision collision)
-    //{
-    //    if (collision.gameObject.tag == "Player")
-    //    {
-    //        PlayerHealth ph = collision.gameObject.GetComponent<PlayerHealth>();
-    //        ph.TakeDamage(damage);
-    //        ph.Knockback(Vector3.ProjectOnPlane(transform.forward, Vector3.up).normalized + Vector3.up/4, knockback_amount, knockback_growth);
-    //    }
-    //    if(!isExploding)
-    //    {
-    //        explode();
-    //        isExploding = true;
-    //    }
-    //}
+    [Server(Logging = LoggingType.Off)]
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Player")
+        {
+            PlayerHealth ph = collision.gameObject.GetComponent<PlayerHealth>();
+            ph.TakeDamage(damage);
+            ph.Knockback(Vector3.ProjectOnPlane(transform.forward, Vector3.up).normalized + Vector3.up / 4, knockback_amount, knockback_growth);
+        }
+        if (!isExploding)
+        {
+            explode();
+            isExploding = true;
+        }
+    }
 
     [Server(Logging = LoggingType.Off)]
     private void explode()

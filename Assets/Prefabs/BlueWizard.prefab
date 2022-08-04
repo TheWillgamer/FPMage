@@ -264,7 +264,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e67d99d202131714dae1e2d34c288fad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 5
+  _componentIndexCache: 4
   _addedNetworkObject: {fileID: 5799011907501661977}
   _networkObjectCache: {fileID: 5799011907501661977}
 --- !u!1 &5799011907501662085
@@ -387,7 +387,6 @@ MonoBehaviour:
   - {fileID: 5799011907501661979}
   - {fileID: 5799011907501661967}
   - {fileID: 5799011907501661994}
-  - {fileID: 0}
   - {fileID: 1858288461476807508}
   SceneTransformProperties:
     Position: {x: 0, y: 0, z: 0}
@@ -529,6 +528,7 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 5799011907501661999}
   _networkObjectCache: {fileID: 5799011907501661977}
   fb: {fileID: 3637627862300843640, guid: ee6fbff84b0264d4894169a7613053d2, type: 3}
+  ls: {fileID: 332102958971674775, guid: 74fbcea6b1536ee4c8160a00d116d790, type: 3}
   proj_spawn: {fileID: 5799011907501662135}
   proj_force: 40
   dashForce: 10000
@@ -890,7 +890,6 @@ MonoBehaviour:
   - {fileID: 5799011907501661979}
   - {fileID: 5799011907501661967}
   - {fileID: 5799011907501661994}
-  - {fileID: 0}
   - {fileID: 1858288461476807508}
   - {fileID: 5799011907501661998}
   - {fileID: 5799011907501662005}

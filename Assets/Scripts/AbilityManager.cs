@@ -7,6 +7,7 @@ using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
 public class AbilityManager : NetworkBehaviour
 {
     [SerializeField] private GameObject fb;
+    [SerializeField] private GameObject ls;
     [SerializeField] private Transform proj_spawn;
     [SerializeField] private float proj_force;
     [SerializeField] private float dashForce;
@@ -29,6 +30,18 @@ public class AbilityManager : NetworkBehaviour
             if (IsServer)
             {
                 playShootSound();
+            }
+        }
+        if (Input.GetButtonDown("Fire2"))
+        {
+            if (IsOwner)
+            {
+                //chargeLightning();
+                fireLightning();
+            }
+            if (IsServer)
+            {
+                //playShootSound();
             }
         }
         if (Input.GetButtonDown("Fire3"))
@@ -62,6 +75,26 @@ public class AbilityManager : NetworkBehaviour
         UnitySceneManager.MoveGameObjectToScene(spawned.gameObject, gameObject.scene);
         base.Spawn(spawned);
         
+        Projectile proj = spawned.GetComponent<Projectile>();
+        proj.Initialize(base.TimeManager.GetPreciseTick(TickType.Tick), proj_spawn.forward * proj_force, base.Owner);
+    }
+
+    [ServerRpc]
+    private void chargeLightning()
+    {
+        //playShootSound();
+        Invoke("fireLightning", 1f);
+    }
+
+    [ServerRpc]
+    private void fireLightning()
+    {
+        //playShootSound();
+        GameObject spawned = Instantiate(ls, proj_spawn.position, proj_spawn.rotation);
+
+        UnitySceneManager.MoveGameObjectToScene(spawned.gameObject, gameObject.scene);
+        base.Spawn(spawned);
+
         Projectile proj = spawned.GetComponent<Projectile>();
         proj.Initialize(base.TimeManager.GetPreciseTick(TickType.Tick), proj_spawn.forward * proj_force, base.Owner);
     }

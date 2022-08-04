@@ -109,9 +109,6 @@ public class AbilityManager : NetworkBehaviour
 
         UnitySceneManager.MoveGameObjectToScene(spawned.gameObject, gameObject.scene);
         base.Spawn(spawned);
-
-        LightningStrike LS  = spawned.GetComponent<LightningStrike>();
-        LS.LightningHit();
     }
 
     [ObserversRpc]

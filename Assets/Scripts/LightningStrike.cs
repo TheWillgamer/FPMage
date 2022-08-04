@@ -23,25 +23,18 @@ public class LightningStrike : NetworkBehaviour
     [SerializeField] private float knockback_amount = 20f;
     [SerializeField] private float knockback_growth = 60f;
     [SerializeField] LightningBoltPrefabScript spell;
-    [SerializeField] Transform SpellStart;
     [SerializeField] Transform SpellEnd;
     [SerializeField] float MaxDistance;
 
     [Server(Logging = LoggingType.Off)]
     public void LightningHit()
     {
-        ServerFire(transform.position, transform.forward);
-    }
-
-    private void ServerFire(Vector3 start, Vector3 direction)
-    {
-        Ray ray = new Ray(start, direction);
+        Ray ray = new Ray(transform.position, transform.forward);
         RaycastHit hit;
         
         //If ray hits.
         if (Physics.Raycast(ray, out hit, MaxDistance))
         {
-            SpellStart.position = start;
             SpellEnd.position = hit.point;
             if (hit.transform.gameObject.tag == "Player")
             {
@@ -56,16 +49,14 @@ public class LightningStrike : NetworkBehaviour
         }
         else
         {
-            SpellStart.position = start;
-            SpellEnd.position = start + direction * MaxDistance;
+            SpellEnd.position = transform.position + transform.forward * MaxDistance;
         }
-        ShowLightning(SpellStart.position, SpellEnd.position);
+        ShowLightning(SpellEnd.position);
     }
 
     [ObserversRpc]
-    private void ShowLightning(Vector3 start, Vector3 end)
+    private void ShowLightning(Vector3 end)
     {
-        SpellStart.position = start;
         SpellEnd.position = end;
         spell.Trigger();
     }

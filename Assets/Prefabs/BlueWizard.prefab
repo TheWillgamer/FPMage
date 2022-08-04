@@ -264,7 +264,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e67d99d202131714dae1e2d34c288fad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 5
+  _componentIndexCache: 4
   _addedNetworkObject: {fileID: 5799011907501661977}
   _networkObjectCache: {fileID: 5799011907501661999}
 --- !u!1 &5799011907501662085
@@ -387,7 +387,6 @@ MonoBehaviour:
   - {fileID: 5799011907501661979}
   - {fileID: 5799011907501661967}
   - {fileID: 5799011907501661994}
-  - {fileID: 0}
   - {fileID: 1858288461476807508}
   SceneTransformProperties:
     Position: {x: 0, y: 0, z: 0}
@@ -644,7 +643,7 @@ GameObject:
   - component: {fileID: 5799011907501662056}
   m_Layer: 0
   m_Name: Camera
-  m_TagString: MainCamera
+  m_TagString: PlayerCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -794,7 +793,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 044753e13dd3b2d47b94005fb3cdbcbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 6
+  _componentIndexCache: 5
   _addedNetworkObject: {fileID: 5799011907501661999}
   _networkObjectCache: {fileID: 5799011907501661999}
   sensitivity: 70
@@ -811,7 +810,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2836e36774ca1c4bbbee976e17b649c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 7
+  _componentIndexCache: 6
   _addedNetworkObject: {fileID: 5799011907501661999}
   _networkObjectCache: {fileID: 5799011907501661999}
   _synchronizeParent: 0
@@ -892,7 +891,6 @@ MonoBehaviour:
   - {fileID: 5799011907501661979}
   - {fileID: 5799011907501661967}
   - {fileID: 5799011907501661994}
-  - {fileID: 0}
   - {fileID: 1858288461476807508}
   - {fileID: 5799011907501661998}
   - {fileID: 5799011907501662005}

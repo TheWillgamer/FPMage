@@ -88,7 +88,6 @@ public class AbilityManager : NetworkBehaviour
     private void chargeLightning()
     {
         //playShootSound();
-        mv.disableAR = true;
         obsChargeLightning();
         InvokeRepeating("decreaseSpd", .1f, .1f);
         Invoke("fireLightning", 1f);
@@ -97,7 +96,6 @@ public class AbilityManager : NetworkBehaviour
     [ObserversRpc]
     private void obsChargeLightning()
     {
-        mv.disableAR = true;
     }
 
     [ServerRpc]
@@ -107,7 +105,6 @@ public class AbilityManager : NetworkBehaviour
         obsFireLightning();
         CancelInvoke("decreaseSpd");
         mv.maxSpeed = tempSpd;
-        mv.disableAR = false;
         Debug.Log("Ser:" + mv.maxSpeed);
         GameObject spawned = Instantiate(ls, proj_spawn.position, proj_spawn.rotation);
 
@@ -120,7 +117,6 @@ public class AbilityManager : NetworkBehaviour
     {
         //playShootSound();
         mv.maxSpeed = tempSpd;
-        mv.disableAR = false;
     }
 
     [ServerRpc]

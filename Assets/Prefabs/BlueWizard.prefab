@@ -346,7 +346,6 @@ GameObject:
   - component: {fileID: 5799011907501661967}
   - component: {fileID: 5799011907501661994}
   - component: {fileID: 5799011907501662057}
-  - component: {fileID: 2027138022526732474}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -388,7 +387,7 @@ MonoBehaviour:
   - {fileID: 5799011907501661979}
   - {fileID: 5799011907501661967}
   - {fileID: 5799011907501661994}
-  - {fileID: 2027138022526732474}
+  - {fileID: 0}
   - {fileID: 1858288461476807508}
   SceneTransformProperties:
     Position: {x: 0, y: 0, z: 0}
@@ -632,23 +631,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &2027138022526732474
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5799011907501662102}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01a271dd97d875347b0cea860df29a9d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _componentIndexCache: 4
-  _addedNetworkObject: {fileID: 5799011907501661977}
-  _networkObjectCache: {fileID: 5799011907501661999}
-  _colliderParents:
-  - {fileID: 5799011907501662102}
 --- !u!1 &5799011907501662109
 GameObject:
   m_ObjectHideFlags: 0
@@ -910,7 +892,7 @@ MonoBehaviour:
   - {fileID: 5799011907501661979}
   - {fileID: 5799011907501661967}
   - {fileID: 5799011907501661994}
-  - {fileID: 2027138022526732474}
+  - {fileID: 0}
   - {fileID: 1858288461476807508}
   - {fileID: 5799011907501661998}
   - {fileID: 5799011907501662005}

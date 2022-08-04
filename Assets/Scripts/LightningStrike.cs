@@ -42,7 +42,7 @@ public class LightningStrike : NetworkBehaviour
     [ServerRpc]
     private void ServerFire(PreciseTick pt, Vector3 start, Vector3 direction)
     {
-        base.RollbackManager.Rollback(pt, RollbackManager.PhysicsType.ThreeDimensional, base.IsOwner);
+        //base.RollbackManager.Rollback(pt, RollbackManager.PhysicsType.ThreeDimensional, base.IsOwner);
 
         Ray ray = new Ray(start, direction);
         RaycastHit hit;
@@ -70,7 +70,7 @@ public class LightningStrike : NetworkBehaviour
             SpellEnd.position = start + direction * MaxDistance;
         }
 
-        base.RollbackManager.Return();
+        //base.RollbackManager.Return();
         spell.Trigger();
     }
 }

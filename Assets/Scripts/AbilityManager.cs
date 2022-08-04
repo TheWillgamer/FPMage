@@ -43,7 +43,7 @@ public class AbilityManager : NetworkBehaviour
         {
             if (IsOwner)
             {
-                chargeLightning();
+                fireLightning();
             }
             if (IsServer)
             {
@@ -98,14 +98,13 @@ public class AbilityManager : NetworkBehaviour
     {
     }
 
-    [ServerRpc]
     private void fireLightning()
     {
         //playShootSound();
         obsFireLightning();
         CancelInvoke("decreaseSpd");
         mv.maxSpeed = tempSpd;
-        Debug.Log("Ser:" + mv.maxSpeed);
+        
         GameObject spawned = Instantiate(ls, proj_spawn.position, proj_spawn.rotation);
 
         UnitySceneManager.MoveGameObjectToScene(spawned.gameObject, gameObject.scene);
@@ -122,7 +121,6 @@ public class AbilityManager : NetworkBehaviour
         mv.maxSpeed = tempSpd;
     }
 
-    [ServerRpc]
     private void decreaseSpd()
     {
         mv.maxSpeed -= lightningChargingSpeedDecreaseRate;

@@ -69,8 +69,16 @@ public class LightningStrike : NetworkBehaviour
             SpellStart.position = start;
             SpellEnd.position = start + direction * MaxDistance;
         }
-
+        ShowLightning(SpellStart.position, SpellEnd.position);
         //base.RollbackManager.Return();
+        spell.Trigger();
+    }
+
+    [ObserversRpc]
+    private void ShowLightning(Vector3 start, Vector3 end)
+    {
+        SpellStart.position = start;
+        SpellEnd.position = end;
         spell.Trigger();
     }
 }

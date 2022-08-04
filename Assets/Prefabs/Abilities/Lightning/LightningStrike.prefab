@@ -54,7 +54,7 @@ MonoBehaviour:
   spell: {fileID: 1339397145782546505}
   SpellStart: {fileID: 1335004856845135433}
   SpellEnd: {fileID: 1335023519310572239}
-  MaxDistance: 0
+  MaxDistance: 200
 --- !u!114 &2479976140121468190
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -107,7 +107,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1338405149561377251}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1, y: 1, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -138,7 +138,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1338441805640519769}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1, y: -1, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -223,24 +223,24 @@ MonoBehaviour:
     Minimum: 0.05
     Maximum: 0.1
   CountRange:
-    Minimum: 1
+    Minimum: 3
     Maximum: 3
   CountProbabilityModifier: 1
   DelayRange:
     Minimum: 0
     Maximum: 0
   DurationRange:
-    Minimum: 0.08
-    Maximum: 0.15
+    Minimum: 10
+    Maximum: 10
   TrunkWidthRange:
     Minimum: 0.075
     Maximum: 0.15
   LifeTime: 2
-  Generations: 5
-  ChaosFactor: 0.1
-  ChaosFactorForks: 0.095
-  Intensity: 4
-  GlowIntensity: 0.2
+  Generations: 3
+  ChaosFactor: 0.03
+  ChaosFactorForks: 0.05
+  Intensity: 2
+  GlowIntensity: 1
   GlowWidthMultiplier: 3
   FadePercent: 0.5
   FadeInMultiplier: 0
@@ -248,7 +248,7 @@ MonoBehaviour:
   FadeOutMultiplier: 1
   GrowthMultiplier: 0
   EndWidthMultiplier: 0.8
-  Forkedness: 0
+  Forkedness: 1
   ForkLengthMultiplier: 0.6
   ForkLengthVariance: 0.2
   ForkEndWidthMultiplier: 1
@@ -280,4 +280,4 @@ MonoBehaviour:
   Source: {fileID: 1338441805640519769}
   Destination: {fileID: 1338405149561377251}
   StartVariance: {x: 0, y: 0, z: 0}
-  EndVariance: {x: 0.3, y: 0.3, z: 0.3}
+  EndVariance: {x: 0.1, y: 0.1, z: 0.1}

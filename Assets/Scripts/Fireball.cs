@@ -1,21 +1,18 @@
 using FishNet.Object;
 using FishNet.Managing.Logging;
 using FishNet.Managing.Timing;
-using FishNet.Component.ColliderRollback;
-using FishNet.Component.ColliderRollback.Demo;
-using FishNet.Connection;
 using UnityEngine;
 using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
 
 public class Fireball : NetworkBehaviour, Projectile
 {
+    [SerializeField] private int damage = 15;
     [SerializeField] private float knockback_amount = 1f;
     [SerializeField] private float knockback_growth = 20f;
     private Vector3 velocity = Vector3.zero;
     [SerializeField] private GameObject explosion;
     private float _colliderRadius;
     private bool isExploding = false;
-    NetworkConnection o;
 
 
     public override void OnStartServer()
@@ -59,7 +56,7 @@ public class Fireball : NetworkBehaviour, Projectile
     }
 
     [Server(Logging = LoggingType.Off)]
-    public virtual void Initialize(PreciseTick pt, Vector3 force, NetworkConnection owner)
+    public virtual void Initialize(PreciseTick pt, Vector3 force)
     {
         velocity = force;
         SphereCollider sc = GetComponent<SphereCollider>();
@@ -70,7 +67,8 @@ public class Fireball : NetworkBehaviour, Projectile
         if (timePassed > 0.1f)
             timePassed = 0.1f;
 
-        o = owner;
+        //Debug.Log(Owner.ClientId);
+
         Debug.Log(timePassed);
         Move(timePassed);
     }
@@ -105,7 +103,7 @@ public class Fireball : NetworkBehaviour, Projectile
     //    if (collision.gameObject.tag == "Player")
     //    {
     //        PlayerHealth ph = collision.gameObject.GetComponent<PlayerHealth>();
-    //        ph.TakeDamage(15);
+    //        ph.TakeDamage(damage);
     //        ph.Knockback(Vector3.ProjectOnPlane(transform.forward, Vector3.up).normalized + Vector3.up/4, knockback_amount, knockback_growth);
     //    }
     //    if(!isExploding)
@@ -150,54 +148,5 @@ public class Fireball : NetworkBehaviour, Projectile
     {
         GameObject spawned = Instantiate(explosion, transform.position, transform.rotation);
         UnitySceneManager.MoveGameObjectToScene(spawned.gameObject, gameObject.scene);
-        //base.Spawn(spawned);
-    }
-    
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.tag == "Player")
-        {
-            PreciseTick pt = base.TimeManager.GetPreciseTick(base.TimeManager.LastPacketTick);
-            //Send the frame, start, and direction.
-            /* The remaining arguments are used to calculate
-                * the accuracy between where client hit and where
-                * shot will register on server. There is no reason to
-                * really know these results other than for testing. */
-            GiveOwnership(o);
-            ServerFireDemo(pt, collision.transform.root.GetComponent<NetworkObject>(), collision.transform.position);
-        }
-        if (!isExploding)
-        {
-            explode();
-            isExploding = true;
-        }
-    }
-
-    /// <summary>
-    /// Fires using a specified fixed frame.
-    /// </summary>
-    /// <param name="fixedFrame"></param>
-    [ServerRpc]
-    private void ServerFireDemo(PreciseTick pt, NetworkObject hitObject, Vector3 hitIdentityPosition)
-    {
-        Transform hitChild = hitObject.transform.GetChild(0);
-        /* Rollback using the frame sent in
-            * while subtracting frames for interpolation, such
-            * as a NetworkTransform moving an object into position. */
-        base.RollbackManager.Rollback(pt, RollbackManager.PhysicsType.ThreeDimensional, base.IsOwner);
-        /* This is where you would use the start
-            * and direction to fire your raycast. This method is
-            * only used to show accuracy so I won't be using those here. */
-
-        //The hitbox is hard set to first child for demo.
-        Vector3 rollbackPosition = hitChild.position;
-        float difference = Vector3.Distance(hitIdentityPosition, rollbackPosition);
-        //if (canRollback)
-        base.RollbackManager.Return();
-
-        //Distance object root is after rollback, in comparison to where it was when client hit it.
-        Debug.Log($"Accuracy is within {difference} units.");
-        RollbackVisualizer med = hitObject.GetComponent<RollbackVisualizer>();
-        med.ShowDifference(base.NetworkObject, hitIdentityPosition, rollbackPosition);
     }
 }

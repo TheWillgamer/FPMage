@@ -48,8 +48,7 @@ public class Movement : NetworkBehaviour
     private float jumpForce = 15f;
     [SerializeField]
     private float moveSpeed = 4500f;
-    [SerializeField]
-    private float maxSpeed = 20;
+    public float maxSpeed = 22;
     [SerializeField]
     private bool grounded;
     [SerializeField]
@@ -186,11 +185,18 @@ public class Movement : NetworkBehaviour
     [Replicate]
     private void Move(MoveData md, bool asServer, bool replaying = false)
     {
+        if (disableMV)
+        {
+            md.Horizontal = 0;
+            md.Vertical = 0;
+        }
+
         if (md.Hdash)
         {
             _rigidbody.velocity = new Vector3(0, 0, 0);
             _rigidbody.AddForce(transform.forward * md.Vertical * dashModifier + transform.right * md.Horizontal * dashModifier);
             disableAR = true;
+            disableCM = true;
             Invoke(nameof(EndDash), dashDuration);
         }
 
@@ -258,6 +264,7 @@ public class Movement : NetworkBehaviour
         Vector3 vel = _rigidbody.velocity;
         _rigidbody.velocity = new Vector3(vel.x/2, vel.y/2, vel.z/2);
         disableAR = false;
+        disableCM = false;
     }
 
     private void ResetJump()

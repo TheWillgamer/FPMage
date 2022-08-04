@@ -264,7 +264,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e67d99d202131714dae1e2d34c288fad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 4
+  _componentIndexCache: 6
   _addedNetworkObject: {fileID: 5799011907501661977}
   _networkObjectCache: {fileID: 5799011907501661977}
 --- !u!1 &5799011907501662085
@@ -346,6 +346,7 @@ GameObject:
   - component: {fileID: 5799011907501661967}
   - component: {fileID: 5799011907501661994}
   - component: {fileID: 5799011907501662057}
+  - component: {fileID: 2027138022526732474}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -387,6 +388,8 @@ MonoBehaviour:
   - {fileID: 5799011907501661979}
   - {fileID: 5799011907501661967}
   - {fileID: 5799011907501661994}
+  - {fileID: 2027138022526732474}
+  - {fileID: 0}
   - {fileID: 1858288461476807508}
   SceneTransformProperties:
     Position: {x: 0, y: 0, z: 0}
@@ -531,6 +534,7 @@ MonoBehaviour:
   ls: {fileID: 332102958971674775, guid: 74fbcea6b1536ee4c8160a00d116d790, type: 3}
   proj_spawn: {fileID: 5799011907501662135}
   proj_force: 40
+  lightningChargingSpeedDecreaseRate: 1
   dashForce: 10000
   dashDur: 0.1
 --- !u!82 &5799011907501662057
@@ -629,6 +633,23 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &2027138022526732474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5799011907501662102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01a271dd97d875347b0cea860df29a9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 4
+  _addedNetworkObject: {fileID: 5799011907501661977}
+  _networkObjectCache: {fileID: 5799011907501661977}
+  _colliderParents:
+  - {fileID: 5799011907501662111}
 --- !u!1 &5799011907501662109
 GameObject:
   m_ObjectHideFlags: 0
@@ -890,6 +911,8 @@ MonoBehaviour:
   - {fileID: 5799011907501661979}
   - {fileID: 5799011907501661967}
   - {fileID: 5799011907501661994}
+  - {fileID: 2027138022526732474}
+  - {fileID: 0}
   - {fileID: 1858288461476807508}
   - {fileID: 5799011907501661998}
   - {fileID: 5799011907501662005}

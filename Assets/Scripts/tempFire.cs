@@ -27,8 +27,8 @@ public class tempFire : NetworkBehaviour
     {
         if (base.IsOwner)
         {
-            //CheckFire();
-            CheckFireDemo();
+            CheckFire();
+            //CheckFireDemo();
         }
     }
 
@@ -41,7 +41,7 @@ public class tempFire : NetworkBehaviour
         if (Time.time < _nextFire)
             return;
         //Only fire on mouse0 down.
-        if (!Input.GetKeyDown(KeyCode.Mouse0))
+        if (!Input.GetKeyDown(KeyCode.Mouse1))
             return;
 
         _nextFire = Time.time + FIRE_RATE;
@@ -71,6 +71,17 @@ public class tempFire : NetworkBehaviour
         /* Perform your raycast here using typical values.
             * EG: Trace from start, to direction, on whatever hit
             * layers you would normally use. Process hit results normally. */
+        Ray ray = new Ray(start, direction);
+        RaycastHit hit;
+        //If raycast hit.
+        if (Physics.Raycast(ray, out hit, float.PositiveInfinity, _hitboxLayer))
+        {
+            //If moving enemy was hit.
+            if (hit.transform.root.GetComponent<RollbackVisualizer>() != null)
+            {
+                Debug.Log("HHIITT");
+            }
+        }
 
         /* After performing your trace it's important to call RollbackManager.ReturnForward(). */
         base.RollbackManager.Return();

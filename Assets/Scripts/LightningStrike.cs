@@ -27,20 +27,13 @@ public class LightningStrike : NetworkBehaviour
     [SerializeField] Transform SpellEnd;
     [SerializeField] float MaxDistance;
 
-    public override void OnStartClient()
+    [Server(Logging = LoggingType.Off)]
+    public void LightningHit()
     {
-        base.OnStartClient();
-        if (base.IsOwner)
-            LightningHit();
+        ServerFire(transform.position, transform.forward);
     }
 
-    private void LightningHit()
-    {
-        ServerFire(base.TimeManager.GetPreciseTick(base.TimeManager.LastPacketTick), transform.position, transform.forward);
-    }
-
-    [ServerRpc]
-    private void ServerFire(PreciseTick pt, Vector3 start, Vector3 direction)
+    private void ServerFire(Vector3 start, Vector3 direction)
     {
         //base.RollbackManager.Rollback(pt, RollbackManager.PhysicsType.ThreeDimensional, base.IsOwner);
 

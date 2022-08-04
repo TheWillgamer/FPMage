@@ -4118,7 +4118,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh67614
+  m_Name: pb_Mesh29314
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -6891,23 +6891,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _tickRate: 128
   _pingInterval: 1
-  _timingInterval: 1
+  _timingInterval: 2
   _physicsMode: 1
   _maximumBufferedInputs: 15
---- !u!114 &734948113
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 734948098}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b185516acd802904383e2a5f1a666750, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _maximumRollbackTime: 1.25
-  Interpolation: 2
 --- !u!1 &744294822 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100000, guid: a838677d75b40ed4d92e38a95d2fc232, type: 3}
@@ -12914,7 +12900,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh67638
+  m_Name: pb_Mesh29338
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2

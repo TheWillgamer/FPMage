@@ -2,6 +2,7 @@ using FishNet.Object;
 using FishNet.Managing.Logging;
 using FishNet.Managing.Timing;
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
 
@@ -18,39 +19,69 @@ public class AbilityManager : NetworkBehaviour
     AudioSource m_shootingSound;
     Movement mv;
 
+    #region cooldowns
+    //Fireball
+    private int fb_charges;
+    [SerializeField] private float fb_cd;
+    private float fb_offcd;
+
+    //LightningStrike
+    [SerializeField] private float ls_cd;
+    private float ls_offcd;
+
+    //WindDash
+    [SerializeField] private float dash_cd;
+    private float dash_offcd;
+    #endregion
+
+    #region UI
+    [SerializeField] GameObject cdRepresentation;
+    [SerializeField] Image[] Fireball;
+    [SerializeField] Image Lightning;
+    [SerializeField] Image Wind;
+    #endregion
+
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+        cdRepresentation.SetActive(true);
+    }
+
     void Start()
     {
         m_shootingSound = GetComponent<AudioSource>();
         mv = GetComponent<Movement>();
+        fb_charges = 3;
+        fb_offcd = Time.deltaTime;
+        ls_offcd = Time.deltaTime;
+        dash_offcd = Time.deltaTime;
     }
 
     private void Update()
     {
         if (Input.GetButtonDown("Fire1"))
         {
-            if (IsOwner)
+            if (IsOwner && fb_charges>0)
             {
                 shootFireball();
-            }
-            if (IsServer)
-            {
-                playShootSound();
+                fb_charges--;
+                if (fb_charges == 2)
+                {
+                    fb_offcd = Time.time + fb_cd;
+                }
             }
         }
         if (Input.GetButtonDown("Fire2"))
         {
-            if (IsOwner)
+            if (IsOwner && Time.time > ls_offcd)
             {
                 fireLightning();
-            }
-            if (IsServer)
-            {
-                //playShootSound();
+                ls_offcd = Time.time + ls_cd;
             }
         }
         if (Input.GetButtonDown("Fire3"))
         {
-            if (IsOwner)
+            if (IsOwner && Time.time > dash_offcd)
             {
                 setDashing();
                 if (!IsServer)
@@ -59,7 +90,17 @@ public class AbilityManager : NetworkBehaviour
                     mv.dashModifier = dashForce;
                     mv.dashDuration = dashDur;
                 }
+                dash_offcd = Time.time + dash_cd;
             }
+        }
+        if (IsOwner)
+        {
+            if(fb_charges < 3 && Time.time > fb_offcd)
+            {
+                fb_charges += 1;
+                fb_offcd = Time.time + fb_cd;
+            }
+            UpdateUI();
         }
     }
 
@@ -100,5 +141,15 @@ public class AbilityManager : NetworkBehaviour
         mv.h_dashing = true;
         mv.dashModifier = dashForce;
         mv.dashDuration = dashDur;
+    }
+
+    private void UpdateUI()
+    {
+        for(int i = 0; i < 3; i++)
+        {
+            Fireball[i].gameObject.SetActive(fb_charges > i);
+        }
+        Wind.fillAmount = 1 - (dash_offcd - Time.time) / dash_cd;
+        Lightning.fillAmount = 1 - (ls_offcd - Time.time) / ls_cd;
     }
 }

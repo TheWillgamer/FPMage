@@ -86,6 +86,7 @@ MonoBehaviour:
   SpellStart: {fileID: 1338441805640519769}
   SpellEnd: {fileID: 1338405149561377251}
   MaxDistance: 100
+  projSpawn: {fileID: 0}
 --- !u!1 &1338405149561377251
 GameObject:
   m_ObjectHideFlags: 0
@@ -232,8 +233,8 @@ MonoBehaviour:
     Minimum: 0
     Maximum: 0
   DurationRange:
-    Minimum: 10
-    Maximum: 10
+    Minimum: 2
+    Maximum: 2
   TrunkWidthRange:
     Minimum: 0.075
     Maximum: 0.15
@@ -281,5 +282,5 @@ MonoBehaviour:
       m_Calls: []
   Source: {fileID: 1338441805640519769}
   Destination: {fileID: 1338405149561377251}
-  StartVariance: {x: 0, y: 0, z: 0}
+  StartVariance: {x: 0.1, y: 0.1, z: 0.1}
   EndVariance: {x: 0.1, y: 0.1, z: 0.1}

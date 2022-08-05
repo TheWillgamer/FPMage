@@ -10,6 +10,7 @@ public class SpectatorCamera : NetworkBehaviour
     [SerializeField]
     private float moveRate = 0f;
     private GameObject cam;
+    public bool movable;
 
     public override void OnStartClient()
     {
@@ -18,12 +19,12 @@ public class SpectatorCamera : NetworkBehaviour
         {
             cam = transform.GetChild(0).gameObject;
             cam.SetActive(true);
-        }
+}
     }
 
     private void LateUpdate()
     {
-        if (!base.IsOwner)
+        if (!base.IsOwner || !movable)
             return;
 
         float mouseX = Input.GetAxis("Mouse X") * sensitivity * Time.fixedDeltaTime * sensMultiplier;

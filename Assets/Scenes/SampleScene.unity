@@ -373,6 +373,37 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &209261175
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 209261176}
+  m_Layer: 0
+  m_Name: MainSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &209261176
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 209261175}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1108425375}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &239033433
 GameObject:
   m_ObjectHideFlags: 0
@@ -524,7 +555,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1108425375}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &496327458
 GameObject:
@@ -555,7 +586,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1108425375}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &599860572
 GameObject:
@@ -1096,6 +1127,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 209261176}
   - {fileID: 496327459}
   - {fileID: 1491690513}
   - {fileID: 475374460}
@@ -1178,11 +1210,13 @@ MonoBehaviour:
   _componentIndexCache: 0
   _addedNetworkObject: {fileID: 1220841595}
   _networkObjectCache: {fileID: 1220841595}
-  Spawns:
+  Re_spawn: {fileID: 209261176}
+  Startingspawns:
   - {fileID: 496327459}
   - {fileID: 1491690513}
   - {fileID: 475374460}
-  _playerPrefab: {fileID: 8227743508398521442, guid: 34ace2f7b3a47fc42b680ecf9882bf4b, type: 3}
+  _playerPrefab: {fileID: 5799011907501661999, guid: 1355515e754d4ae468c18457e92e14f2, type: 3}
+  _obPrefab: {fileID: 3687431025750103129, guid: 25269a90fcde3fa4a8e3602769620f32, type: 3}
   _deathDummy: {fileID: 8227743508398521443, guid: 34ace2f7b3a47fc42b680ecf9882bf4b, type: 3}
 --- !u!65 &1220841599
 BoxCollider:
@@ -1226,7 +1260,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1108425375}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1650822150
 GameObject:

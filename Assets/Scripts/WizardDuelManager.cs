@@ -67,15 +67,23 @@ public class WizardDuelManager : NetworkBehaviour
     /// <summary>
     /// List of players on red team
     /// </summary>
-    private List<NetworkObject> r_team = new List<NetworkObject>();
+    public Queue<NetworkConnection> r_team = new Queue<NetworkConnection>();
     /// <summary>
     /// List of players on blue team
     /// </summary>
-    private List<NetworkObject> b_team = new List<NetworkObject>();
+    public Queue<NetworkConnection> b_team = new Queue<NetworkConnection>();
     /// <summary>
     /// Next spawns to use.
     /// </summary>
     private int _nextSpawn;
+
+    private int r_lives;        // Lives remaining for Red Team
+    private int b_lives;        // Lives remaining for Blue Team
+
+    #region UI
+    public GameObject redUI;
+    public GameObject blueUI;
+    #endregion
 
     #region Initialization and Deinitialization.
     private void OnDestroy()
@@ -255,6 +263,22 @@ public class WizardDuelManager : NetworkBehaviour
         foreach (NetworkObject item in collectedIdents)
             _lobbyNetwork.TryLeaveRoom(item);
     }
+
+    #region addPlayersToTeamQueue
+    [ServerRpc]
+    public void QueueRed(NetworkConnection conn)
+    {
+        r_team.Enqueue(conn);
+        Debug.Log("Red");
+    }
+
+    [ServerRpc]
+    public void QueueBlue(NetworkConnection conn)
+    {
+        b_team.Enqueue(conn);
+        Debug.Log("Blue");
+    }
+    #endregion
 
     /// <summary>
     /// Displayers who won.

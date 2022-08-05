@@ -17,7 +17,7 @@ public class WizardDuelManager : NetworkBehaviour
     #region Serialized
     [Header("Spawning")]
     /// <summary>
-    /// Location where players respawn.
+    /// Location where players respawn. (and observers spawn)
     /// </summary>
     [Tooltip("Areas in which players may respawn.")]
     [SerializeField]
@@ -277,9 +277,8 @@ public class WizardDuelManager : NetworkBehaviour
     /// <param name="conn"></param>
     private void SpawnObserver(NetworkConnection conn)
     {
-        Vector3 position;
-        Quaternion rotation;
-        SetSpawn(_playerPrefab.transform, out position, out rotation);
+        Vector3 position = Re_spawn.position;
+        Quaternion rotation = Re_spawn.rotation;
 
         //Make object and move it to proper scene.
         NetworkObject netIdent = Instantiate<NetworkObject>(_obPrefab, position, rotation);
@@ -329,13 +328,13 @@ public class WizardDuelManager : NetworkBehaviour
     private void SetSpawn(Transform prefab, out Vector3 pos, out Quaternion rot)
     {
         //No spawns specified.
-        if (Spawns.Length == 0)
+        if (Startingspawns.Length == 0)
         {
             SetSpawnUsingPrefab(prefab, out pos, out rot);
             return;
         }
 
-        Transform result = Spawns[_nextSpawn];
+        Transform result = Startingspawns[_nextSpawn];
         if (result == null)
         {
             SetSpawnUsingPrefab(prefab, out pos, out rot);
@@ -348,7 +347,7 @@ public class WizardDuelManager : NetworkBehaviour
 
         //Increase next spawn and reset if needed.
         _nextSpawn++;
-        if (_nextSpawn >= Spawns.Length)
+        if (_nextSpawn >= Startingspawns.Length)
             _nextSpawn = 0;
     }
 

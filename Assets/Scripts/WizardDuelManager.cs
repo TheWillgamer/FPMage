@@ -17,17 +17,29 @@ public class WizardDuelManager : NetworkBehaviour
     #region Serialized
     [Header("Spawning")]
     /// <summary>
+    /// Location where players respawn.
+    /// </summary>
+    [Tooltip("Areas in which players may respawn.")]
+    [SerializeField]
+    public Transform Re_spawn;
+    /// <summary>
     /// Region players may spawn.
     /// </summary>
     [Tooltip("Areas in which players may spawn.")]
     [SerializeField]
-    public Transform[] Spawns = new Transform[0];
+    public Transform[] Startingspawns = new Transform[0];
     /// <summary>
-    /// Prefab to spawn.
+    /// Wizard prefab to spawn.
     /// </summary>
     [Tooltip("Prefab to spawn.")]
     [SerializeField]
     private NetworkObject _playerPrefab = null;
+    /// <summary>
+    /// Observer prefab to spawn.
+    /// </summary>
+    [Tooltip("Prefab to spawn.")]
+    [SerializeField]
+    private NetworkObject _obPrefab = null;
     /// <summary>
     /// DeathDummy to spawn.
     /// </summary>
@@ -52,6 +64,14 @@ public class WizardDuelManager : NetworkBehaviour
     /// Currently spawned player objects. Only exist on the server.
     /// </summary>
     private List<NetworkObject> _spawnedPlayerObjects = new List<NetworkObject>();
+    /// <summary>
+    /// List of players on red team
+    /// </summary>
+    private List<NetworkObject> r_team = new List<NetworkObject>();
+    /// <summary>
+    /// List of players on blue team
+    /// </summary>
+    private List<NetworkObject> b_team = new List<NetworkObject>();
     /// <summary>
     /// Next spawns to use.
     /// </summary>
@@ -129,7 +149,7 @@ public class WizardDuelManager : NetworkBehaviour
             * before spaning then check if roomDetails.StartedMembers.Count
             * is the same as roomDetails.MemberIds.Count. A member is considered
             * started AFTER they have loaded all of the scenes. */
-        SpawnPlayer(client.Owner);
+        SpawnObserver(client.Owner);
     }
     #endregion
 
@@ -138,7 +158,7 @@ public class WizardDuelManager : NetworkBehaviour
     /// Called when object exits trigger. Used to respawn players.
     /// </summary>
     /// <param name="other"></param>
-    private void OnTriggerExit(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if (!base.IsServer)
             return;
@@ -160,12 +180,11 @@ public class WizardDuelManager : NetworkBehaviour
     private IEnumerator __DelayRespawn(NetworkObject netIdent)
     {
         //Send Rpc to spawn death dummy then destroy original.
-        RpcSpawnDeathDummy(netIdent.transform.position);
         NetworkConnection conn = netIdent.Owner;
         InstanceFinder.ServerManager.Despawn(netIdent.gameObject);
 
         //Wait a little to respawn player.
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(3f);
         //Don't respawn if someone won.
         if (_winner)
             yield break;
@@ -176,19 +195,7 @@ public class WizardDuelManager : NetworkBehaviour
         if (ci == null || !_roomDetails.StartedMembers.Contains(ci.NetworkObject))
             yield break;
 
-        SpawnPlayer(conn);
-    }
-
-    /// <summary>
-    /// Spawns a dummy player to show death.
-    /// </summary>
-    /// <param name="player"></param>
-    [ObserversRpc]
-    private void RpcSpawnDeathDummy(Vector3 position)
-    {
-        GameObject go = Instantiate(_deathDummy, position, Quaternion.identity);
-        UnitySceneManager.MoveGameObjectToScene(go, gameObject.scene);
-        Destroy(go, 1f);
+        SpawnObserver(conn);
     }
     #endregion
 
@@ -268,6 +275,23 @@ public class WizardDuelManager : NetworkBehaviour
     /// Spawns a player at a random position for a connection.
     /// </summary>
     /// <param name="conn"></param>
+    private void SpawnObserver(NetworkConnection conn)
+    {
+        Vector3 position;
+        Quaternion rotation;
+        SetSpawn(_playerPrefab.transform, out position, out rotation);
+
+        //Make object and move it to proper scene.
+        NetworkObject netIdent = Instantiate<NetworkObject>(_obPrefab, position, rotation);
+        UnitySceneManager.MoveGameObjectToScene(netIdent.gameObject, gameObject.scene);
+
+        _spawnedPlayerObjects.Add(netIdent);
+        base.Spawn(netIdent.gameObject, conn);
+
+        //NetworkObject netIdent = conn.identity;            
+        netIdent.transform.position = position;
+        RpcTeleport(netIdent, position);
+    }
     private void SpawnPlayer(NetworkConnection conn)
     {
         Vector3 position;

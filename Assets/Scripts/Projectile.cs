@@ -1,6 +1,5 @@
 using FishNet.Managing.Timing;
 using UnityEngine;
-using FishNet.Connection;
 
 public interface Projectile
 {

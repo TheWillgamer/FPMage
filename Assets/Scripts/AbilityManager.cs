@@ -12,7 +12,6 @@ public class AbilityManager : NetworkBehaviour
     [SerializeField] private Transform proj_spawn;
     [SerializeField] private float proj_force;
     [SerializeField] private float lightningChargingSpeedDecreaseRate;
-    private float tempSpd;
     [SerializeField] private float dashForce;
     [SerializeField] private float dashDur;
 
@@ -23,7 +22,6 @@ public class AbilityManager : NetworkBehaviour
     {
         m_shootingSound = GetComponent<AudioSource>();
         mv = GetComponent<Movement>();
-        tempSpd = mv.maxSpeed;
     }
 
     private void Update()
@@ -85,49 +83,14 @@ public class AbilityManager : NetworkBehaviour
     }
 
     [ServerRpc]
-    private void chargeLightning()
-    {
-        //playShootSound();
-        obsChargeLightning();
-        InvokeRepeating("decreaseSpd", .1f, .1f);
-        Invoke("fireLightning", 1f);
-    }
-
-    [ObserversRpc]
-    private void obsChargeLightning()
-    {
-    }
-
     private void fireLightning()
     {
-        //playShootSound();
-        obsFireLightning();
-        CancelInvoke("decreaseSpd");
-        mv.maxSpeed = tempSpd;
-        
         GameObject spawned = Instantiate(ls, proj_spawn.position, proj_spawn.rotation);
 
         UnitySceneManager.MoveGameObjectToScene(spawned.gameObject, gameObject.scene);
         base.Spawn(spawned);
-    }
 
-    [ObserversRpc]
-    private void obsFireLightning()
-    {
-        //playShootSound();
-        mv.maxSpeed = tempSpd;
-    }
-
-    private void decreaseSpd()
-    {
-        mv.maxSpeed -= lightningChargingSpeedDecreaseRate;
-        obsDecreaseSpd();
-    }
-
-    [ObserversRpc]
-    private void obsDecreaseSpd()
-    {
-        mv.maxSpeed -= lightningChargingSpeedDecreaseRate;
+        spawned.GetComponent<LightningStrike>().projSpawn = proj_spawn;
     }
 
     [ServerRpc]

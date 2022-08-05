@@ -23,31 +23,40 @@ public class LightningStrike : NetworkBehaviour
     [SerializeField] private float knockback_amount = 20f;
     [SerializeField] private float knockback_growth = 60f;
     [SerializeField] LightningBoltPrefabScript spell;
+    [SerializeField] GameObject SpellStart;
     [SerializeField] GameObject SpellEnd;
     [SerializeField] float MaxDistance;
+    public Transform projSpawn = null;
 
     public override void OnStartServer()
     {
         base.OnStartServer();
-        LightningHit(true);
+        LightningCharge(true);
     }
 
     protected virtual void Start()
     {
-        LightningHit(false);
+        LightningCharge(false);
     }
 
     [Server(Logging = LoggingType.Off)]
-    private void LightningHit(bool server)
+    private void LightningCharge(bool server)
     {
         if (server && base.IsHost)
             return;
         else if (!server && base.IsServerOnly)
             return;
 
-        Ray ray = new Ray(transform.position, transform.forward);
+        Invoke("LightningShoot", 1f);
+    }
+
+    [Server(Logging = LoggingType.Off)]
+    private void LightningShoot()
+    {
+        Ray ray = new Ray(projSpawn.position, projSpawn.forward);
         RaycastHit hit;
-        
+
+        SpellStart.transform.position = projSpawn.position;
         //If ray hits.
         if (Physics.Raycast(ray, out hit, MaxDistance))
         {
@@ -59,13 +68,13 @@ public class LightningStrike : NetworkBehaviour
                 {
                     PlayerHealth ph = hit.transform.gameObject.GetComponent<PlayerHealth>();
                     ph.TakeDamage(damage);
-                    ph.Knockback(Vector3.ProjectOnPlane(transform.forward, Vector3.up).normalized + Vector3.up / 4, knockback_amount, knockback_growth);
+                    ph.Knockback(transform.forward, knockback_amount, knockback_growth);
                 }
             }
         }
         else
         {
-            SpellEnd.transform.position = transform.position + transform.forward * MaxDistance;
+            SpellEnd.transform.position = projSpawn.position + projSpawn.forward * MaxDistance;
         }
         if (base.IsServer)
             ShowLightning(SpellEnd.transform.position);

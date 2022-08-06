@@ -104,10 +104,17 @@ public class Movement : NetworkBehaviour
     public bool disableCM;      //Disable counter-movement
     public bool disableAR;      //Disable air-reduction
 
-    private void Start()
+    private bool paused;
+
+    public override void OnStartClient()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        base.OnStartClient();
+        if (base.IsOwner)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            paused = false;
+        }
     }
 
     private void Awake()
@@ -137,6 +144,21 @@ public class Movement : NetworkBehaviour
             if (Input.GetButtonDown("Jump") && readyToJump && jumpCharge > 0)
             {
                 jumping = true;
+            }
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                if (paused)
+                {
+                    Cursor.lockState = CursorLockMode.Locked;
+                    Cursor.visible = false;
+                    paused = false;
+                }
+                else
+                {
+                    Cursor.lockState = CursorLockMode.None;
+                    Cursor.visible = true;
+                    paused = true;
+                }
             }
         }
     }

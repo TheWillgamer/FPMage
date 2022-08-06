@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class PlayerHealth : NetworkBehaviour
 {
-    private int hp;  //keeps track of player health
+    [SyncVar] public int hp;  //keeps track of player health
     public Transform hpMeter;
     public Image dmgScreen;
     private Rigidbody rb;
@@ -33,7 +33,6 @@ public class PlayerHealth : NetworkBehaviour
     {
         int oldHp = hp;
         hp += amt;
-        Debug.Log(hp);
         //UpdateUI();
         if (base.IsServer)
             ObserversTakeDamage(amt, oldHp);

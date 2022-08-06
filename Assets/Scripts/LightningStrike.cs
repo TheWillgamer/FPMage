@@ -53,12 +53,11 @@ public class LightningStrike : NetworkBehaviour
     [Server(Logging = LoggingType.Off)]
     private void LightningShoot()
     {
-        Ray ray = new Ray(projSpawn.position, projSpawn.forward);
         RaycastHit hit;
 
         SpellStart.transform.position = projSpawn.position;
         //If ray hits.
-        if (Physics.Raycast(ray, out hit, MaxDistance))
+        if (GameObject.Find("PhysSim").GetComponent<PhysSim>()._physicsScene.Raycast(projSpawn.position, projSpawn.forward, out hit, MaxDistance))
         {
             SpellEnd.transform.position = hit.point;
             if (hit.transform.gameObject.tag == "Player")

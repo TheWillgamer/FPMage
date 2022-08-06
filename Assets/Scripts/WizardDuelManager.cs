@@ -33,19 +33,15 @@ public class WizardDuelManager : NetworkBehaviour
     /// </summary>
     [Tooltip("Prefab to spawn.")]
     [SerializeField]
-    private NetworkObject _playerPrefab = null;
+    private NetworkObject r_playerPrefab = null;
+    [SerializeField]
+    private NetworkObject b_playerPrefab = null;
     /// <summary>
     /// Observer prefab to spawn.
     /// </summary>
     [Tooltip("Prefab to spawn.")]
     [SerializeField]
     private NetworkObject _obPrefab = null;
-    /// <summary>
-    /// DeathDummy to spawn.
-    /// </summary>
-    [Tooltip("DeathDummy to spawn.")]
-    [SerializeField]
-    private GameObject _deathDummy = null;
     #endregion
 
     /// <summary>
@@ -75,14 +71,17 @@ public class WizardDuelManager : NetworkBehaviour
     /// <summary>
     /// Next spawns to use.
     /// </summary>
+    private NetworkObject currentRedPlayer;
+    private NetworkObject currentBluePlayer;
+    private bool started = false;
+
     private int _nextSpawn;
 
     private int r_lives;        // Lives remaining for Red Team
     private int b_lives;        // Lives remaining for Blue Team
 
     #region UI
-    public GameObject redUI;
-    public GameObject blueUI;
+    public GameObject UI;
     #endregion
 
     #region Initialization and Deinitialization.
@@ -92,6 +91,70 @@ public class WizardDuelManager : NetworkBehaviour
         {
             _lobbyNetwork.OnClientJoinedRoom -= LobbyNetwork_OnClientStarted;
             _lobbyNetwork.OnClientLeftRoom -= LobbyNetwork_OnClientLeftRoom;
+        }
+    }
+
+    private void Update()
+    {
+        if (!started)
+        {
+            if (r_team.Count > 0 && b_team.Count > 0)
+            {
+                NetworkConnection temp = r_team.Dequeue();
+                for (int i = 0; i < _spawnedPlayerObjects.Count; i++)
+                {
+                    NetworkObject entry = _spawnedPlayerObjects[i];
+                    //Entry is null. Remove and iterate next.
+                    if (entry == null)
+                    {
+                        _spawnedPlayerObjects.RemoveAt(i);
+                        i--;
+                        continue;
+                    }
+
+                    //If same connection to client (owner) as client instance of leaving player.
+                    if (_spawnedPlayerObjects[i].Owner == temp)
+                    {
+                        //Destroy entry then remove from collection.
+                        InstanceFinder.ServerManager.Despawn(entry.gameObject);
+                        _spawnedPlayerObjects.RemoveAt(i);
+                        i--;
+                    }
+                }
+                SpawnPlayer(temp, 0);
+                r_team.Enqueue(temp);
+                
+                temp = b_team.Dequeue();
+                for (int i = 0; i < _spawnedPlayerObjects.Count; i++)
+                {
+                    NetworkObject entry = _spawnedPlayerObjects[i];
+                    //Entry is null. Remove and iterate next.
+                    if (entry == null)
+                    {
+                        _spawnedPlayerObjects.RemoveAt(i);
+                        i--;
+                        continue;
+                    }
+
+                    //If same connection to client (owner) as client instance of leaving player.
+                    if (_spawnedPlayerObjects[i].Owner == temp)
+                    {
+                        //Destroy entry then remove from collection.
+                        InstanceFinder.ServerManager.Despawn(entry.gameObject);
+                        _spawnedPlayerObjects.RemoveAt(i);
+                        i--;
+                    }
+
+                }
+                SpawnPlayer(temp, 1);
+                b_team.Enqueue(temp);
+                started = true;
+            }
+        }
+        else
+        {
+            CheckWin();
+            UpdateUI();
         }
     }
 
@@ -129,7 +192,7 @@ public class WizardDuelManager : NetworkBehaviour
             if (_spawnedPlayerObjects[i].Owner == arg2.Owner)
             {
                 //Destroy entry then remove from collection.
-                //InstanceFinder.ServerManager.Despawn(entry.gameObject);
+                InstanceFinder.ServerManager.Despawn(entry.gameObject);
                 _spawnedPlayerObjects.RemoveAt(i);
                 i--;
             }
@@ -177,33 +240,10 @@ public class WizardDuelManager : NetworkBehaviour
             return;
 
         //If there is an owning client then destroy the object and respawn.
-        StartCoroutine((__DelayRespawn(netIdent)));
-    }
-
-    /// <summary>
-    /// Destroys netIdent and respawns player after delay.
-    /// </summary>
-    /// <param name="netIdent"></param>
-    /// <returns></returns>
-    private IEnumerator __DelayRespawn(NetworkObject netIdent)
-    {
-        //Send Rpc to spawn death dummy then destroy original.
         NetworkConnection conn = netIdent.Owner;
         InstanceFinder.ServerManager.Despawn(netIdent.gameObject);
-
-        //Wait a little to respawn player.
-        yield return new WaitForSeconds(3f);
-        //Don't respawn if someone won.
-        if (_winner)
-            yield break;
-        /* Check for rage quit conditions (left room). */
-        if (conn == null)
-            yield break;
-        ClientInstance ci = ClientInstance.ReturnClientInstance(conn);
-        if (ci == null || !_roomDetails.StartedMembers.Contains(ci.NetworkObject))
-            yield break;
-
         SpawnObserver(conn);
+        CheckWin();
     }
     #endregion
 
@@ -211,44 +251,29 @@ public class WizardDuelManager : NetworkBehaviour
     /// <summary>
     /// Called when a player wins.
     /// </summary>
-    private void KingTimer_OnTimerComplete(NetworkObject winner)
+    private void CheckWin()
     {
-        //Already a winner. Could happen if both clients somehow managed to win at the exact same frame.
-        if (_winner)
-            return;
-        _winner = true;
-
-        StartCoroutine(__PlayerWon(winner));
+        if(r_lives < 1)
+        {
+            TeamWon(b_team);
+        }
+        else if (b_lives < 1)
+        {
+            TeamWon(r_team);
+        }
     }
 
     /// <summary>
     /// Ends the game announcing winner and sending clients back to lobby.
     /// </summary>
     /// <returns></returns>
-    private IEnumerator __PlayerWon(NetworkObject winner)
+    private IEnumerator TeamWon(Queue<NetworkConnection> team)
     {
-        //Find all players in room and destroy their objects. Don't destroy client instance!
-        foreach (NetworkObject item in _roomDetails.StartedMembers)
-        {
-            //If not winner.
-            if (item.Owner != winner.Owner)
-            {
-                foreach (NetworkObject ni in item.Owner.Objects)
-                {
-                    //Try to get king timer, if object with timer then stop timer.
-                    if (ni.TryGetComponent<KingTimer>(out KingTimer kt))
-                        kt.StopTimer();
-                }
-            }
-        }
-
         //Send out winner text.
-        ClientInstance ci = ClientInstance.ReturnClientInstance(winner.Owner);
-        string playerName = ci.PlayerSettings.GetUsername();
         foreach (NetworkObject item in _roomDetails.StartedMembers)
         {
             if (item != null && item.Owner != null)
-                TargetShowWinner(item.Owner, playerName, (item.Owner == winner.Owner));
+                TargetShowWinner(item.Owner, team.Contains(item.Owner));
         }
 
         //Wait a moment then kick the players out. Not required.
@@ -257,7 +282,7 @@ public class WizardDuelManager : NetworkBehaviour
         foreach (NetworkObject item in _roomDetails.StartedMembers)
         {
             ClientInstance cli = ClientInstance.ReturnClientInstance(item.Owner);
-            if (ci != null)
+            if (cli != null)
                 collectedIdents.Add(cli.NetworkObject);
         }
         foreach (NetworkObject item in collectedIdents)
@@ -265,18 +290,30 @@ public class WizardDuelManager : NetworkBehaviour
     }
 
     #region addPlayersToTeamQueue
-    [ServerRpc]
     public void QueueRed(NetworkConnection conn)
     {
         r_team.Enqueue(conn);
-        Debug.Log("Red");
+        if (!IsOwner)
+            QueueRedObs(conn);
     }
 
-    [ServerRpc]
     public void QueueBlue(NetworkConnection conn)
     {
         b_team.Enqueue(conn);
-        Debug.Log("Blue");
+        if (!IsOwner)
+            QueueBlueObs(conn);
+    }
+
+    [ObserversRpc]
+    public void QueueRedObs(NetworkConnection conn)
+    {
+        r_team.Enqueue(conn);
+    }
+
+    [ObserversRpc]
+    public void QueueBlueObs(NetworkConnection conn)
+    {
+        b_team.Enqueue(conn);
     }
     #endregion
 
@@ -285,11 +322,11 @@ public class WizardDuelManager : NetworkBehaviour
     /// </summary>
     /// <param name="winner"></param>
     [TargetRpc]
-    private void TargetShowWinner(NetworkConnection conn, string winnerName, bool won)
+    private void TargetShowWinner(NetworkConnection conn, bool won)
     {
         Color c = (won) ? MessagesCanvas.LIGHT_BLUE : Color.red;
-        string text = (won) ? "Congrats, you won!" :
-            $"{winnerName} has won, better luck next time!";
+        string text = (won) ? "Victory!" :
+            $"Defeat!";
         GlobalManager.CanvasesManager.MessagesCanvas.InfoMessages.ShowTimedMessage(text, c, 4f);
     }
     #endregion
@@ -315,22 +352,55 @@ public class WizardDuelManager : NetworkBehaviour
         netIdent.transform.position = position;
         RpcTeleport(netIdent, position);
     }
-    private void SpawnPlayer(NetworkConnection conn)
+
+    // 0 for red, 1 for blue
+    private void SpawnPlayer(NetworkConnection conn, int team)
     {
         Vector3 position;
         Quaternion rotation;
-        SetSpawn(_playerPrefab.transform, out position, out rotation);
+        SetSpawn(out position, out rotation);
 
         //Make object and move it to proper scene.
-        NetworkObject netIdent = Instantiate<NetworkObject>(_playerPrefab, position, rotation);
+        NetworkObject netIdent;
+        if (team == 0)
+            netIdent = Instantiate<NetworkObject>(r_playerPrefab, position, rotation);
+        else
+            netIdent = Instantiate<NetworkObject>(b_playerPrefab, position, rotation);
         UnitySceneManager.MoveGameObjectToScene(netIdent.gameObject, gameObject.scene);
 
         _spawnedPlayerObjects.Add(netIdent);
+        string un = ClientInstance.ReturnClientInstance(conn).PlayerSettings.GetUsername();
+        if (team == 0)
+        {
+            currentRedPlayer = netIdent;
+            if (!IsOwner)
+                setPlayer(netIdent, 0);
+            UI.transform.GetChild(0).GetChild(1).GetComponent<TMPro.TextMeshProUGUI>().text = un;
+        }
+        else
+        {
+            currentBluePlayer = netIdent;
+            if (!IsOwner)
+                setPlayer(netIdent, 1);
+            UI.transform.GetChild(1).GetChild(1).GetComponent<TMPro.TextMeshProUGUI>().text = un;
+        }
         base.Spawn(netIdent.gameObject, conn);
 
         //NetworkObject netIdent = conn.identity;            
         netIdent.transform.position = position;
         RpcTeleport(netIdent, position);
+    }
+    [ObserversRpc]
+    private void setPlayer(NetworkObject obj, int team)
+    {
+        if (team == 0)
+        {
+            currentRedPlayer = obj;
+        }
+        else
+        {
+            currentBluePlayer = obj;
+        }
     }
     /// <summary>
     /// teleports a NetworkObject to a position.
@@ -349,25 +419,11 @@ public class WizardDuelManager : NetworkBehaviour
     /// </summary>
     /// <param name="pos"></param>
     /// <param name="rot"></param>
-    private void SetSpawn(Transform prefab, out Vector3 pos, out Quaternion rot)
+    private void SetSpawn(out Vector3 pos, out Quaternion rot)
     {
-        //No spawns specified.
-        if (Startingspawns.Length == 0)
-        {
-            SetSpawnUsingPrefab(prefab, out pos, out rot);
-            return;
-        }
-
         Transform result = Startingspawns[_nextSpawn];
-        if (result == null)
-        {
-            SetSpawnUsingPrefab(prefab, out pos, out rot);
-        }
-        else
-        {
-            pos = result.position;
-            rot = result.rotation;
-        }
+        pos = result.position;
+        rot = result.rotation;
 
         //Increase next spawn and reset if needed.
         _nextSpawn++;
@@ -375,15 +431,15 @@ public class WizardDuelManager : NetworkBehaviour
             _nextSpawn = 0;
     }
 
-    /// <summary>
-    /// Sets spawn using values from prefab.
-    /// </summary>
-    /// <param name="prefab"></param>
-    /// <param name="pos"></param>
-    /// <param name="rot"></param>
-    private void SetSpawnUsingPrefab(Transform prefab, out Vector3 pos, out Quaternion rot)
+    private void UpdateUI()
     {
-        pos = prefab.position;
-        rot = prefab.rotation;
+        if (currentRedPlayer != null)
+        {
+            UI.transform.GetChild(0).GetChild(0).GetComponent<TMPro.TextMeshProUGUI>().text = currentRedPlayer.transform.GetChild(0).GetComponent<PlayerHealth>().hp.ToString() + "%";
+        }
+        if (currentBluePlayer != null)
+        {
+            UI.transform.GetChild(1).GetChild(0).GetComponent<TMPro.TextMeshProUGUI>().text = currentBluePlayer.transform.GetChild(0).GetComponent<PlayerHealth>().hp.ToString() + "%";
+        }
     }
 }

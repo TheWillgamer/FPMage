@@ -44,7 +44,8 @@ public class AbilityManager : NetworkBehaviour
     public override void OnStartClient()
     {
         base.OnStartClient();
-        cdRepresentation.SetActive(true);
+        if(IsOwner)
+            cdRepresentation.SetActive(true);
     }
 
     void Start()

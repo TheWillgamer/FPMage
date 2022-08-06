@@ -11,6 +11,7 @@ public class SpectatorCamera : NetworkBehaviour
     private float moveRate = 0f;
     private GameObject cam;
     public bool movable;
+    private bool paused;
 
     public override void OnStartClient()
     {
@@ -19,11 +20,28 @@ public class SpectatorCamera : NetworkBehaviour
         {
             cam = transform.GetChild(0).gameObject;
             cam.SetActive(true);
-}
+            paused = true;
+        }
     }
 
     private void LateUpdate()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (paused)
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+                paused = false;
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                paused = true;
+            }
+        }
+
         if (!base.IsOwner || !movable)
             return;
 

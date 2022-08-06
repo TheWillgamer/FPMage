@@ -690,6 +690,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _networkBehaviours:
   - {fileID: 5069811310117029540}
+  - {fileID: 8753360957028578466}
   SceneTransformProperties:
     Position: {x: 17.4, y: 15.2, z: -20.4}
     Rotation: {x: -0, y: -0, z: -0, w: 1}
@@ -715,6 +716,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0caa52d6b3598bd43aa1b79931f9a242, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _componentIndexCache: 1
+  _addedNetworkObject: {fileID: 3687431025750103129}
+  _networkObjectCache: {fileID: 3687431025750103129}
 --- !u!1 &8804599591576960913
 GameObject:
   m_ObjectHideFlags: 0
@@ -733,7 +737,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6908820389969577274
 RectTransform:
   m_ObjectHideFlags: 0

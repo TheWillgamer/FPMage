@@ -67,7 +67,6 @@ public class Fireball : NetworkBehaviour, Projectile
         if (timePassed > 0.1f)
             timePassed = 0.1f;
 
-        Debug.Log(timePassed);
         Move(timePassed);
     }
 
@@ -85,7 +84,6 @@ public class Fireball : NetworkBehaviour, Projectile
         RaycastHit hit;
         // Does the ray intersect any walls
 
-        //if (GameObject.Find("PhysSim").GetComponent<PhysSim>()._physicsScene.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, layerMask))
         if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, traceDistance, layerMask) && !isExploding)
         {
             explode();

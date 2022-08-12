@@ -52,11 +52,11 @@ public class Movement : NetworkBehaviour
     [SerializeField]
     private bool grounded;
     [SerializeField]
+    private bool walltouching;
+    [SerializeField]
     private float counterMovement = 0.175f;
     [SerializeField]
     private float airReduceAmt = 0.1f;
-    [SerializeField]
-    private LayerMask whatIsGround;
     [SerializeField]
     private float airMovementMultiplier = 0.5f;
     [SerializeField]
@@ -141,7 +141,7 @@ public class Movement : NetworkBehaviour
     {
         if (base.IsOwner)
         {
-            if (Input.GetButtonDown("Jump") && readyToJump && jumpCharge > 0)
+            if (Input.GetButtonDown("Jump") && readyToJump && (jumpCharge > 0 || walltouching))
             {
                 jumping = true;
             }
@@ -264,8 +264,10 @@ public class Movement : NetworkBehaviour
     private void Jump(float x, float y)
     {
         readyToJump = false;
-        if(!grounded)
+        if (!grounded)
+        {
             jumpCharge--;
+        }
 
         //Add jump forces
         _rigidbody.AddForce(transform.up * jumpForce);
@@ -360,48 +362,23 @@ public class Movement : NetworkBehaviour
         return new Vector2(xMag, yMag);
     }
 
-    private bool IsFloor(Vector3 v)
+    private void OnCollisionEnter(Collision collision)
     {
-        float angle = Vector3.Angle(Vector3.up, v);
-        return angle < maxSlopeAngle;
+        walltouching = true;
     }
 
-    private bool cancellingGrounded;
-
-    /// <summary>
-    /// Handle ground detection
-    /// </summary>
-    private void OnCollisionStay(Collision other)
+    private void OnCollisionExit(Collision collision)
     {
-        //Make sure we are only checking for walkable layers
-        int layer = other.gameObject.layer;
-        if (whatIsGround != (whatIsGround | (1 << layer))) return;
-
-        //Iterate through every collision in a physics update
-        for (int i = 0; i < other.contactCount; i++)
-        {
-            Vector3 normal = other.contacts[i].normal;
-            //FLOOR
-            if (IsFloor(normal))
-            {
-                grounded = true;
-                jumpCharge = 1;
-                cancellingGrounded = false;
-                normalVector = normal;
-                CancelInvoke(nameof(StopGrounded));
-            }
-        }
-
-        //Invoke ground cancel, since we can't check normals with CollisionExit
-        float delay = .1f;
-        if (!cancellingGrounded)
-        {
-            cancellingGrounded = true;
-            Invoke(nameof(StopGrounded), delay);
-        }
+        walltouching = false;
     }
 
-    private void StopGrounded()
+    private void OnTriggerEnter(Collider other)
+    {
+        grounded = true;
+        jumpCharge = 1;
+    }
+
+    private void OnTriggerExit(Collider other)
     {
         grounded = false;
     }

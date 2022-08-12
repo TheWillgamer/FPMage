@@ -908,6 +908,7 @@ GameObject:
   - component: {fileID: 5799011907501661967}
   - component: {fileID: 5799011907501661994}
   - component: {fileID: 5799011907501662057}
+  - component: {fileID: 6109574245237842276}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -996,10 +997,10 @@ MonoBehaviour:
   _networkObjectCache: {fileID: 5799011907501661999}
   cam: {fileID: 5799011907501662018}
   jumpForce: 3200
-  moveSpeed: 70
+  moveSpeed: 90
   maxSpeed: 22
   grounded: 0
-  counterMovement: 0.15
+  counterMovement: 0.175
   airReduceAmt: 0.01
   whatIsGround:
     serializedVersion: 2
@@ -1202,6 +1203,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!135 &6109574245237842276
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5799011907501662102}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.95
+  m_Center: {x: 0, y: -0.7, z: 0}
 --- !u!1 &5799011907501662109
 GameObject:
   m_ObjectHideFlags: 0

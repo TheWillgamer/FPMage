@@ -12,9 +12,27 @@ public class AbilityManager : NetworkBehaviour
     [SerializeField] private GameObject ls;
     [SerializeField] private Transform proj_spawn;
     [SerializeField] private float proj_force;
-    [SerializeField] private float lightningChargingSpeedDecreaseRate;
     [SerializeField] private float dashForce;
     [SerializeField] private float dashDur;
+
+    /* keeps track of spells the player has equipped
+    0   - Nothing
+    1   - Fireball
+    2   - LightningStrike
+    3   - 
+    4   - 
+    5   - 
+    6   - 
+    7   -
+    8   -
+    9   - Dash
+    10  - Teleport
+    11  - Charge
+    12  - 
+    13  -
+    14  -
+    15  - */
+    public int[] equipped = new int[5];
 
     AudioSource m_shootingSound;
     Movement mv;
@@ -56,6 +74,10 @@ public class AbilityManager : NetworkBehaviour
         fb_offcd = Time.deltaTime;
         ls_offcd = Time.deltaTime;
         dash_offcd = Time.deltaTime;
+
+        // Unequips all spells
+        for (int i = 0; i < 5; i++)
+            equipped[i] = 0;
     }
 
     private void Update()

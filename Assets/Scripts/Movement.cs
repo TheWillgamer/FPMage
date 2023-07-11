@@ -52,8 +52,6 @@ public class Movement : NetworkBehaviour
     [SerializeField]
     private bool grounded;
     [SerializeField]
-    private bool walltouching;
-    [SerializeField]
     private float counterMovement = 0.175f;
     [SerializeField]
     private float airReduceAmt = 0.1f;
@@ -111,8 +109,6 @@ public class Movement : NetworkBehaviour
         base.OnStartClient();
         if (base.IsOwner)
         {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
             paused = false;
         }
     }
@@ -141,7 +137,7 @@ public class Movement : NetworkBehaviour
     {
         if (base.IsOwner)
         {
-            if (Input.GetButtonDown("Jump") && readyToJump && (jumpCharge > 0 || walltouching))
+            if (Input.GetButtonDown("Jump") && readyToJump && jumpCharge > 0)
             {
                 jumping = true;
             }
@@ -216,7 +212,10 @@ public class Movement : NetworkBehaviour
         if (md.Hdash)
         {
             _rigidbody.velocity = new Vector3(0, 0, 0);
-            _rigidbody.AddForce(transform.forward * md.Vertical * dashModifier + transform.right * md.Horizontal * dashModifier);
+            if(md.Horizontal == 0 && md.Vertical == 0)
+                _rigidbody.AddForce(transform.up * dashModifier * 2/3);
+            else
+                _rigidbody.AddForce((transform.forward * md.Vertical + transform.right * md.Horizontal).normalized * dashModifier);
             disableAR = true;
             disableCM = true;
             Invoke(nameof(EndDash), dashDuration);
@@ -286,7 +285,7 @@ public class Movement : NetworkBehaviour
     private void EndDash()
     {
         Vector3 vel = _rigidbody.velocity;
-        _rigidbody.velocity = new Vector3(vel.x/2, vel.y/2, vel.z/2);
+        _rigidbody.velocity = new Vector3(vel.x/3, vel.y/3, vel.z/3);
         disableAR = false;
         disableCM = false;
     }
@@ -362,17 +361,7 @@ public class Movement : NetworkBehaviour
         return new Vector2(xMag, yMag);
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        walltouching = true;
-    }
-
-    private void OnCollisionExit(Collision collision)
-    {
-        walltouching = false;
-    }
-
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         grounded = true;
         jumpCharge = 1;

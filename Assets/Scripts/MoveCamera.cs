@@ -10,6 +10,8 @@ public class MoveCamera : NetworkBehaviour
     [SerializeField]
     private Transform playerLoc;
     private float _movingTime = 0f;
+    public bool playerSpawned;
+    public bool activated;
 
     public override void OnStartClient()
     {
@@ -17,15 +19,16 @@ public class MoveCamera : NetworkBehaviour
         if (base.IsOwner)
         {
             transform.GetChild(0).gameObject.SetActive(true);
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
+        playerSpawned = true;
+        activated = true;
     }
 
     private void LateUpdate()
     {
-        if (base.IsServer && !base.IsOwner)
-            transform.position = playerLoc.position;
-
-        if (!base.IsOwner)
+        if (!base.IsOwner || !activated)
             return;
 
         float mouseX = Input.GetAxis("Mouse X") * sensitivity * Time.fixedDeltaTime * sensMultiplier;
@@ -42,7 +45,13 @@ public class MoveCamera : NetworkBehaviour
         //Perform the rotations
         transform.localRotation = Quaternion.Euler(xRotation, desiredX, 0);
 
+        if (!playerSpawned)
+            return;
+
         //Follows the player
+        if (base.IsServer && !base.IsOwner)
+            transform.position = playerLoc.position;
+
         float distance = Mathf.Max(0.1f, Vector3.Distance(transform.position, playerLoc.position));
         if (transform.position != playerLoc.position)
         {

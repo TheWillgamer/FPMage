@@ -20,6 +20,7 @@ using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
 public class LightningStrike : NetworkBehaviour
 {
     [SerializeField] private int damage = 40;
+    [SerializeField] private float chargeTime = 0.5f;
     [SerializeField] private float knockback_amount = 20f;
     [SerializeField] private float knockback_growth = 60f;
     [SerializeField] LightningBoltPrefabScript spell;
@@ -47,7 +48,7 @@ public class LightningStrike : NetworkBehaviour
         else if (!server && base.IsServerOnly)
             return;
 
-        Invoke("LightningShoot", 1f);
+        Invoke("LightningShoot", chargeTime);
     }
 
     [Server(Logging = LoggingType.Off)]

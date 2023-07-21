@@ -112,7 +112,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _componentIndexCache: 4
   _addedNetworkObject: {fileID: 8805782178254341495}
-  _networkObjectCache: {fileID: 8805782178254341495}
+  _networkObjectCache: {fileID: 8805782178254341441}
 --- !u!1 &2000032158968198555
 GameObject:
   m_ObjectHideFlags: 0
@@ -1034,7 +1034,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _networkBehaviours:
-  - {fileID: 0}
   - {fileID: 8805782178254341453}
   - {fileID: 8805782178254341493}
   - {fileID: 8805782178254341473}
@@ -1206,7 +1205,7 @@ MonoBehaviour:
     LocalScale: {x: 1, y: 1, z: 1}
   _isNetworked: 1
   _isGlobal: 0
-  _hasParentNetworkObjectAtEdit: 0
+  _hasParentNetworkObjectAtEdit: 1
   NetworkObserver: {fileID: 0}
   _prefabId: -1
   _scenePathHash: 0
@@ -1242,7 +1241,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _componentIndexCache: 0
   _addedNetworkObject: {fileID: 8805782178254341441}
-  _networkObjectCache: {fileID: 8805782178254341495}
+  _networkObjectCache: {fileID: 8805782178254341441}
   cam: {fileID: 8805782178254341420}
   jumpForce: 1800
   moveSpeed: 130
@@ -1288,7 +1287,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _componentIndexCache: 1
   _addedNetworkObject: {fileID: 0}
-  _networkObjectCache: {fileID: 8805782178254341495}
+  _networkObjectCache: {fileID: 8805782178254341441}
   _graphicalObject: {fileID: 1302388606590953556}
   _smoothTicks: 1
   _durationType: 0
@@ -1314,7 +1313,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _componentIndexCache: 2
   _addedNetworkObject: {fileID: 8805782178254341441}
-  _networkObjectCache: {fileID: 8805782178254341495}
+  _networkObjectCache: {fileID: 8805782178254341441}
   hp: 0
   hpMeter: {fileID: 0}
   dmgScreen: {fileID: 0}
@@ -1334,7 +1333,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _componentIndexCache: 3
   _addedNetworkObject: {fileID: 8805782178254341441}
-  _networkObjectCache: {fileID: 8805782178254341495}
+  _networkObjectCache: {fileID: 8805782178254341441}
   fb: {fileID: 3637627862300843640, guid: ee6fbff84b0264d4894169a7613053d2, type: 3}
   ls: {fileID: 332102958971674775, guid: 74fbcea6b1536ee4c8160a00d116d790, type: 3}
   proj_spawn: {fileID: 8805782178254341593}

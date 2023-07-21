@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MainMenu : MonoBehaviour{
+public class MainMenu : MonoBehaviour
+{
+    private static MainMenu instance;
 
-    public void PlayGame ()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-    }
+    private void Awake() => instance = this;
+
 
     public void QuitGame ()
     {

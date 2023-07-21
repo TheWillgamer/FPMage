@@ -12,7 +12,6 @@ public class BulletParticle : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Mouse0))
         {
-            Debug.Log("Fucked Up");
             particleSystem.Play();
         }
     }
@@ -20,8 +19,6 @@ public class BulletParticle : MonoBehaviour
     private void OnParticleCollision(GameObject other)
     {
       int events = particleSystem.GetCollisionEvents(other, colEvents);
-
-      Debug.Log("Fucked Up");
 
       for (int i = 0; i < events; i++)
       {

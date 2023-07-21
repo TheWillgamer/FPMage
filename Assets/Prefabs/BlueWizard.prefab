@@ -1093,9 +1093,10 @@ MonoBehaviour:
   proj_force: 40
   dashForce: 8000
   dashDur: 0.1
+  equipped: 0000000000000000000000000000000000000000
   fb_cd: 1
   ls_cd: 8
-  dash_cd: 4
+  dash_cd: 0.1
   cdRepresentation: {fileID: 470701633}
   Fireball:
   - {fileID: 205282073}
@@ -1353,7 +1354,7 @@ MonoBehaviour:
     LocalScale: {x: 1, y: 1, z: 1}
   _isNetworked: 1
   _isGlobal: 0
-  _hasParentNetworkObjectAtEdit: 0
+  _hasParentNetworkObjectAtEdit: 1
   NetworkObserver: {fileID: 0}
   _prefabId: -1
   _scenePathHash: 0
@@ -1374,9 +1375,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 044753e13dd3b2d47b94005fb3cdbcbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 0
+  _componentIndexCache: 5
   _addedNetworkObject: {fileID: 5799011907501661999}
-  _networkObjectCache: {fileID: 5799011907501661975}
+  _networkObjectCache: {fileID: 5799011907501661999}
   sensitivity: 70
   playerLoc: {fileID: 5799011907501662131}
   playerSpawned: 0
@@ -1393,9 +1394,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2836e36774ca1c4bbbee976e17b649c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 1
+  _componentIndexCache: 6
   _addedNetworkObject: {fileID: 5799011907501661999}
-  _networkObjectCache: {fileID: 5799011907501661975}
+  _networkObjectCache: {fileID: 5799011907501661999}
   _synchronizeParent: 0
   _packing:
     Position: 0

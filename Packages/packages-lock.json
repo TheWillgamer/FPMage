@@ -1,10 +1,11 @@
 {
   "dependencies": {
     "com.heathen.steamworkscomplete": {
-      "version": "file:C:/Users/William/Desktop/HeathenEngineering/SourceRepo/Steamworks/com.heathen.steamworkscomplete",
+      "version": "https://github.com/heathen-engineering/SourceRepo.git?path=/Steamworks/com.heathen.steamworkscomplete",
       "depth": 0,
-      "source": "local",
-      "dependencies": {}
+      "source": "git",
+      "dependencies": {},
+      "hash": "099a00dc7c5deeb1421b1871e2a368a08c23f6be"
     },
     "com.heathen.systemcore": {
       "version": "https://github.com/heathen-engineering/SystemCore.git?path=/com.heathen.systemcore",

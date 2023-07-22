@@ -12,6 +12,7 @@ public class LobbyUIController : MonoBehaviour
     public GameObject sessionPanel;
     public GameObject[] border;
     public SetUserAvatar[] memberSlotAvatars;
+    public SetUserName[] memberSlotNames;
     public GameObject readyButton;
     public GameObject startButton;
 
@@ -165,6 +166,7 @@ public class LobbyUIController : MonoBehaviour
 
             //Set the avatar
             memberSlotAvatars[0].UserData = partyMembersOtherThanMe[0].user;
+            memberSlotNames[0].UserData = partyMembersOtherThanMe[0].user;
         }
     }
 

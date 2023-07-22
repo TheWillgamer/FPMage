@@ -365,8 +365,8 @@ MonoBehaviour:
       - m_Target: {fileID: 467549465}
         m_TargetAssemblyTypeName: HeathenEngineering.SteamworksIntegration.LobbyManager,
           Heathen.Steamworks
-        m_MethodName: Create
-        m_Mode: 1
+        m_MethodName: QuickMatch
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

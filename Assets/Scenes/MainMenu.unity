@@ -8021,10 +8021,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 467549465}
-        m_TargetAssemblyTypeName: HeathenEngineering.SteamworksIntegration.LobbyManager,
-          Heathen.Steamworks
-        m_MethodName: Join
+      - m_Target: {fileID: 467549466}
+        m_TargetAssemblyTypeName: LobbyUIController, Assembly-CSharp
+        m_MethodName: JoinLobby
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

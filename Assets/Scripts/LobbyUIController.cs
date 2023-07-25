@@ -4,6 +4,8 @@ using HeathenEngineering.SteamworksIntegration;
 using HeathenEngineering.SteamworksIntegration.UI;
 using UnityEngine;
 using UnityEngine.UI;
+using Steamworks;
+using System;
 
 public class LobbyUIController : MonoBehaviour
 {
@@ -170,4 +172,10 @@ public class LobbyUIController : MonoBehaviour
         }
     }
 
+    // Joins 
+    public void JoinLobby(string lobbyInput)
+    {
+        Debug.Log(Convert.ToUInt64(lobbyInput));
+        //SteamMatchmaking.JoinLobby(new CSteamID(Convert.ToUInt64(lobbyInput)));
+    }
 }

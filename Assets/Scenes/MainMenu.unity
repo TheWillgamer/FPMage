@@ -2287,7 +2287,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   searchArguments:
-    slots: -1
+    slots: 2
     distance: 3
     nearValues: []
     numericFilters: []
@@ -2296,7 +2296,7 @@ MonoBehaviour:
     usageHint: 2
     name: RATJOINTHISLOBBYRIGHTNOWYOUSTUPIDRASCAL
     slots: 2
-    type: 2
+    type: 1
     metadata: []
   evtFound:
     m_PersistentCalls:

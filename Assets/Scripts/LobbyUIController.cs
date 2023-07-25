@@ -175,7 +175,6 @@ public class LobbyUIController : MonoBehaviour
     // Joins 
     public void JoinLobby(string lobbyInput)
     {
-        Debug.Log(Convert.ToUInt64(lobbyInput));
-        //SteamMatchmaking.JoinLobby(new CSteamID(Convert.ToUInt64(lobbyInput)));
+        SteamMatchmaking.JoinLobby(new CSteamID(Convert.ToUInt64(lobbyInput)));
     }
 }

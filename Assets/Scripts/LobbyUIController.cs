@@ -4,8 +4,10 @@ using HeathenEngineering.SteamworksIntegration;
 using HeathenEngineering.SteamworksIntegration.UI;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using Steamworks;
 using System;
+using FishNet.Managing;
 
 public class LobbyUIController : MonoBehaviour
 {
@@ -16,10 +18,13 @@ public class LobbyUIController : MonoBehaviour
     public Image character;
     public GameObject mapSelector;
     public Image map;
+    [SerializeField] private string[] maps;
     public SetUserAvatar[] memberSlotAvatars;
     public SetUserName[] memberSlotNames;
     public GameObject readyButton;
     public GameObject startButton;
+
+    private FishySteamworks.FishySteamworks _fishySteamworks;
 
     // cash of the members of the lobby other than my self
     private List<LobbyMemberData> partyMembersOtherThanMe = new List<LobbyMemberData>();
@@ -27,6 +32,11 @@ public class LobbyUIController : MonoBehaviour
 
     [SerializeField] private int mapCount;      // number of maps in the game
     [SerializeField] private int charCount;     // number of characters in the game
+
+    public void Start()
+    {
+        _fishySteamworks = GameObject.FindGameObjectWithTag("NetworkManager").GetComponent<FishySteamworks.FishySteamworks>();
+    }
 
     /// <summary>
     /// Occures when we have entered a lobby .. that is when we have joined a lobby we didn't create
@@ -51,6 +61,7 @@ public class LobbyUIController : MonoBehaviour
     {
         var member = lobby.Me;
         member["char"] = "0";
+        lobbyManager.IsPlayerReady = true;
 
         UpdateUI();
     }
@@ -99,18 +110,32 @@ public class LobbyUIController : MonoBehaviour
     /// </summary>
     public void StartGame()
     {
-        if (!lobbyManager.Lobby.AllPlayersReady)
-        {
-            Debug.Log($"You chose to start the session before all players where marked ready");
-        }
+        // Loads map
+        string mapName = maps[Convert.ToInt32(lobbyManager.Lobby["map"])];
+        SceneManager.LoadScene(mapName, LoadSceneMode.Additive);
+        StartCoroutine(SetActive(SceneManager.GetSceneByName(mapName)));
 
-        Debug.Log($"If this was a real game the owner would need to start up the network session.\n" +
-            $"For a typical P2P game this would mean loading the network scene, calling StartHost or similar on your networking HLAPI and setting up the environment to make it ready for others to join.\n" +
-            $"For a Client/Server game this would mean allocating a server, connecting to it and configuring it to make it ready for others to join.\n" +
-            $"Once the network session is set up and ready for others to connect ... the owner of the lobby should call SetGameServer as demonstrated in our source code.");
+        // Start server
+        _fishySteamworks.SetClientAddress(SteamUser.GetSteamID().ToString());
+        _fishySteamworks.StartConnection(true);
+        _fishySteamworks.StartConnection(false);
 
         //This will notify all other members on the lobby that the network session is ready to connect to
         lobbyManager.Lobby.SetGameServer();
+
+        //SceneManager.UnloadScene("MainMenu");
+    }
+    public IEnumerator SetActive(Scene scene)
+    {
+        int i = 0;
+        while (i == 0)
+        {
+            i++;
+            yield return null;
+        }
+        SceneManager.SetActiveScene(scene);
+        SceneManager.UnloadScene("MainMenu");
+        yield break;
     }
     /// <summary>
     /// Occurs when the server info has been set on this lobby
@@ -121,6 +146,15 @@ public class LobbyUIController : MonoBehaviour
         //If we are the owner ... we already know we set this and can skip this
         if (lobbyManager.Lobby.IsOwner)
             return;
+
+        // Loads map
+        string mapName = maps[Convert.ToInt32(lobbyManager.Lobby["map"])];
+        SceneManager.LoadScene(mapName, LoadSceneMode.Additive);
+        StartCoroutine(SetActive(SceneManager.GetSceneByName(mapName)));
+
+        _fishySteamworks.SetClientAddress(server.id.ToString());
+
+
 
         Debug.Log($"The owner of the session lobby has notified us that the server is ready to connect to and that the address of the server is\n\n" +
             $"CSteamID:{server.id}\n" +
@@ -138,6 +172,7 @@ public class LobbyUIController : MonoBehaviour
         {
             foreach (var b in border)
                 b.SetActive(false);
+            border[0].SetActive(true);
 
             menuScreen.SetActive(true);
             sessionPanel.SetActive(false);
@@ -158,13 +193,13 @@ public class LobbyUIController : MonoBehaviour
                 map.color = Color.magenta;
                 break;
             case "1":
-                map.color = Color.cyan;
-                break;
-            case "2":
                 map.color = Color.gray;
                 break;
-            case "3":
+            case "2":
                 map.color = Color.yellow;
+                break;
+            case "3":
+                map.color = Color.cyan;
                 break;
             default:
                 print("ERROR! map not found");
@@ -192,7 +227,7 @@ public class LobbyUIController : MonoBehaviour
         if (lobby.IsOwner)
         {
             readyButton.SetActive(false);
-            startButton.SetActive(true);
+            startButton.SetActive(lobbyManager.Lobby.AllPlayersReady ? true : false);
         }
         else
         {

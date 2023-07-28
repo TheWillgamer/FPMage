@@ -700,9 +700,6 @@ MonoBehaviour:
   grounded: 0
   counterMovement: 0.15
   airReduceAmt: 0.01
-  whatIsGround:
-    serializedVersion: 2
-    m_Bits: 64
   airMovementMultiplier: 0.8
   maxSlopeAngle: 35
   h_dashing: 0
@@ -768,6 +765,7 @@ MonoBehaviour:
   _componentIndexCache: 2
   _addedNetworkObject: {fileID: 5799011907501661999}
   _networkObjectCache: {fileID: 5799011907501661999}
+  hp: 0
   hpMeter: {fileID: 0}
   dmgScreen: {fileID: 0}
   hit: {fileID: 0}
@@ -791,9 +789,9 @@ MonoBehaviour:
   ls: {fileID: 332102958971674775, guid: 74fbcea6b1536ee4c8160a00d116d790, type: 3}
   proj_spawn: {fileID: 5799011907501662135}
   proj_force: 40
-  lightningChargingSpeedDecreaseRate: 1
   dashForce: 10000
   dashDur: 0.1
+  equipped: 0000000000000000000000000000000000000000
   fb_cd: 1
   ls_cd: 8
   dash_cd: 4
@@ -1070,6 +1068,8 @@ MonoBehaviour:
   _networkObjectCache: {fileID: 5799011907501661999}
   sensitivity: 70
   playerLoc: {fileID: 5799011907501662131}
+  playerSpawned: 0
+  activated: 0
 --- !u!114 &5799011907501662005
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -12,28 +12,15 @@ public class BootstrapManager : MonoBehaviour
     [SerializeField] private FishySteamworks.FishySteamworks _fishySteamworks;
 
     protected Callback<LobbyCreated_t> LobbyCreated;
-    protected Callback<GameLobbyJoinRequested_t> JoinRequest;
     protected Callback<LobbyEnter_t> LobbyEntered;
 
     public static ulong CurrentLobbyID;
 
     private void Awake() => instance = this;
 
-    private void Start()
-    {
-        LobbyCreated = Callback<LobbyCreated_t>.Create(OnLobbyCreated);
-        JoinRequest = Callback<GameLobbyJoinRequested_t>.Create(OnJoinRequest);
-        LobbyEntered = Callback<LobbyEnter_t>.Create(OnLobbyEntered);
-    }
-
     public void GoToMenu()
     {
         SceneManager.LoadScene(menuName, LoadSceneMode.Additive);
-    }
-
-    public static void CreateLobby()
-    {
-        SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypeFriendsOnly, 2);
     }
 
     private void OnLobbyCreated(LobbyCreated_t callback)
@@ -45,11 +32,6 @@ public class BootstrapManager : MonoBehaviour
         SteamMatchmaking.SetLobbyData(new CSteamID(callback.m_ulSteamIDLobby), "HostAddress", SteamUser.GetSteamID().ToString());
         _fishySteamworks.SetClientAddress(SteamUser.GetSteamID().ToString());
         _fishySteamworks.StartConnection(true);
-    }
-
-    private void OnJoinRequest(GameLobbyJoinRequested_t callback)
-    {
-
     }
 
     private void OnLobbyEntered(LobbyEnter_t callback)

@@ -153,7 +153,7 @@ public class LobbyUIController : MonoBehaviour
         StartCoroutine(SetActive(SceneManager.GetSceneByName(mapName)));
 
         _fishySteamworks.SetClientAddress(server.id.ToString());
-
+        _fishySteamworks.StartConnection(false);
 
 
         Debug.Log($"The owner of the session lobby has notified us that the server is ready to connect to and that the address of the server is\n\n" +

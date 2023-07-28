@@ -18,7 +18,10 @@ public class MoveCamera : NetworkBehaviour
         base.OnStartClient();
         if (base.IsOwner)
         {
-            transform.GetChild(0).gameObject.SetActive(true);
+            //transform.GetChild(0).gameObject.SetActive(true);
+            GameObject cam = GameObject.FindWithTag("MainCamera");
+            cam.transform.parent = transform;
+            cam.transform.localPosition = Vector3.zero;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }

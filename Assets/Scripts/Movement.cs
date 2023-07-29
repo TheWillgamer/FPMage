@@ -232,7 +232,7 @@ public class Movement : NetworkBehaviour
         }
 
         if (md.Jump)
-            Jump(md.Horizontal, md.Vertical);
+            Jump();
 
         //Extra gravity
         _rigidbody.AddForce(Vector3.down * 30);
@@ -270,7 +270,7 @@ public class Movement : NetworkBehaviour
         _rigidbody.AddForce(transform.right * md.Horizontal * moveSpeed * multiplier);
     }
 
-    private void Jump(float x, float y)
+    private void Jump()
     {
         readyToJump = false;
 

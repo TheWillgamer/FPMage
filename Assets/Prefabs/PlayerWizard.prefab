@@ -834,10 +834,10 @@ MonoBehaviour:
   _networkObjectCache: {fileID: 8227743508398521442}
   cam: {fileID: 8227743508193196329}
   jumpForce: 700
-  secondJumpForce: 700
+  secondJumpForce: 650
   wallJumpUpModifier: 1.9
   wallJumpModifier: 1.5
-  coyoteTime: 0.3
+  coyoteTime: 0.1
   moveSpeed: 140
   maxSpeed: 24
   grounded: 0
@@ -892,7 +892,7 @@ MonoBehaviour:
   _rigidbody: {fileID: 6675352565897393522}
   _rigidbody2d: {fileID: 0}
   _networkTransform: {fileID: 0}
-  _predictionRatio: 0.1
+  _predictionRatio: 0
 --- !u!114 &1392717416191338940
 MonoBehaviour:
   m_ObjectHideFlags: 0

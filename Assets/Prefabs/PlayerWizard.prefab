@@ -883,7 +883,7 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 0}
   _networkObjectCache: {fileID: 8227743508398521442}
   _graphicalObject: {fileID: 7928923847964066659}
-  _smoothTicks: 0
+  _smoothTicks: 1
   _durationType: 0
   _smoothingDuration: 0.05
   _enableTeleport: 0

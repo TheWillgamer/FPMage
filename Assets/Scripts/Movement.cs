@@ -47,6 +47,15 @@ public class Movement : NetworkBehaviour
     [SerializeField]
     private float jumpForce = 15f;
     [SerializeField]
+    private float secondJumpForce = 15f;
+    [SerializeField]
+    private float wallJumpUpModifier = 1.5f;
+    [SerializeField]
+    private float wallJumpModifier = 1.5f;
+    [SerializeField]
+    private float coyoteTime = 3f;
+
+    [SerializeField]
     private float moveSpeed = 4500f;
     public float maxSpeed = 22;
     [SerializeField]
@@ -86,6 +95,7 @@ public class Movement : NetworkBehaviour
     private bool readyToJump = true;
     private int jumpCharge = 1;
     private float jumpCooldown = 0.2f;
+    private bool canGroundJump;
 
     private float threshold = 0.01f;
     private Vector2 mag;
@@ -263,13 +273,21 @@ public class Movement : NetworkBehaviour
     private void Jump(float x, float y)
     {
         readyToJump = false;
-        if (!grounded)
+
+        if (canGroundJump)
         {
+            _rigidbody.velocity = new Vector3(_rigidbody.velocity.x, 0f, _rigidbody.velocity.z);
+            _rigidbody.AddForce(Vector2.up * jumpForce * wallJumpUpModifier);
+            if (Vector3.Angle(Vector2.up, normalVector) > 35)
+                _rigidbody.AddForce(normalVector * jumpForce * wallJumpModifier);
+            else
+                _rigidbody.AddForce(normalVector * jumpForce * (2f - wallJumpUpModifier));
+        }
+        else
+        {
+            _rigidbody.AddForce(Vector2.up * secondJumpForce * 2f);
             jumpCharge--;
         }
-
-        //Add jump forces
-        _rigidbody.AddForce(transform.up * jumpForce);
 
         //If jumping while falling, reset y velocity.
         Vector3 vel = _rigidbody.velocity;
@@ -279,6 +297,7 @@ public class Movement : NetworkBehaviour
             _rigidbody.velocity = new Vector3(vel.x, vel.y / 2, vel.z);
 
         Invoke(nameof(ResetJump), jumpCooldown);
+
     }
 
     //reduces velocity by a factor of the parameter
@@ -361,16 +380,54 @@ public class Movement : NetworkBehaviour
         return new Vector2(xMag, yMag);
     }
 
-    private void OnTriggerStay(Collider other)
+    private bool IsFloor(Vector3 v)
     {
-        grounded = true;
-        jumpCharge = 1;
+        float angle = Vector3.Angle(Vector3.up, v);
+        return angle < 95;
     }
 
-    private void OnTriggerExit(Collider other)
+    void CancelCoyoteTime()
+    {
+        canGroundJump = false;
+    }
+
+    private void OnCollisionExit(Collision other)
     {
         grounded = false;
+        Invoke(nameof(CancelCoyoteTime), coyoteTime);
     }
+
+    // Allows player to jump away from wall
+    private void OnCollisionStay(Collision other)
+    {
+        if (other.gameObject.tag == "Ground" || other.gameObject.tag == "Enemy")
+        {
+            for (int i = 0; i < other.contactCount; i++)
+            {
+                Vector3 normal = other.contacts[i].normal;
+                //FLOOR
+                if (IsFloor(normal))
+                {
+                    grounded = true;
+                    canGroundJump = true;
+                    normalVector = normal;
+                    jumpCharge = 1;
+                }
+            }
+
+        }
+    }
+
+    //private void OnTriggerStay(Collider other)
+    //{
+    //    grounded = true;
+    //    jumpCharge = 1;
+    //}
+
+    //private void OnTriggerExit(Collider other)
+    //{
+    //    grounded = false;
+    //}
 
     [Reconcile]
     private void Reconciliation(ReconcileData rd, bool asServer)

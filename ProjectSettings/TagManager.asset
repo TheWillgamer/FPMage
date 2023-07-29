@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Projectile
   - NetworkManager
+  - LobbyNetwork
+  - Ground
   layers:
   - Default
   - TransparentFX

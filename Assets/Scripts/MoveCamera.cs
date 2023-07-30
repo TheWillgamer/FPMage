@@ -31,6 +31,10 @@ public class MoveCamera : NetworkBehaviour
 
     private void LateUpdate()
     {
+        //Follows the player
+        if (activated && base.IsServer && !base.IsOwner)
+            transform.position = playerLoc.position;
+
         if (!base.IsOwner || !activated)
             return;
 
@@ -50,10 +54,6 @@ public class MoveCamera : NetworkBehaviour
 
         if (!playerSpawned)
             return;
-
-        //Follows the player
-        if (base.IsServer && !base.IsOwner)
-            transform.position = playerLoc.position;
 
         float distance = Mathf.Max(0.1f, Vector3.Distance(transform.position, playerLoc.position));
         if (transform.position != playerLoc.position)

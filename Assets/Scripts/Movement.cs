@@ -65,8 +65,6 @@ public class Movement : NetworkBehaviour
     [SerializeField]
     private float counterMovement = 0.175f;
     [SerializeField]
-    private float airReduceAmt = 0.1f;
-    [SerializeField]
     private float airMovementMultiplier = 0.5f;
     [SerializeField]
     private float maxSlopeAngle = 35f;
@@ -112,7 +110,6 @@ public class Movement : NetworkBehaviour
 
     public bool disableMV;      //Disable movement
     public bool disableCM;      //Disable counter-movement
-    public bool disableAR;      //Disable air-reduction
 
     private bool paused;
 
@@ -132,7 +129,6 @@ public class Movement : NetworkBehaviour
         InstanceFinder.TimeManager.OnPostTick += TimeManager_OnPostTick;
         disableMV = false;
         disableCM = false;
-        disableAR = false;
         mag = new Vector2(0f, 0f);
     }
 
@@ -228,7 +224,6 @@ public class Movement : NetworkBehaviour
                 _rigidbody.AddForce(transform.up * dashModifier * 2/3);
             else
                 _rigidbody.AddForce((transform.forward * md.Vertical + transform.right * md.Horizontal).normalized * dashModifier);
-            disableAR = true;
             disableCM = true;
             Invoke(nameof(EndDash), dashDuration);
         }
@@ -246,7 +241,7 @@ public class Movement : NetworkBehaviour
         CounterMovement(md.Horizontal, md.Vertical, mag);
 
         //Make it easier to change trajectory in air
-        AirReduction(md.Horizontal, md.Vertical, mag);
+        //AirReduction(md.Horizontal, md.Vertical, mag);
 
         //Set max speed
         float maxSpeed = this.maxSpeed;
@@ -258,17 +253,14 @@ public class Movement : NetworkBehaviour
         if (md.Vertical < 0 && yMag < -maxSpeed) md.Vertical = 0;
 
         //Some multipliers
-        float multiplier = 1f, multiplierV = 1f;
+        float multiplier = 1f;
 
         // Movement in air
         if (!grounded)
-        {
             multiplier = airMovementMultiplier;
-            multiplierV = 0.5f;
-        }
 
         //Apply forces to move player
-        _rigidbody.AddForce(transform.forward * md.Vertical * moveSpeed * multiplier * multiplierV);
+        _rigidbody.AddForce(transform.forward * md.Vertical * moveSpeed * multiplier);
         _rigidbody.AddForce(transform.right * md.Horizontal * moveSpeed * multiplier);
     }
 
@@ -307,7 +299,6 @@ public class Movement : NetworkBehaviour
     {
         Vector3 vel = _rigidbody.velocity;
         _rigidbody.velocity = new Vector3(vel.x/3, vel.y/3, vel.z/3);
-        disableAR = false;
         disableCM = false;
     }
 
@@ -328,29 +319,6 @@ public class Movement : NetworkBehaviour
         if (Math.Abs(mag.y) > threshold && Math.Abs(y) < 0.05f || (mag.y < -threshold && y > 0) || (mag.y > threshold && y < 0))
         {
             _rigidbody.AddForce(moveSpeed * transform.forward * -mag.y * counterMovement);
-        }
-
-        //Limit diagonal running. This will also cause a full stop if sliding fast and un-crouching, so not optimal.
-        if (Mathf.Sqrt((Mathf.Pow(_rigidbody.velocity.x, 2) + Mathf.Pow(_rigidbody.velocity.z, 2))) > maxSpeed)
-        {
-            float fallspeed = _rigidbody.velocity.y;
-            Vector3 n = _rigidbody.velocity.normalized * maxSpeed;
-            _rigidbody.velocity = new Vector3(n.x, fallspeed, n.z);
-        }
-    }
-
-    private void AirReduction(float x, float y, Vector2 mag)
-    {
-        if (grounded || disableAR) return;
-
-        //Counter movement
-        if ((x > 0 && mag.x < 0) || (x < 0 && mag.x > 0))
-        {
-            _rigidbody.AddForce(moveSpeed * transform.right * x * airReduceAmt);
-        }
-        if ((y > 0 && mag.y < 0) || (y < 0 && mag.y > 0))
-        {
-            _rigidbody.AddForce(moveSpeed * transform.forward * y * airReduceAmt);
         }
 
         //Limit diagonal running. This will also cause a full stop if sliding fast and un-crouching, so not optimal.

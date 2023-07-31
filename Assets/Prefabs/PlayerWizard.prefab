@@ -906,7 +906,7 @@ MonoBehaviour:
   maxSpeed: 20
   grounded: 0
   counterMovement: 0.08
-  airMovementMultiplier: 0.3
+  airMovementMultiplier: 0.5
   maxSlopeAngle: 35
   h_dashing: 0
   dashModifier: 0

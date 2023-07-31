@@ -34,9 +34,13 @@ public class PlayerHealth : NetworkBehaviour
     {
         int oldHp = hp;
         hp += amt;
-        
+
         if (base.IsServer)
+        {
             ObserversTakeDamage(amt, oldHp);
+            if (base.IsOwner)
+                UpdateUI();
+        }
     }
 
     // Knocks back the player in a given direction: kb_growth determines how much percentage determines the knockback amount

@@ -94,7 +94,7 @@ public class Movement : NetworkBehaviour
     private bool jumping = false;
     private bool readyToJump = true;
     private int jumpCharge = 1;
-    private float jumpCooldown = 0.1f;
+    private float jumpCooldown = 0.2f;
     private bool canGroundJump;
 
     private float threshold = 0.01f;
@@ -145,6 +145,7 @@ public class Movement : NetworkBehaviour
     {
         if (base.IsOwner)
         {
+            Debug.Log(grounded.ToString() + canGroundJump.ToString() + jumpCharge.ToString());
             if (Input.GetButtonDown("Jump") && readyToJump && jumpCharge > 0)
             {
                 jumping = true;
@@ -239,9 +240,6 @@ public class Movement : NetworkBehaviour
 
         //Counteract sliding and sloppy movement
         CounterMovement(md.Horizontal, md.Vertical, mag);
-
-        //Make it easier to change trajectory in air
-        //AirReduction(md.Horizontal, md.Vertical, mag);
 
         //Set max speed
         float maxSpeed = this.maxSpeed;

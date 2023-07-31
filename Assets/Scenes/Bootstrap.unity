@@ -521,4 +521,4 @@ MonoBehaviour:
   _pingInterval: 1
   _timingInterval: 2
   _physicsMode: 1
-  _maximumBufferedInputs: 25
+  _maximumBufferedInputs: 20

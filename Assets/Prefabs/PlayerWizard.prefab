@@ -901,7 +901,7 @@ MonoBehaviour:
   secondJumpForce: 550
   wallJumpUpModifier: 1.9
   wallJumpModifier: 1.5
-  coyoteTime: 0.1
+  coyoteTime: 0.15
   moveSpeed: 130
   maxSpeed: 20
   grounded: 0

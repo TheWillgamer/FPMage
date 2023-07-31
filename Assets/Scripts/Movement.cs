@@ -94,7 +94,7 @@ public class Movement : NetworkBehaviour
     private bool jumping = false;
     private bool readyToJump = true;
     private int jumpCharge = 1;
-    private float jumpCooldown = 0.2f;
+    private float jumpCooldown = 0.1f;
     private bool canGroundJump;
 
     private float threshold = 0.01f;

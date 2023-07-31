@@ -3,11 +3,12 @@ using FishNet.Object.Synchronizing;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class PlayerHealth : NetworkBehaviour
 {
     [SyncVar] public int hp;  //keeps track of player health
-    public Transform hpMeter;
+    public TMP_Text hpPercentage;
     public Image dmgScreen;
     private Rigidbody rb;
     private Movement mv;
@@ -33,7 +34,7 @@ public class PlayerHealth : NetworkBehaviour
     {
         int oldHp = hp;
         hp += amt;
-        //UpdateUI();
+        
         if (base.IsServer)
             ObserversTakeDamage(amt, oldHp);
     }
@@ -60,7 +61,10 @@ public class PlayerHealth : NetworkBehaviour
 
         TakeDamage(value);
         if (base.IsOwner)
+        {
+            UpdateUI();
             StartCoroutine(Fade());
+        }
     }
 
     IEnumerator Fade()
@@ -72,6 +76,11 @@ public class PlayerHealth : NetworkBehaviour
             dmgScreen.color = c;
             yield return null;
         }
+    }
+
+    private void UpdateUI()
+    {
+        hpPercentage.text = hp.ToString() + "%";
     }
 
     private void EnableCM()

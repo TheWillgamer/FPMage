@@ -59,6 +59,8 @@ public class PlayerHealth : NetworkBehaviour
         hp = priorHealth;
 
         TakeDamage(value);
+        if (base.IsOwner)
+            StartCoroutine(Fade());
     }
 
     IEnumerator Fade()

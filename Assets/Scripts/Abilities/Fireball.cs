@@ -84,6 +84,18 @@ public class Fireball : NetworkBehaviour, Projectile
         RaycastHit hit;
         // Does the ray intersect any walls
 
+        if (Physics.SphereCast(transform.position, _colliderRadius, transform.TransformDirection(Vector3.forward), out hit, traceDistance) && !isExploding)
+        {
+            if (hit.transform.tag == "Player")
+            {
+                PlayerHealth ph = hit.transform.gameObject.GetComponent<PlayerHealth>();
+                ph.TakeDamage(damage);
+                ph.Knockback(Vector3.ProjectOnPlane(transform.forward, Vector3.up).normalized + Vector3.up / 4, knockback_amount, knockback_growth);
+                explode();
+                isExploding = true;
+            }
+        }
+
         if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, traceDistance, layerMask) && !isExploding)
         {
             explode();
@@ -91,22 +103,6 @@ public class Fireball : NetworkBehaviour, Projectile
         }
 
         transform.position += (velocity * Time.deltaTime);
-    }
-
-    [Server(Logging = LoggingType.Off)]
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.tag == "Player")
-        {
-            PlayerHealth ph = collision.gameObject.GetComponent<PlayerHealth>();
-            ph.TakeDamage(damage);
-            ph.Knockback(Vector3.ProjectOnPlane(transform.forward, Vector3.up).normalized + Vector3.up / 4, knockback_amount, knockback_growth);
-        }
-        if (!isExploding)
-        {
-            explode();
-            isExploding = true;
-        }
     }
 
     [Server(Logging = LoggingType.Off)]

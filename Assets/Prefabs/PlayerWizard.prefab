@@ -1150,7 +1150,7 @@ MonoBehaviour:
   _networkObjectCache: {fileID: 8227743508398521442}
   fb: {fileID: 3637627862300843640, guid: ee6fbff84b0264d4894169a7613053d2, type: 3}
   proj_spawn: {fileID: 5682205087739296379}
-  proj_force: 60
+  proj_force: 100
   fb_cd: 2
   cdRepresentation: {fileID: 5260410080079055999}
   Fireball:

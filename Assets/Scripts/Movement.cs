@@ -33,13 +33,11 @@ public class Movement : NetworkBehaviour
         public Vector3 Position;
         public Quaternion Rotation;
         public Vector3 Velocity;
-        public Vector3 AngularVelocity;
-        public ReconcileData(Vector3 position, Quaternion rotation, Vector3 velocity, Vector3 angularVelocity)
+        public ReconcileData(Vector3 position, Quaternion rotation, Vector3 velocity)
         {
             Position = position;
             Rotation = rotation;
             Velocity = velocity;
-            AngularVelocity = angularVelocity;
         }
     }
     #endregion
@@ -191,7 +189,7 @@ public class Movement : NetworkBehaviour
     {
         if (base.IsServer)
         {
-            ReconcileData rd = new ReconcileData(transform.position, transform.rotation, _rigidbody.velocity, _rigidbody.angularVelocity);
+            ReconcileData rd = new ReconcileData(transform.position, transform.rotation, _rigidbody.velocity);
             Reconciliation(rd, true);
         }
     }
@@ -406,6 +404,5 @@ public class Movement : NetworkBehaviour
         transform.position = rd.Position;
         transform.rotation = rd.Rotation;
         _rigidbody.velocity = rd.Velocity;
-        _rigidbody.angularVelocity = rd.AngularVelocity;
     }
 }

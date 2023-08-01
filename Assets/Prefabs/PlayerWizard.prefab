@@ -897,8 +897,8 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 4575299771133537037}
   _networkObjectCache: {fileID: 8227743508398521442}
   cam: {fileID: 8227743508193196329}
-  jumpForce: 650
-  secondJumpForce: 550
+  jumpForce: 675
+  secondJumpForce: 600
   wallJumpUpModifier: 1.9
   wallJumpModifier: 1.5
   coyoteTime: 0.15

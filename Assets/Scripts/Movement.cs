@@ -148,6 +148,8 @@ public class Movement : NetworkBehaviour
             Debug.Log(grounded.ToString() + canGroundJump.ToString() + jumpCharge.ToString());
             if (Input.GetButtonDown("Jump") && readyToJump && jumpCharge > 0)
             {
+                readyToJump = false;
+                Invoke(nameof(ResetJump), jumpCooldown);
                 jumping = true;
             }
             if (Input.GetKeyDown(KeyCode.Escape))
@@ -264,9 +266,7 @@ public class Movement : NetworkBehaviour
 
     private void Jump()
     {
-        if (!readyToJump) return;
-
-        readyToJump = false;
+        //readyToJump = false;
 
         if (canGroundJump)
         {
@@ -290,7 +290,7 @@ public class Movement : NetworkBehaviour
         else if (_rigidbody.velocity.y > 0)
             _rigidbody.velocity = new Vector3(vel.x, vel.y / 2, vel.z);
 
-        Invoke(nameof(ResetJump), jumpCooldown);
+        //Invoke(nameof(ResetJump), jumpCooldown);
 
     }
 

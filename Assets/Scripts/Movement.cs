@@ -1,6 +1,7 @@
 using FishNet;
 using FishNet.Object;
 using FishNet.Object.Prediction;
+using FishNet.Object.Synchronizing;
 using UnityEngine;
 using System;
 
@@ -93,6 +94,7 @@ public class Movement : NetworkBehaviour
     /// </summary>
     private bool jumping = false;
     private bool readyToJump = true;
+    [SyncVar]
     private int jumpCharge = 1;
     private float jumpCooldown = 0.2f;
     private bool canGroundJump;
@@ -148,8 +150,6 @@ public class Movement : NetworkBehaviour
             Debug.Log(grounded.ToString() + canGroundJump.ToString() + jumpCharge.ToString());
             if (Input.GetButtonDown("Jump") && readyToJump && jumpCharge > 0)
             {
-                readyToJump = false;
-                Invoke(nameof(ResetJump), jumpCooldown);
                 jumping = true;
             }
             if (Input.GetKeyDown(KeyCode.Escape))
@@ -266,7 +266,7 @@ public class Movement : NetworkBehaviour
 
     private void Jump()
     {
-        //readyToJump = false;
+        readyToJump = false;
 
         if (canGroundJump)
         {
@@ -280,7 +280,8 @@ public class Movement : NetworkBehaviour
         else
         {
             _rigidbody.AddForce(Vector2.up * secondJumpForce * 2f);
-            jumpCharge--;
+            if (base.IsServer)
+                jumpCharge--;
         }
 
         //If jumping while falling, reset y velocity.
@@ -290,7 +291,7 @@ public class Movement : NetworkBehaviour
         else if (_rigidbody.velocity.y > 0)
             _rigidbody.velocity = new Vector3(vel.x, vel.y / 2, vel.z);
 
-        //Invoke(nameof(ResetJump), jumpCooldown);
+        Invoke(nameof(ResetJump), jumpCooldown);
 
     }
 

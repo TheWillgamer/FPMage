@@ -145,7 +145,7 @@ public class Movement : NetworkBehaviour
     {
         if (base.IsOwner)
         {
-            Debug.Log(grounded.ToString() + canGroundJump.ToString() + jumpCharge.ToString());
+            Debug.Log(mag);
             if (Input.GetButtonDown("Jump") && readyToJump && jumpCharge > 0)
             {
                 jumping = true;

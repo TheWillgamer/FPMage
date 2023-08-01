@@ -238,7 +238,7 @@ public class Movement : NetworkBehaviour
         float xMag = mag.x, yMag = mag.y;
 
         //Counteract sliding and sloppy movement
-        CounterMovement(md.Horizontal, md.Vertical, mag);
+        //CounterMovement(md.Horizontal, md.Vertical, mag);
 
         //Set max speed
         float maxSpeed = this.maxSpeed;
@@ -361,6 +361,7 @@ public class Movement : NetworkBehaviour
 
     private void OnCollisionExit(Collision other)
     {
+        _rigidbody.drag = 0;
         grounded = false;
         Invoke(nameof(CancelCoyoteTime), coyoteTime);
     }
@@ -376,6 +377,7 @@ public class Movement : NetworkBehaviour
                 //FLOOR
                 if (IsFloor(normal))
                 {
+                    _rigidbody.drag = 5;
                     grounded = true;
                     canGroundJump = true;
                     normalVector = normal;
@@ -385,17 +387,6 @@ public class Movement : NetworkBehaviour
 
         }
     }
-
-    //private void OnTriggerStay(Collider other)
-    //{
-    //    grounded = true;
-    //    jumpCharge = 1;
-    //}
-
-    //private void OnTriggerExit(Collider other)
-    //{
-    //    grounded = false;
-    //}
 
     [Reconcile]
     private void Reconciliation(ReconcileData rd, bool asServer)

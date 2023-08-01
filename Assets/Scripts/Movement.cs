@@ -128,7 +128,7 @@ public class Movement : NetworkBehaviour
         InstanceFinder.TimeManager.OnTick += TimeManager_OnTick;
         InstanceFinder.TimeManager.OnPostTick += TimeManager_OnPostTick;
         disableMV = false;
-        disableCM = false;
+        disableCM = true;
         mag = new Vector2(0f, 0f);
     }
 
@@ -145,7 +145,6 @@ public class Movement : NetworkBehaviour
     {
         if (base.IsOwner)
         {
-            Debug.Log(mag);
             if (Input.GetButtonDown("Jump") && readyToJump && jumpCharge > 0)
             {
                 jumping = true;
@@ -269,15 +268,15 @@ public class Movement : NetworkBehaviour
         if (canGroundJump)
         {
             _rigidbody.velocity = new Vector3(_rigidbody.velocity.x, 0f, _rigidbody.velocity.z);
-            _rigidbody.AddForce(Vector2.up * jumpForce * wallJumpUpModifier);
-            if (Vector3.Angle(Vector2.up, normalVector) > 35)
+            _rigidbody.AddForce(Vector3.up * jumpForce * wallJumpUpModifier);
+            if (Vector3.Angle(Vector3.up, normalVector) > 35)
                 _rigidbody.AddForce(normalVector * jumpForce * wallJumpModifier);
             else
-                _rigidbody.AddForce(normalVector * jumpForce * (2f - wallJumpUpModifier));
+                _rigidbody.AddForce(Vector3.up * jumpForce * (2f - wallJumpUpModifier));
         }
         else
         {
-            _rigidbody.AddForce(Vector2.up * secondJumpForce * 2f);
+            _rigidbody.AddForce(Vector3.up * secondJumpForce * 2f);
             if (base.IsServer)
                 jumpCharge--;
         }
@@ -308,7 +307,7 @@ public class Movement : NetworkBehaviour
 
     private void CounterMovement(float x, float y, Vector2 mag)
     {
-        if (!grounded || disableCM) return;
+        if (!grounded || !readyToJump || disableCM) return;
         
         //Counter movement
         if (Math.Abs(mag.x) > threshold && Math.Abs(x) < 0.05f || (mag.x < -threshold && x > 0) || (mag.x > threshold && x < 0))

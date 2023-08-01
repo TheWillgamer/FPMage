@@ -97,7 +97,7 @@ public class Movement : NetworkBehaviour
     private float jumpCooldown = 0.2f;
     private bool canGroundJump;
 
-    private float threshold = 0.05f;
+    private float threshold = 0.01f;
     private Vector2 mag;
     #endregion
 
@@ -308,7 +308,7 @@ public class Movement : NetworkBehaviour
 
     private void CounterMovement(float x, float y, Vector2 mag)
     {
-        if (!grounded || !readyToJump || disableCM) return;
+        if (!grounded || disableCM) return;
         
         //Counter movement
         if (Math.Abs(mag.x) > threshold && Math.Abs(x) < 0.05f || (mag.x < -threshold && x > 0) || (mag.x > threshold && x < 0))

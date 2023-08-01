@@ -897,21 +897,22 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 4575299771133537037}
   _networkObjectCache: {fileID: 4575299771133537037}
   cam: {fileID: 8227743508193196329}
-  jumpForce: 900
+  jumpForce: 675
   secondJumpForce: 600
   wallJumpUpModifier: 1.9
   wallJumpModifier: 1.5
   coyoteTime: 0.15
-  moveSpeed: 200
+  moveSpeed: 120
   maxSpeed: 20
   grounded: 0
-  counterMovement: 8
-  airMovementMultiplier: 0.3
+  counterMovement: 0.06
+  airMovementMultiplier: 0.5
   maxSlopeAngle: 35
   h_dashing: 0
   dashModifier: 0
   dashDuration: 0
   disableMV: 0
+  disableCM: 0
 --- !u!54 &6675352565897393522
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1292,7 +1293,7 @@ MonoBehaviour:
     LocalScale: {x: 1, y: 1, z: 1}
   _isNetworked: 1
   _isGlobal: 0
-  _hasParentNetworkObjectAtEdit: 0
+  _hasParentNetworkObjectAtEdit: 1
   NetworkObserver: {fileID: 0}
   _prefabId: -1
   _scenePathHash: 0
@@ -1310,9 +1311,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 044753e13dd3b2d47b94005fb3cdbcbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 0
+  _componentIndexCache: 7
   _addedNetworkObject: {fileID: 8227743508398521442}
-  _networkObjectCache: {fileID: 3886377583055081699}
+  _networkObjectCache: {fileID: 8227743508398521442}
   sensitivity: 50
   playerLoc: {fileID: 4790489275998527890}
   playerSpawned: 0
@@ -1329,9 +1330,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2836e36774ca1c4bbbee976e17b649c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 1
+  _componentIndexCache: 8
   _addedNetworkObject: {fileID: 8227743508398521442}
-  _networkObjectCache: {fileID: 3886377583055081699}
+  _networkObjectCache: {fileID: 8227743508398521442}
   _synchronizeParent: 0
   _packing:
     Position: 0

@@ -264,6 +264,8 @@ public class Movement : NetworkBehaviour
 
     private void Jump()
     {
+        if (!readyToJump) return;
+
         readyToJump = false;
 
         if (canGroundJump)

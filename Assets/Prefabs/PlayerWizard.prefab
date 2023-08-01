@@ -809,7 +809,6 @@ GameObject:
   - component: {fileID: 3380425082291294957}
   - component: {fileID: 1392717416191338940}
   - component: {fileID: 2399677714019010807}
-  - component: {fileID: 1716380038372918809}
   - component: {fileID: 1120615853069163452}
   m_Layer: 0
   m_Name: Player
@@ -852,7 +851,7 @@ MonoBehaviour:
   - {fileID: 2133361338340739430}
   - {fileID: 3380425082291294957}
   - {fileID: 1392717416191338940}
-  - {fileID: 1716380038372918809}
+  - {fileID: 0}
   - {fileID: 1120615853069163452}
   - {fileID: 341256469546221778}
   SceneTransformProperties:
@@ -861,7 +860,7 @@ MonoBehaviour:
     LocalScale: {x: 1, y: 1, z: 1}
   _isNetworked: 1
   _isGlobal: 0
-  _hasParentNetworkObjectAtEdit: 0
+  _hasParentNetworkObjectAtEdit: 1
   NetworkObserver: {fileID: 0}
   _prefabId: -1
   _scenePathHash: 0
@@ -895,24 +894,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _componentIndexCache: 0
   _addedNetworkObject: {fileID: 4575299771133537037}
-  _networkObjectCache: {fileID: 4575299771133537037}
+  _networkObjectCache: {fileID: 8227743508398521442}
   cam: {fileID: 8227743508193196329}
-  jumpForce: 675
-  secondJumpForce: 600
+  jumpForce: 15
+  secondJumpForce: 11
   wallJumpUpModifier: 1.9
   wallJumpModifier: 1.5
   coyoteTime: 0.15
-  moveSpeed: 120
+  moveSpeed: 200
   maxSpeed: 20
   grounded: 0
-  counterMovement: 0.06
+  counterMovement: 8
   airMovementMultiplier: 0.5
   maxSlopeAngle: 35
   h_dashing: 0
   dashModifier: 0
   dashDuration: 0
   disableMV: 0
-  disableCM: 0
 --- !u!54 &6675352565897393522
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -943,7 +941,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _componentIndexCache: 1
   _addedNetworkObject: {fileID: 4575299771133537037}
-  _networkObjectCache: {fileID: 4575299771133537037}
+  _networkObjectCache: {fileID: 8227743508398521442}
   _synchronizeParent: 0
   _packing:
     Position: 1
@@ -985,7 +983,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _componentIndexCache: 2
   _addedNetworkObject: {fileID: 4575299771133537037}
-  _networkObjectCache: {fileID: 4575299771133537037}
+  _networkObjectCache: {fileID: 8227743508398521442}
   _graphicalObject: {fileID: 7928923847964066659}
   _smoothTicks: 1
   _durationType: 0
@@ -1011,7 +1009,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _componentIndexCache: 3
   _addedNetworkObject: {fileID: 8227743508398521442}
-  _networkObjectCache: {fileID: 4575299771133537037}
+  _networkObjectCache: {fileID: 8227743508398521442}
   hp: 0
   hpPercentage: {fileID: 4198358656015635291}
   dmgScreen: {fileID: 1733089372414222686}
@@ -1113,26 +1111,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &1716380038372918809
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6383162011746621452}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12934b279dfff45479a9a6212926df98, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _componentIndexCache: 4
-  _addedNetworkObject: {fileID: 4575299771133537037}
-  _networkObjectCache: {fileID: 4575299771133537037}
-  hp: 0
-  hpPercentage: {fileID: 0}
-  dmgScreen: {fileID: 0}
-  hit: {fileID: 0}
-  dead: {fileID: 0}
 --- !u!114 &1120615853069163452
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1147,7 +1125,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _componentIndexCache: 5
   _addedNetworkObject: {fileID: 4575299771133537037}
-  _networkObjectCache: {fileID: 4575299771133537037}
+  _networkObjectCache: {fileID: 8227743508398521442}
   fb: {fileID: 3637627862300843640, guid: ee6fbff84b0264d4894169a7613053d2, type: 3}
   proj_spawn: {fileID: 5682205087739296379}
   proj_force: 100
@@ -1236,7 +1214,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _componentIndexCache: 6
   _addedNetworkObject: {fileID: 8227743508398521442}
-  _networkObjectCache: {fileID: 4575299771133537037}
+  _networkObjectCache: {fileID: 8227743508398521442}
 --- !u!1 &8227743508193196330
 GameObject:
   m_ObjectHideFlags: 0
@@ -1412,7 +1390,7 @@ MonoBehaviour:
   - {fileID: 2133361338340739430}
   - {fileID: 3380425082291294957}
   - {fileID: 1392717416191338940}
-  - {fileID: 1716380038372918809}
+  - {fileID: 0}
   - {fileID: 1120615853069163452}
   - {fileID: 341256469546221778}
   - {fileID: 8227743508193196328}

@@ -109,7 +109,7 @@ public class Movement : NetworkBehaviour
     public float dashDuration = 0f;         // duration of dash
 
     public bool disableMV;      //Disable movement
-    public bool disableCM;      //Disable counter-movement
+    //public bool disableCM;      //Disable counter-movement
 
     private bool paused;
 
@@ -128,7 +128,7 @@ public class Movement : NetworkBehaviour
         InstanceFinder.TimeManager.OnTick += TimeManager_OnTick;
         InstanceFinder.TimeManager.OnPostTick += TimeManager_OnPostTick;
         disableMV = false;
-        disableCM = true;
+        //disableCM = true;
         mag = new Vector2(0f, 0f);
     }
 
@@ -224,7 +224,7 @@ public class Movement : NetworkBehaviour
                 _rigidbody.AddForce(transform.up * dashModifier * 2/3);
             else
                 _rigidbody.AddForce((transform.forward * md.Vertical + transform.right * md.Horizontal).normalized * dashModifier);
-            disableCM = true;
+            //disableCM = true;
             Invoke(nameof(EndDash), dashDuration);
         }
 
@@ -267,6 +267,7 @@ public class Movement : NetworkBehaviour
 
         if (canGroundJump)
         {
+            _rigidbody.drag = 0;
             _rigidbody.velocity = new Vector3(_rigidbody.velocity.x, 0f, _rigidbody.velocity.z);
             _rigidbody.AddForce(Vector3.up * jumpForce * wallJumpUpModifier);
             if (Vector3.Angle(Vector3.up, normalVector) > 35)
@@ -297,35 +298,12 @@ public class Movement : NetworkBehaviour
     {
         Vector3 vel = _rigidbody.velocity;
         _rigidbody.velocity = new Vector3(vel.x/3, vel.y/3, vel.z/3);
-        disableCM = false;
+        //disableCM = false;
     }
 
     private void ResetJump()
     {
         readyToJump = true;
-    }
-
-    private void CounterMovement(float x, float y, Vector2 mag)
-    {
-        if (!grounded || !readyToJump || disableCM) return;
-        
-        //Counter movement
-        if (Math.Abs(mag.x) > threshold && Math.Abs(x) < 0.05f || (mag.x < -threshold && x > 0) || (mag.x > threshold && x < 0))
-        {
-            _rigidbody.AddForce(moveSpeed * transform.right * -mag.x * counterMovement);
-        }
-        if (Math.Abs(mag.y) > threshold && Math.Abs(y) < 0.05f || (mag.y < -threshold && y > 0) || (mag.y > threshold && y < 0))
-        {
-            _rigidbody.AddForce(moveSpeed * transform.forward * -mag.y * counterMovement);
-        }
-
-        //Limit diagonal running. This will also cause a full stop if sliding fast and un-crouching, so not optimal.
-        if (Mathf.Sqrt((Mathf.Pow(_rigidbody.velocity.x, 2) + Mathf.Pow(_rigidbody.velocity.z, 2))) > maxSpeed)
-        {
-            float fallspeed = _rigidbody.velocity.y;
-            Vector3 n = _rigidbody.velocity.normalized * maxSpeed;
-            _rigidbody.velocity = new Vector3(n.x, fallspeed, n.z);
-        }
     }
 
     // <summary>
@@ -359,12 +337,14 @@ public class Movement : NetworkBehaviour
         canGroundJump = false;
     }
 
-    private void OnCollisionExit(Collision other)
-    {
-        _rigidbody.drag = 0;
-        grounded = false;
-        Invoke(nameof(CancelCoyoteTime), coyoteTime);
-    }
+    //private void OnCollisionExit(Collision other)
+    //{
+    //    _rigidbody.drag = 0;
+    //    grounded = false;
+    //    Invoke(nameof(CancelCoyoteTime), coyoteTime);
+    //}
+
+    private bool cancellingGrounded;
 
     // Allows player to jump away from wall
     private void OnCollisionStay(Collision other)
@@ -377,15 +357,30 @@ public class Movement : NetworkBehaviour
                 //FLOOR
                 if (IsFloor(normal))
                 {
-                    _rigidbody.drag = 5;
+                    _rigidbody.drag = counterMovement;
                     grounded = true;
                     canGroundJump = true;
                     normalVector = normal;
                     jumpCharge = 1;
+                    cancellingGrounded = false;
+                    CancelInvoke(nameof(StopGrounded));
                 }
             }
-
         }
+
+        float delay = 3f;
+        if (!cancellingGrounded)
+        {
+            cancellingGrounded = true;
+            Invoke(nameof(StopGrounded), (float)TimeManager.TickDelta * delay);
+        }
+    }
+
+    private void StopGrounded()
+    {
+        _rigidbody.drag = 0;
+        grounded = false;
+        Invoke(nameof(CancelCoyoteTime), coyoteTime);
     }
 
     [Reconcile]
@@ -395,4 +390,27 @@ public class Movement : NetworkBehaviour
         transform.rotation = rd.Rotation;
         _rigidbody.velocity = rd.Velocity;
     }
+
+    //private void CounterMovement(float x, float y, Vector2 mag)
+    //{
+    //    if (!grounded || !readyToJump || disableCM) return;
+
+    //    //Counter movement
+    //    if (Math.Abs(mag.x) > threshold && Math.Abs(x) < 0.05f || (mag.x < -threshold && x > 0) || (mag.x > threshold && x < 0))
+    //    {
+    //        _rigidbody.AddForce(moveSpeed * transform.right * -mag.x * counterMovement);
+    //    }
+    //    if (Math.Abs(mag.y) > threshold && Math.Abs(y) < 0.05f || (mag.y < -threshold && y > 0) || (mag.y > threshold && y < 0))
+    //    {
+    //        _rigidbody.AddForce(moveSpeed * transform.forward * -mag.y * counterMovement);
+    //    }
+
+    //    //Limit diagonal running. This will also cause a full stop if sliding fast and un-crouching, so not optimal.
+    //    if (Mathf.Sqrt((Mathf.Pow(_rigidbody.velocity.x, 2) + Mathf.Pow(_rigidbody.velocity.z, 2))) > maxSpeed)
+    //    {
+    //        float fallspeed = _rigidbody.velocity.y;
+    //        Vector3 n = _rigidbody.velocity.normalized * maxSpeed;
+    //        _rigidbody.velocity = new Vector3(n.x, fallspeed, n.z);
+    //    }
+    //}
 }

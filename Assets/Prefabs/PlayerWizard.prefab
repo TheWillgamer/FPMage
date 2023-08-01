@@ -897,22 +897,21 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 4575299771133537037}
   _networkObjectCache: {fileID: 4575299771133537037}
   cam: {fileID: 8227743508193196329}
-  jumpForce: 675
+  jumpForce: 900
   secondJumpForce: 600
   wallJumpUpModifier: 1.9
   wallJumpModifier: 1.5
   coyoteTime: 0.15
-  moveSpeed: 130
+  moveSpeed: 200
   maxSpeed: 20
   grounded: 0
-  counterMovement: 0.08
-  airMovementMultiplier: 0.5
+  counterMovement: 8
+  airMovementMultiplier: 0.3
   maxSlopeAngle: 35
   h_dashing: 0
   dashModifier: 0
   dashDuration: 0
   disableMV: 0
-  disableCM: 0
 --- !u!54 &6675352565897393522
 Rigidbody:
   m_ObjectHideFlags: 0

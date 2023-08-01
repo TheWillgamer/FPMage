@@ -46,7 +46,7 @@ public class PlayerHealth : NetworkBehaviour
     // Knocks back the player in a given direction: kb_growth determines how much percentage determines the knockback amount
     public void Knockback(Vector3 direction, float base_kb, float kb_growth)
     {
-        mv.disableCM = true;
+        //mv.disableCM = true;
         rb.AddForce(direction * (((hp / kb_growth) + 1) * base_kb), ForceMode.Impulse);
         Invoke("EnableCM", .2f);
     }
@@ -89,6 +89,6 @@ public class PlayerHealth : NetworkBehaviour
 
     private void EnableCM()
     {
-        mv.disableCM = false;
+        //mv.disableCM = false;
     }
 }

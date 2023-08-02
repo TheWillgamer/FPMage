@@ -80,7 +80,7 @@ public class a_fireball : NetworkBehaviour
         base.Spawn(spawned);
 
         Projectile proj = spawned.GetComponent<Projectile>();
-        proj.Initialize(base.TimeManager.GetPreciseTick(TickType.Tick), proj_spawn.forward * proj_force, base.Owner);
+        proj.Initialize(base.TimeManager.GetPreciseTick(TickType.Tick), proj_spawn.forward * proj_force, base.Owner.ClientId);
     }
 
     private void UpdateUI()

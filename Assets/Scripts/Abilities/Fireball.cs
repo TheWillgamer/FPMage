@@ -86,7 +86,7 @@ public class Fireball : NetworkBehaviour, Projectile
 
         if (Physics.SphereCast(transform.position, _colliderRadius, transform.TransformDirection(Vector3.forward), out hit, traceDistance) && !isExploding)
         {
-            if (hit.transform.tag == "Player" && hit.transform.parent.GetComponent<NetworkObject>().Owner != base.Owner)
+            if (hit.transform.tag == "Player")
             {
                 PlayerHealth ph = hit.transform.gameObject.GetComponent<PlayerHealth>();
                 ph.TakeDamage(damage);

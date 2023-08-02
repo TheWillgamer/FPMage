@@ -78,7 +78,7 @@ public class a_fireball : NetworkBehaviour
         //Physics.IgnoreCollision(spawned.GetComponent<Collider>(), GetComponent<Collider>());
 
         //UnitySceneManager.MoveGameObjectToScene(spawned.gameObject, gameObject.scene);
-        base.Spawn(spawned, base.Owner);
+        base.Spawn(spawned);
 
         Projectile proj = spawned.GetComponent<Projectile>();
         proj.Initialize(base.TimeManager.GetPreciseTick(TickType.Tick), proj_spawn.forward * proj_force);

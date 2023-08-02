@@ -8,5 +8,5 @@ public interface Projectile
     /// Initializes projectile with force.
     /// </summary>
     /// <param name="force"></param>
-    void Initialize(PreciseTick pt, Vector3 force, int conn);
+    void Initialize(PreciseTick pt, Vector3 force);
 }

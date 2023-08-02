@@ -11,6 +11,7 @@ public class Fireball : NetworkBehaviour, Projectile
     [SerializeField] private float knockback_amount = 1f;
     [SerializeField] private float knockback_growth = 20f;
     private Vector3 velocity = Vector3.zero;
+    private int owner;
     [SerializeField] private GameObject explosion;
     private float _colliderRadius;
     private bool isExploding = false;
@@ -57,11 +58,12 @@ public class Fireball : NetworkBehaviour, Projectile
     }
 
     [Server(Logging = LoggingType.Off)]
-    public virtual void Initialize(PreciseTick pt, Vector3 force)
+    public virtual void Initialize(PreciseTick pt, Vector3 force, int conn)
     {
         velocity = force;
         SphereCollider sc = GetComponent<SphereCollider>();
         _colliderRadius = sc.radius;
+        owner = conn;
 
         //Move ellapsed time from when grenade was 'thrown' on thrower.
         float timePassed = (float)base.TimeManager.TimePassed(pt.Tick);
@@ -87,7 +89,7 @@ public class Fireball : NetworkBehaviour, Projectile
 
         if (Physics.SphereCast(transform.position, _colliderRadius, transform.TransformDirection(Vector3.forward), out hit, traceDistance) && !isExploding)
         {
-            if (hit.transform.tag == "Player")// && hit.collider.GetComponent<NetworkObject>().Owner.ClientId != owner)
+            if (hit.transform.tag == "Player" && hit.collider.GetComponent<NetworkObject>().Owner.ClientId != owner)
             {
                 PlayerHealth ph = hit.transform.gameObject.GetComponent<PlayerHealth>();
                 ph.TakeDamage(damage);

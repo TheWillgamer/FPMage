@@ -143,7 +143,7 @@ public class AbilityManager : NetworkBehaviour
         base.Spawn(spawned);
         
         Projectile proj = spawned.GetComponent<Projectile>();
-        proj.Initialize(base.TimeManager.GetPreciseTick(TickType.Tick), proj_spawn.forward * proj_force);
+        proj.Initialize(base.TimeManager.GetPreciseTick(TickType.Tick), proj_spawn.forward * proj_force, base.Owner.ClientId);
     }
 
     [ServerRpc]

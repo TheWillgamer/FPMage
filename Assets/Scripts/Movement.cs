@@ -20,12 +20,14 @@ public class Movement : NetworkBehaviour
         public float Horizontal;
         public float Vertical;
         public bool Hdash;
-        public MoveData(bool jump, float horizontal, float vertical, bool hdash)
+        public bool Mdash;
+        public MoveData(bool jump, float horizontal, float vertical, bool hdash, bool mdash)
         {
             Jump = jump;
             Horizontal = horizontal;
             Vertical = vertical;
             Hdash = hdash;
+            Mdash = mdash;
         }
     }
     public struct ReconcileData
@@ -104,11 +106,14 @@ public class Movement : NetworkBehaviour
     /// Dashing
     /// </summary>
     public bool h_dashing = false;          // tells movement system to dash horizontally
+    public bool m_dashing = false;          // tells movement system to dash towards the mouse
     public float dashModifier = 0f;         // speed of dash
     public float dashDuration = 0f;         // duration of dash
+    public bool gravity;
 
     public bool disableMV;      //Disable movement
     //public bool disableCM;      //Disable counter-movement
+    private float _colliderRadius;
 
     private bool paused;
 
@@ -127,8 +132,12 @@ public class Movement : NetworkBehaviour
         InstanceFinder.TimeManager.OnTick += TimeManager_OnTick;
         InstanceFinder.TimeManager.OnPostTick += TimeManager_OnPostTick;
         disableMV = false;
+        gravity = true;
         //disableCM = true;
         mag = new Vector2(0f, 0f);
+
+        CapsuleCollider cc = GetComponent<CapsuleCollider>();
+        _colliderRadius = cc.radius;
     }
 
     private void OnDestroy()
@@ -199,12 +208,13 @@ public class Movement : NetworkBehaviour
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
 
-        if (horizontal == 0 && vertical == 0 && !jumping && !h_dashing)
+        if (horizontal == 0 && vertical == 0 && !jumping && !h_dashing && !m_dashing)
             return;
 
-        md = new MoveData(jumping, horizontal, vertical, h_dashing);
+        md = new MoveData(jumping, horizontal, vertical, h_dashing, m_dashing);
         jumping = false;
         h_dashing = false;
+        m_dashing = false;
     }
 
     [Replicate]
@@ -220,18 +230,25 @@ public class Movement : NetworkBehaviour
         {
             _rigidbody.velocity = new Vector3(0, 0, 0);
             if (md.Horizontal == 0 && md.Vertical == 0)
-                _rigidbody.AddForce(transform.up * dashModifier * 2 / 3);
+                _rigidbody.AddForce(transform.forward * dashModifier, ForceMode.Impulse);
             else
-                _rigidbody.AddForce((transform.forward * md.Vertical + transform.right * md.Horizontal).normalized * dashModifier);
-            //disableCM = true;
+                _rigidbody.AddForce((transform.forward * md.Vertical + transform.right * md.Horizontal).normalized * dashModifier, ForceMode.Impulse);
             Invoke(nameof(EndDash), dashDuration);
         }
 
-        if (md.Jump)
+        if (md.Mdash)
+        {
+            _rigidbody.velocity = new Vector3(0, 0, 0);
+            _rigidbody.AddForce(cam.forward * dashModifier, ForceMode.Impulse);
+            Invoke(nameof(EndDash), dashDuration);
+        }
+
+        if (md.Jump && !disableMV)
             Jump();
 
         //Extra gravity
-        _rigidbody.AddForce(Vector3.down * 30);
+        if (gravity)
+            _rigidbody.AddForce(Vector3.down * 40);
 
         //Find actual velocity relative to where player is looking
         float xMag = mag.x, yMag = mag.y;
@@ -258,6 +275,29 @@ public class Movement : NetworkBehaviour
         //Apply forces to move player
         _rigidbody.AddForce(transform.forward * md.Vertical * moveSpeed * multiplier);
         _rigidbody.AddForce(transform.right * md.Horizontal * moveSpeed * multiplier);
+
+        WallCheck();
+    }
+
+    private void WallCheck()
+    {
+        Vector3 velocity = _rigidbody.velocity;
+        if (velocity.magnitude < 80f)
+            return;
+
+        //Determine how far object should travel this frame.
+        float travelDistance = (velocity.magnitude * Time.deltaTime);
+        //Set trace distance to be travel distance + collider radius.
+        float traceDistance = travelDistance + _colliderRadius;
+
+        // only checks for walls
+        int layerMask = 1 << 6;
+        RaycastHit hit;
+        // Does the ray intersect any walls
+        if (Physics.SphereCast(transform.position, _colliderRadius, velocity, out hit, traceDistance, layerMask))
+        {
+            _rigidbody.velocity = _rigidbody.velocity.normalized * 80f;
+        }
     }
 
     private void Jump()
@@ -296,7 +336,8 @@ public class Movement : NetworkBehaviour
     {
         Vector3 vel = _rigidbody.velocity;
         _rigidbody.velocity = new Vector3(vel.x / 3, vel.y / 3, vel.z / 3);
-        //disableCM = false;
+        disableMV = false;
+        gravity = true;
     }
 
     private void ResetJump()

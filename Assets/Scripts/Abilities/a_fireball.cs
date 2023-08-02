@@ -1,10 +1,9 @@
 using FishNet.Object;
-using FishNet.Managing.Logging;
 using FishNet.Managing.Timing;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
+//using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
 
 public class a_fireball : NetworkBehaviour
 {
@@ -81,7 +80,7 @@ public class a_fireball : NetworkBehaviour
         base.Spawn(spawned);
 
         Projectile proj = spawned.GetComponent<Projectile>();
-        proj.Initialize(base.TimeManager.GetPreciseTick(TickType.Tick), proj_spawn.forward * proj_force);
+        proj.Initialize(base.TimeManager.GetPreciseTick(TickType.Tick), proj_spawn.forward * proj_force, base.Owner);
     }
 
     private void UpdateUI()

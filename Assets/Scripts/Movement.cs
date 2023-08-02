@@ -59,8 +59,7 @@ public class Movement : NetworkBehaviour
     [SerializeField]
     private float moveSpeed = 4500f;
     public float maxSpeed = 22;
-    [SerializeField]
-    private bool grounded;
+    public bool grounded;
     [SerializeField]
     private float counterMovement = 0.175f;
     [SerializeField]

@@ -75,10 +75,10 @@ public class a_fireball : NetworkBehaviour
     {
         playShootSound();
         GameObject spawned = Instantiate(fb, proj_spawn.position, proj_spawn.rotation);
-        Physics.IgnoreCollision(spawned.GetComponent<Collider>(), GetComponent<Collider>());
+        //Physics.IgnoreCollision(spawned.GetComponent<Collider>(), GetComponent<Collider>());
 
         //UnitySceneManager.MoveGameObjectToScene(spawned.gameObject, gameObject.scene);
-        base.Spawn(spawned);
+        base.Spawn(spawned, base.Owner);
 
         Projectile proj = spawned.GetComponent<Projectile>();
         proj.Initialize(base.TimeManager.GetPreciseTick(TickType.Tick), proj_spawn.forward * proj_force);

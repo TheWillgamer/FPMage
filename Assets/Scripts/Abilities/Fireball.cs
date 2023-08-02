@@ -86,19 +86,19 @@ public class Fireball : NetworkBehaviour, Projectile
 
         if (Physics.SphereCast(transform.position, _colliderRadius, transform.TransformDirection(Vector3.forward), out hit, traceDistance) && !isExploding)
         {
-            if (hit.transform.tag == "Player")
+            if (hit.transform.tag == "Player" && hit.transform.parent.GetComponent<NetworkObject>().Owner != base.Owner)
             {
                 PlayerHealth ph = hit.transform.gameObject.GetComponent<PlayerHealth>();
                 ph.TakeDamage(damage);
-                ph.Knockback(Vector3.ProjectOnPlane(transform.forward, Vector3.up).normalized + Vector3.up / 4, knockback_amount, knockback_growth);
-                explode();
+                ph.Knockback(transform.TransformDirection(Vector3.forward), knockback_amount, knockback_growth);
+                explode(transform.position);
                 isExploding = true;
             }
         }
 
         if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, traceDistance, layerMask) && !isExploding)
         {
-            explode();
+            explode(hit.point);
             isExploding = true;
         }
 
@@ -106,11 +106,11 @@ public class Fireball : NetworkBehaviour, Projectile
     }
 
     [Server(Logging = LoggingType.Off)]
-    private void explode()
+    private void explode(Vector3 pos)
     {
         if (base.IsServer)
         {
-            ObserversSpawnExplodePrefab();
+            ObserversSpawnExplodePrefab(pos);
 
             /* If server only then call destroy now. It will follow in order
              * so clients will receive it after they get the RPC. 
@@ -124,9 +124,9 @@ public class Fireball : NetworkBehaviour, Projectile
     /// Tells clients to spawn the detonate prefab.
     /// </summary>
     [ObserversRpc]
-    private void ObserversSpawnExplodePrefab()
+    private void ObserversSpawnExplodePrefab(Vector3 pos)
     {
-        SpawnDetonatePrefab();
+        SpawnDetonatePrefab(pos);
         //If also client host destroy here.
         if (base.IsServer)
             base.Despawn();
@@ -136,9 +136,9 @@ public class Fireball : NetworkBehaviour, Projectile
     /// Spawns the detonate prefab.
     /// </summary>
     [Client(Logging = LoggingType.Off)]
-    private void SpawnDetonatePrefab()
+    private void SpawnDetonatePrefab(Vector3 pos)
     {
-        GameObject spawned = Instantiate(explosion, transform.position, transform.rotation);
+        GameObject spawned = Instantiate(explosion, pos, transform.rotation);
         UnitySceneManager.MoveGameObjectToScene(spawned.gameObject, gameObject.scene);
     }
 }

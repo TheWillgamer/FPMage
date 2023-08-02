@@ -851,7 +851,6 @@ MonoBehaviour:
   - {fileID: 2133361338340739430}
   - {fileID: 3380425082291294957}
   - {fileID: 1392717416191338940}
-  - {fileID: 0}
   - {fileID: 1120615853069163452}
   - {fileID: 341256469546221778}
   SceneTransformProperties:
@@ -860,7 +859,7 @@ MonoBehaviour:
     LocalScale: {x: 1, y: 1, z: 1}
   _isNetworked: 1
   _isGlobal: 0
-  _hasParentNetworkObjectAtEdit: 1
+  _hasParentNetworkObjectAtEdit: 0
   NetworkObserver: {fileID: 0}
   _prefabId: -1
   _scenePathHash: 0
@@ -894,7 +893,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _componentIndexCache: 0
   _addedNetworkObject: {fileID: 4575299771133537037}
-  _networkObjectCache: {fileID: 8227743508398521442}
+  _networkObjectCache: {fileID: 4575299771133537037}
   cam: {fileID: 8227743508193196329}
   jumpForce: 15
   secondJumpForce: 11
@@ -941,7 +940,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _componentIndexCache: 1
   _addedNetworkObject: {fileID: 4575299771133537037}
-  _networkObjectCache: {fileID: 8227743508398521442}
+  _networkObjectCache: {fileID: 4575299771133537037}
   _synchronizeParent: 0
   _packing:
     Position: 1
@@ -983,7 +982,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _componentIndexCache: 2
   _addedNetworkObject: {fileID: 4575299771133537037}
-  _networkObjectCache: {fileID: 8227743508398521442}
+  _networkObjectCache: {fileID: 4575299771133537037}
   _graphicalObject: {fileID: 7928923847964066659}
   _smoothTicks: 1
   _durationType: 0
@@ -1009,7 +1008,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _componentIndexCache: 3
   _addedNetworkObject: {fileID: 8227743508398521442}
-  _networkObjectCache: {fileID: 8227743508398521442}
+  _networkObjectCache: {fileID: 4575299771133537037}
   hp: 0
   hpPercentage: {fileID: 4198358656015635291}
   dmgScreen: {fileID: 1733089372414222686}
@@ -1123,13 +1122,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f4f5ff271cf6414399a4b22fdf5ac44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 5
+  _componentIndexCache: 4
   _addedNetworkObject: {fileID: 4575299771133537037}
-  _networkObjectCache: {fileID: 8227743508398521442}
+  _networkObjectCache: {fileID: 4575299771133537037}
   fb: {fileID: 3637627862300843640, guid: ee6fbff84b0264d4894169a7613053d2, type: 3}
   proj_spawn: {fileID: 5682205087739296379}
-  proj_force: 100
-  fb_cd: 2
+  proj_force: 120
+  fb_cd: 1.6
   cdRepresentation: {fileID: 5260410080079055999}
   Fireball:
   - {fileID: 89644526380825116}
@@ -1212,9 +1211,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e67d99d202131714dae1e2d34c288fad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 6
+  _componentIndexCache: 5
   _addedNetworkObject: {fileID: 8227743508398521442}
-  _networkObjectCache: {fileID: 8227743508398521442}
+  _networkObjectCache: {fileID: 4575299771133537037}
 --- !u!1 &8227743508193196330
 GameObject:
   m_ObjectHideFlags: 0
@@ -1271,7 +1270,7 @@ MonoBehaviour:
     LocalScale: {x: 1, y: 1, z: 1}
   _isNetworked: 1
   _isGlobal: 0
-  _hasParentNetworkObjectAtEdit: 1
+  _hasParentNetworkObjectAtEdit: 0
   NetworkObserver: {fileID: 0}
   _prefabId: -1
   _scenePathHash: 0
@@ -1289,9 +1288,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 044753e13dd3b2d47b94005fb3cdbcbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 7
+  _componentIndexCache: 0
   _addedNetworkObject: {fileID: 8227743508398521442}
-  _networkObjectCache: {fileID: 8227743508398521442}
+  _networkObjectCache: {fileID: 3886377583055081699}
   sensitivity: 50
   playerLoc: {fileID: 4790489275998527890}
   playerSpawned: 0
@@ -1308,9 +1307,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2836e36774ca1c4bbbee976e17b649c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 8
+  _componentIndexCache: 1
   _addedNetworkObject: {fileID: 8227743508398521442}
-  _networkObjectCache: {fileID: 8227743508398521442}
+  _networkObjectCache: {fileID: 3886377583055081699}
   _synchronizeParent: 0
   _packing:
     Position: 0
@@ -1390,7 +1389,6 @@ MonoBehaviour:
   - {fileID: 2133361338340739430}
   - {fileID: 3380425082291294957}
   - {fileID: 1392717416191338940}
-  - {fileID: 0}
   - {fileID: 1120615853069163452}
   - {fileID: 341256469546221778}
   - {fileID: 8227743508193196328}

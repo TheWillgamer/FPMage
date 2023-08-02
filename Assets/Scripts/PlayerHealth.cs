@@ -46,9 +46,15 @@ public class PlayerHealth : NetworkBehaviour
     // Knocks back the player in a given direction: kb_growth determines how much percentage determines the knockback amount
     public void Knockback(Vector3 direction, float base_kb, float kb_growth)
     {
-        //mv.disableCM = true;
-        rb.AddForce(direction * (((hp / kb_growth) + 1) * base_kb), ForceMode.Impulse);
-        Invoke("EnableCM", .2f);
+        rb.AddForce(Vector3.up * base_kb, ForceMode.Impulse);
+        if (mv.grounded && direction.y < 0.1f)
+        {
+            Vector3 newDir = new Vector3(direction.x, 0f, direction.z);
+            float force = (((hp / kb_growth) + 1) * base_kb);
+            rb.AddForce((newDir.normalized/2f + newDir/2f) * force, ForceMode.Impulse);
+        }
+        else
+            rb.AddForce(direction * (((hp / kb_growth) + 1) * base_kb), ForceMode.Impulse);
     }
 
     [ObserversRpc]

@@ -9719,7 +9719,7 @@ MonoBehaviour:
   _networkObjectCache: {fileID: 3637627862300843641}
   damage: 15
   knockback_amount: 10
-  knockback_growth: 80
+  knockback_growth: 10
   explosion: {fileID: 2916528441304133865, guid: 96f92734b9b44ec459032d2511f619b2, type: 3}
 --- !u!114 &2164252731766674324
 MonoBehaviour:

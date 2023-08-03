@@ -44,29 +44,24 @@ public class a_flamedash : NetworkBehaviour
 
     private void Update()
     {
-        if (Input.GetButtonDown("Fire3"))
+        if (!IsOwner) return;
+
+        if (Input.GetButtonDown("Fire3") && Time.time > dash_offcd)
         {
-            if (IsOwner && Time.time > dash_offcd)
+            setDashing();
+            Invoke("startDashingServer", dashDelay);
+            if (!IsServer)
             {
-                setDashing();
-                Invoke("startDashingServer", dashDelay);
-                if (!IsServer)
-                {
-                    mv.disableMV = true;
-                    mv.gravity = false;
-                    mv.dashModifier = dashForce;
-                    mv.dashDuration = dashDur;
-                    dashStarted = false;
-                    StartCoroutine(SlowDown());
-                    Invoke("startDashing", dashDelay);
-                }
-                dash_offcd = Time.time + dash_cd;
+                mv.disableMV = true;
+                mv.gravity = false;
+                mv.dashModifier = dashForce;
+                mv.dashDuration = dashDur;
+                dashStarted = false;
+                StartCoroutine(SlowDown());
+                Invoke("startDashing", dashDelay);
             }
         }
-        if (IsOwner)
-        {
-            UpdateUI();
-        }
+        UpdateUI();
     }
 
     [ObserversRpc]
@@ -90,6 +85,7 @@ public class a_flamedash : NetworkBehaviour
     {
         dashStarted = true;
         mv.m_dashing = true;
+        dash_offcd = Time.time + dash_cd;
     }
 
     [ServerRpc]
@@ -97,6 +93,7 @@ public class a_flamedash : NetworkBehaviour
     {
         dashStarted = true;
         mv.m_dashing = true;
+        dash_offcd = Time.time + dash_cd;
     }
 
     private IEnumerator SlowDown()

@@ -3,9 +3,8 @@ using FishNet.Connection;
 using FishNet.Managing.Logging;
 using FishNet.Managing.Timing;
 using UnityEngine;
-//using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
 
-public class Fireball : NetworkBehaviour, Projectile
+public class Meteor : NetworkBehaviour, Projectile
 {
     [SerializeField] private int damage = 15;
     [SerializeField] private float knockback_amount = 1f;

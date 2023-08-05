@@ -5,57 +5,56 @@ using UnityEngine.UI;
 using System.Collections;
 //using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
 
-public class a_fireball : NetworkBehaviour
+public class a_meteor : NetworkBehaviour
 {
-    [SerializeField] private GameObject fb;
+    [SerializeField] private GameObject mt;
     [SerializeField] private Transform proj_spawn;
     [SerializeField] private float proj_force;
+    [SerializeField] private float chargeTime;
     AudioSource m_shootingSound;
 
     #region cooldowns
-    //Fireball
-    private int fb_charges;
-    [SerializeField] private float fb_cd;
-    private float fb_offcd;
+    //Meteor
+    [SerializeField] private float mt_cd;
+    private float mt_offcd;
+    private bool chargeStarted;
+    private float chargeReady;
     #endregion
 
     #region UI
     [SerializeField] GameObject cdRepresentation;
-    [SerializeField] Image[] Fireball;
+    [SerializeField] Image Meteor;
     #endregion
 
     public override void OnStartClient()
     {
         base.OnStartClient();
-        if (IsOwner)
-            cdRepresentation.SetActive(true);
+        //if (IsOwner)
+            //cdRepresentation.SetActive(true);
     }
 
     void Start()
     {
         m_shootingSound = GetComponent<AudioSource>();
-        fb_charges = 3;
-        fb_offcd = Time.deltaTime;
+        mt_offcd = Time.deltaTime;
+        chargeStarted = false;
     }
 
     private void Update()
     {
-        if (!IsOwner) return;
-
-        if (Input.GetButtonDown("Fire1") && fb_charges > 0)
+        if (Input.GetButtonDown("Fire2"))
         {
-            shootFireball();
-            fb_charges--;
-            if (fb_charges == 2)
+            if (IsOwner && Time.time > mt_offcd)
             {
-                fb_offcd = Time.time + fb_cd;
+                chargeStarted = true;
+                chargeReady = Time.time + chargeTime;
             }
         }
-
-        if (fb_charges < 3 && Time.time > fb_offcd)
+        if (chargeStarted && Time.time > chargeReady)
         {
-            fb_charges += 1;
-            fb_offcd = Time.time + fb_cd;
+            shootMeteor();
+            chargeStarted = false;
+            mt_offcd = Time.time + mt_cd;
         }
         UpdateUI();
     }
@@ -67,10 +66,10 @@ public class a_fireball : NetworkBehaviour
     }
 
     [ServerRpc]
-    private void shootFireball()
+    private void shootMeteor()
     {
         playShootSound();
-        GameObject spawned = Instantiate(fb, proj_spawn.position, proj_spawn.rotation);
+        GameObject spawned = Instantiate(mt, proj_spawn.position, proj_spawn.rotation);
         //Physics.IgnoreCollision(spawned.GetComponent<Collider>(), GetComponent<Collider>());
 
         //UnitySceneManager.MoveGameObjectToScene(spawned.gameObject, gameObject.scene);
@@ -82,9 +81,6 @@ public class a_fireball : NetworkBehaviour
 
     private void UpdateUI()
     {
-        for (int i = 0; i < 3; i++)
-        {
-            Fireball[i].gameObject.SetActive(fb_charges > i);
-        }
+
     }
 }

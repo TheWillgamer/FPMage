@@ -77,7 +77,7 @@ public class Fireball : NetworkBehaviour, Projectile
     private void Move(float deltaTime)
     {
         //Determine how far object should travel this frame.
-        float travelDistance = (velocity.magnitude * Time.deltaTime);
+        float travelDistance = (velocity.magnitude * deltaTime);
         //Set trace distance to be travel distance + collider radius.
         float traceDistance = travelDistance + _colliderRadius;
 
@@ -89,7 +89,7 @@ public class Fireball : NetworkBehaviour, Projectile
 
         if (Physics.SphereCast(transform.position, _colliderRadius, transform.TransformDirection(Vector3.forward), out hit, traceDistance) && !isExploding)
         {
-            if (hit.transform.tag == "Player" && hit.collider.GetComponent<NetworkObject>().Owner.ClientId != owner)
+            if (hit.transform.tag == "Player" && hit.transform.parent.GetComponent<NetworkObject>().Owner.ClientId != owner)
             {
                 PlayerHealth ph = hit.transform.gameObject.GetComponent<PlayerHealth>();
                 ph.TakeDamage(damage);
@@ -105,7 +105,7 @@ public class Fireball : NetworkBehaviour, Projectile
             isExploding = true;
         }
 
-        transform.position += (velocity * Time.deltaTime);
+        transform.position += (velocity * deltaTime);
     }
 
     [Server(Logging = LoggingType.Off)]

@@ -6,12 +6,10 @@ using UnityEngine;
 
 public class Meteor : NetworkBehaviour, Projectile
 {
-    [SerializeField] private int damage = 15;
-    [SerializeField] private float knockback_amount = 1f;
-    [SerializeField] private float knockback_growth = 20f;
     private Vector3 velocity = Vector3.zero;
     private int owner;
     [SerializeField] private GameObject explosion;
+    [SerializeField] private float gravity;
     private float _colliderRadius;
     private bool isExploding = false;
 
@@ -52,6 +50,7 @@ public class Meteor : NetworkBehaviour, Projectile
             return;
 
         float delta = (onTick) ? (float)base.TimeManager.TickDelta : Time.deltaTime;
+        velocity -= Vector3.up * gravity * delta;
         //If host move every update for smooth movement. Otherwise move OnTick.
         Move(delta);
     }
@@ -75,8 +74,9 @@ public class Meteor : NetworkBehaviour, Projectile
     [Server(Logging = LoggingType.Off)]
     private void Move(float deltaTime)
     {
+        transform.rotation = Quaternion.LookRotation(velocity);
         //Determine how far object should travel this frame.
-        float travelDistance = (velocity.magnitude * Time.deltaTime);
+        float travelDistance = (velocity.magnitude * deltaTime);
         //Set trace distance to be travel distance + collider radius.
         float traceDistance = travelDistance + _colliderRadius;
 
@@ -88,11 +88,8 @@ public class Meteor : NetworkBehaviour, Projectile
 
         if (Physics.SphereCast(transform.position, _colliderRadius, transform.TransformDirection(Vector3.forward), out hit, traceDistance) && !isExploding)
         {
-            if (hit.transform.tag == "Player" && hit.collider.GetComponent<NetworkObject>().Owner.ClientId != owner)
+            if (hit.transform.tag == "Player" && hit.transform.parent.GetComponent<NetworkObject>().Owner.ClientId != owner)
             {
-                PlayerHealth ph = hit.transform.gameObject.GetComponent<PlayerHealth>();
-                ph.TakeDamage(damage);
-                ph.Knockback(transform.TransformDirection(Vector3.forward), knockback_amount, knockback_growth);
                 explode(transform.position);
                 isExploding = true;
             }
@@ -104,7 +101,7 @@ public class Meteor : NetworkBehaviour, Projectile
             isExploding = true;
         }
 
-        transform.position += (velocity * Time.deltaTime);
+        transform.position += (velocity * deltaTime);
     }
 
     [Server(Logging = LoggingType.Off)]

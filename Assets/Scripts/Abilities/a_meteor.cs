@@ -11,6 +11,8 @@ public class a_meteor : NetworkBehaviour
     [SerializeField] private Transform proj_spawn;
     [SerializeField] private float proj_force;
     [SerializeField] private float chargeTime;
+    [SerializeField] private ParticleSystem ownerMeteor;
+    [SerializeField] private GameObject ownerMeteorGM;
     AudioSource m_shootingSound;
 
     #region cooldowns
@@ -47,6 +49,8 @@ public class a_meteor : NetworkBehaviour
             if (IsOwner && Time.time > mt_offcd)
             {
                 chargeStarted = true;
+                ownerMeteorGM.SetActive(true);
+                ownerMeteor.Play();
                 chargeReady = Time.time + chargeTime;
             }
         }
@@ -54,6 +58,7 @@ public class a_meteor : NetworkBehaviour
         {
             shootMeteor();
             chargeStarted = false;
+            ownerMeteorGM.SetActive(false);
             mt_offcd = Time.time + mt_cd;
         }
         UpdateUI();
@@ -81,6 +86,5 @@ public class a_meteor : NetworkBehaviour
 
     private void UpdateUI()
     {
-
     }
 }

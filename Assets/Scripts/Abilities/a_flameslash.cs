@@ -31,19 +31,19 @@ public class a_flameslash : NetworkBehaviour
 
         if (Input.GetButtonDown("Fire4") && Time.time > slash_offcd)
         {
-            DoDamage();
+            DoDamage(base.Owner.ClientId);
             slash_offcd = Time.time + slash_cd;
         }
         UpdateUI();
     }
 
     [ServerRpc]
-    private void DoDamage()
+    private void DoDamage(int owner)
     {
         Collider[] hitColliders = Physics.OverlapBox(proj_spawn.position, new Vector3(1f, .2f, 1f), proj_spawn.rotation);
         foreach (var hit in hitColliders)
         {
-            if (hit.transform.tag == "Player" && !IsOwner)
+            if (hit.transform.tag == "Player" && hit.transform.parent.GetComponent<NetworkObject>().Owner.ClientId != owner)
             {
                 PlayerHealth ph = hit.transform.gameObject.GetComponent<PlayerHealth>();
                 ph.Knockback(proj_spawn.rotation * Vector3.forward, knockback_amount, knockback_growth);

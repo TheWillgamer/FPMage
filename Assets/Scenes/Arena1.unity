@@ -1822,9 +1822,41 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 341256469546221778, guid: 34ace2f7b3a47fc42b680ecf9882bf4b, type: 3}
+      propertyPath: _networkObjectCache
+      value: 
+      objectReference: {fileID: 169997276}
+    - target: {fileID: 1120615853069163452, guid: 34ace2f7b3a47fc42b680ecf9882bf4b, type: 3}
+      propertyPath: _networkObjectCache
+      value: 
+      objectReference: {fileID: 169997276}
+    - target: {fileID: 1392717416191338940, guid: 34ace2f7b3a47fc42b680ecf9882bf4b, type: 3}
+      propertyPath: _networkObjectCache
+      value: 
+      objectReference: {fileID: 169997276}
+    - target: {fileID: 2133361338340739430, guid: 34ace2f7b3a47fc42b680ecf9882bf4b, type: 3}
+      propertyPath: _networkObjectCache
+      value: 
+      objectReference: {fileID: 169997276}
+    - target: {fileID: 2221468856058139811, guid: 34ace2f7b3a47fc42b680ecf9882bf4b, type: 3}
+      propertyPath: _networkObjectCache
+      value: 
+      objectReference: {fileID: 169997276}
+    - target: {fileID: 3298285600896076465, guid: 34ace2f7b3a47fc42b680ecf9882bf4b, type: 3}
+      propertyPath: _networkObjectCache
+      value: 
+      objectReference: {fileID: 169997276}
+    - target: {fileID: 3380425082291294957, guid: 34ace2f7b3a47fc42b680ecf9882bf4b, type: 3}
+      propertyPath: _networkObjectCache
+      value: 
+      objectReference: {fileID: 169997276}
     - target: {fileID: 3886377583055081699, guid: 34ace2f7b3a47fc42b680ecf9882bf4b, type: 3}
       propertyPath: _sceneId
-      value: 8360052816878082862
+      value: 8360052816576113156
+      objectReference: {fileID: 0}
+    - target: {fileID: 3886377583055081699, guid: 34ace2f7b3a47fc42b680ecf9882bf4b, type: 3}
+      propertyPath: _scenePathHash
+      value: 1946476478
       objectReference: {fileID: 0}
     - target: {fileID: 3886377583055081699, guid: 34ace2f7b3a47fc42b680ecf9882bf4b, type: 3}
       propertyPath: _sceneNetworkObjects.Array.data[3]
@@ -1836,7 +1868,15 @@ PrefabInstance:
       objectReference: {fileID: 1560967899}
     - target: {fileID: 4575299771133537037, guid: 34ace2f7b3a47fc42b680ecf9882bf4b, type: 3}
       propertyPath: _sceneId
-      value: 8360052815634151036
+      value: 8360052817199793742
+      objectReference: {fileID: 0}
+    - target: {fileID: 4575299771133537037, guid: 34ace2f7b3a47fc42b680ecf9882bf4b, type: 3}
+      propertyPath: _scenePathHash
+      value: 1946476478
+      objectReference: {fileID: 0}
+    - target: {fileID: 4575299771133537037, guid: 34ace2f7b3a47fc42b680ecf9882bf4b, type: 3}
+      propertyPath: _hasParentNetworkObjectAtEdit
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4575299771133537037, guid: 34ace2f7b3a47fc42b680ecf9882bf4b, type: 3}
       propertyPath: _sceneNetworkObjects.Array.data[3]
@@ -1846,6 +1886,14 @@ PrefabInstance:
       propertyPath: _sceneNetworkObjects.Array.data[4]
       value: 
       objectReference: {fileID: 1560967899}
+    - target: {fileID: 6383162011746621453, guid: 34ace2f7b3a47fc42b680ecf9882bf4b, type: 3}
+      propertyPath: _networkObjectCache
+      value: 
+      objectReference: {fileID: 169997276}
+    - target: {fileID: 6827716296904414418, guid: 34ace2f7b3a47fc42b680ecf9882bf4b, type: 3}
+      propertyPath: _networkObjectCache
+      value: 
+      objectReference: {fileID: 169997276}
     - target: {fileID: 8227743508398521441, guid: 34ace2f7b3a47fc42b680ecf9882bf4b, type: 3}
       propertyPath: m_RootOrder
       value: 29
@@ -1892,7 +1940,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8227743508398521442, guid: 34ace2f7b3a47fc42b680ecf9882bf4b, type: 3}
       propertyPath: _sceneId
-      value: 8360052818444897494
+      value: 8360052817730475688
+      objectReference: {fileID: 0}
+    - target: {fileID: 8227743508398521442, guid: 34ace2f7b3a47fc42b680ecf9882bf4b, type: 3}
+      propertyPath: _scenePathHash
+      value: 1946476478
       objectReference: {fileID: 0}
     - target: {fileID: 8227743508398521442, guid: 34ace2f7b3a47fc42b680ecf9882bf4b, type: 3}
       propertyPath: _sceneNetworkObjects.Array.data[3]
@@ -1908,6 +1960,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 34ace2f7b3a47fc42b680ecf9882bf4b, type: 3}
+--- !u!114 &169997276 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4575299771133537037, guid: 34ace2f7b3a47fc42b680ecf9882bf4b, type: 3}
+  m_PrefabInstance: {fileID: 169997275}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26b716c41e9b56b4baafaf13a523ba2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &194816610
 GameObject:
   m_ObjectHideFlags: 0

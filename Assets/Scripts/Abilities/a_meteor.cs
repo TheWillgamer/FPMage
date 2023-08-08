@@ -26,7 +26,7 @@ public class a_meteor : NetworkBehaviour
     #endregion
 
     #region UI
-    [SerializeField] GameObject cdRepresentation;
+    //[SerializeField] GameObject cdRepresentation;
     [SerializeField] Image Meteor;
     #endregion
 
@@ -115,5 +115,6 @@ public class a_meteor : NetworkBehaviour
 
     private void UpdateUI()
     {
+        Meteor.fillAmount = 1 - (mt_offcd - Time.time) / mt_cd;
     }
 }

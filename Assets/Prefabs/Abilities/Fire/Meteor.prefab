@@ -24457,8 +24457,12 @@ MonoBehaviour:
   _componentIndexCache: 0
   _addedNetworkObject: {fileID: 4905874205509183724}
   _networkObjectCache: {fileID: 4905874205509183724}
+  damage: 18
+  knockback_amount: 40
+  knockback_growth: 25
   explosion: {fileID: 8269378603428623236, guid: e6dd4750647e0084a867a90765eea117, type: 3}
   gravity: 70
+  radius: 9
 --- !u!114 &7522878043119822081
 MonoBehaviour:
   m_ObjectHideFlags: 0

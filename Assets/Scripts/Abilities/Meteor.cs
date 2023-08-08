@@ -6,10 +6,15 @@ using UnityEngine;
 
 public class Meteor : NetworkBehaviour, Projectile
 {
+    [SerializeField] private int damage = 15;
+    [SerializeField] private float knockback_amount = 1f;
+    [SerializeField] private float knockback_growth = 20f;
+
     private Vector3 velocity = Vector3.zero;
     private int owner;
     [SerializeField] private GameObject explosion;
     [SerializeField] private float gravity;
+    [SerializeField] private float radius;
     private float _colliderRadius;
     private bool isExploding = false;
 
@@ -88,17 +93,11 @@ public class Meteor : NetworkBehaviour, Projectile
 
         if (Physics.SphereCast(transform.position, _colliderRadius, transform.TransformDirection(Vector3.forward), out hit, traceDistance) && !isExploding)
         {
-            if (hit.transform.tag == "Player" && hit.transform.parent.GetComponent<NetworkObject>().Owner.ClientId != owner)
+            if ((hit.transform.tag == "Player" && hit.transform.parent.GetComponent<NetworkObject>().Owner.ClientId != owner) || hit.transform.tag == "Ground")
             {
                 explode(transform.position);
                 isExploding = true;
             }
-        }
-
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, traceDistance, layerMask) && !isExploding)
-        {
-            explode(hit.point);
-            isExploding = true;
         }
 
         transform.position += (velocity * deltaTime);
@@ -109,6 +108,17 @@ public class Meteor : NetworkBehaviour, Projectile
     {
         if (base.IsServer)
         {
+            Collider[] hitColliders = Physics.OverlapSphere(pos, radius);
+            foreach (var hit in hitColliders)
+            {
+                if (hit.transform.tag == "Player")
+                {
+                    PlayerHealth ph = hit.transform.gameObject.GetComponent<PlayerHealth>();
+                    ph.Knockback((hit.transform.position - pos).normalized, knockback_amount, knockback_growth);
+                    ph.TakeDamage(damage);
+                }
+            }
+
             ObserversSpawnExplodePrefab(pos);
 
             /* If server only then call destroy now. It will follow in order

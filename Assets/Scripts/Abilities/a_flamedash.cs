@@ -26,7 +26,7 @@ public class a_flamedash : NetworkBehaviour
 
     #region UI
     //[SerializeField] GameObject cdRepresentation;
-    //[SerializeField] Image Wind;
+    [SerializeField] Image Wind;
     #endregion
 
     public override void OnStartClient()
@@ -135,6 +135,6 @@ public class a_flamedash : NetworkBehaviour
 
     private void UpdateUI()
     {
-        //Wind.fillAmount = 1 - (dash_offcd - Time.time) / dash_cd;
+        Wind.fillAmount = 1 - (dash_offcd - Time.time) / dash_cd;
     }
 }

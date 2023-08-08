@@ -12,7 +12,6 @@ public class PlayerHealth : NetworkBehaviour
     public Image dmgScreen;
     private Rigidbody rb;
     private Movement mv;
-    [SerializeField] private float upLimiterMultiplier;
 
     //Audio
     public AudioSource hit;
@@ -40,7 +39,10 @@ public class PlayerHealth : NetworkBehaviour
         {
             ObserversTakeDamage(amt, oldHp);
             if (base.IsOwner)
+            {
                 UpdateUI();
+                StartCoroutine(Fade());
+            }
         }
     }
 
@@ -58,7 +60,6 @@ public class PlayerHealth : NetworkBehaviour
         else if (direction.y > 0f)
         {
             direction = direction + 2 * Vector3.ProjectOnPlane(direction, Vector3.up).normalized;
-            //direction = new Vector3(direction.x, direction.y * upLimiterMultiplier, direction.z);
             rb.AddForce(direction.normalized * (((hp / kb_growth) + 1) * base_kb), ForceMode.Impulse);
         }
     }
@@ -97,10 +98,5 @@ public class PlayerHealth : NetworkBehaviour
     private void UpdateUI()
     {
         hpPercentage.text = hp.ToString() + "%";
-    }
-
-    private void EnableCM()
-    {
-        //mv.disableCM = false;
     }
 }

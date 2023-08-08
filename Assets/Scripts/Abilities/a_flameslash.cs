@@ -40,7 +40,7 @@ public class a_flameslash : NetworkBehaviour
     [ServerRpc]
     private void DoDamage(int owner)
     {
-        Collider[] hitColliders = Physics.OverlapBox(proj_spawn.position, new Vector3(1f, .2f, 1f), proj_spawn.rotation);
+        Collider[] hitColliders = Physics.OverlapBox(proj_spawn.position, new Vector3(1.5f, .3f, 1.5f), proj_spawn.rotation);
         foreach (var hit in hitColliders)
         {
             if (hit.transform.tag == "Player" && hit.transform.parent.GetComponent<NetworkObject>().Owner.ClientId != owner)

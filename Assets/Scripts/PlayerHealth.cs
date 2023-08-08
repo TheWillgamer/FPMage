@@ -12,6 +12,7 @@ public class PlayerHealth : NetworkBehaviour
     public Image dmgScreen;
     private Rigidbody rb;
     private Movement mv;
+    [SerializeField] private float upLimiterMultiplier;
 
     //Audio
     public AudioSource hit;
@@ -54,8 +55,11 @@ public class PlayerHealth : NetworkBehaviour
             float force = (((hp / kb_growth) + 1) * base_kb);
             rb.AddForce((newDir.normalized/2f + newDir/2f) * force, ForceMode.Impulse);
         }
-        else
+        else if (direction.y > 0f)
+        {
+            direction = new Vector3(direction.x, direction.y * upLimiterMultiplier, direction.z);
             rb.AddForce(direction * (((hp / kb_growth) + 1) * base_kb), ForceMode.Impulse);
+        }
     }
 
     [ObserversRpc]

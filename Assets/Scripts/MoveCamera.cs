@@ -47,7 +47,7 @@ public class MoveCamera : NetworkBehaviour
 
         //Rotate, and also make sure we dont over- or under-rotate.
         xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+        xRotation = Mathf.Clamp(xRotation, -89f, 89f);
 
         //Perform the rotations
         transform.localRotation = Quaternion.Euler(xRotation, desiredX, 0);

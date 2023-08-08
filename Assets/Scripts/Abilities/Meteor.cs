@@ -128,7 +128,6 @@ public class Meteor : NetworkBehaviour, Projectile
                 {
                     // knockback direction
                     Vector3 dir = (hit.transform.position - pos).normalized;
-                    //dir = dir + 2 * Vector3.ProjectOnPlane(dir, Vector3.up).normalized;
                     
                     PlayerHealth ph = hit.transform.gameObject.GetComponent<PlayerHealth>();
                     ph.Knockback(dir.normalized, knockback_amount, knockback_growth);

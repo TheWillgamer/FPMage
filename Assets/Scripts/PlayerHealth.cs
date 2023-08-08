@@ -57,8 +57,9 @@ public class PlayerHealth : NetworkBehaviour
         }
         else if (direction.y > 0f)
         {
-            direction = new Vector3(direction.x, direction.y * upLimiterMultiplier, direction.z);
-            rb.AddForce(direction * (((hp / kb_growth) + 1) * base_kb), ForceMode.Impulse);
+            direction = direction + 2 * Vector3.ProjectOnPlane(direction, Vector3.up).normalized;
+            //direction = new Vector3(direction.x, direction.y * upLimiterMultiplier, direction.z);
+            rb.AddForce(direction.normalized * (((hp / kb_growth) + 1) * base_kb), ForceMode.Impulse);
         }
     }
 

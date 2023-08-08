@@ -25292,7 +25292,7 @@ MonoBehaviour:
     LocalScale: {x: 1, y: 1, z: 1}
   _isNetworked: 1
   _isGlobal: 0
-  _hasParentNetworkObjectAtEdit: 1
+  _hasParentNetworkObjectAtEdit: 0
   NetworkObserver: {fileID: 0}
   _prefabId: -1
   _scenePathHash: 0
@@ -25331,7 +25331,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _componentIndexCache: 0
   _addedNetworkObject: {fileID: 4575299771133537037}
-  _networkObjectCache: {fileID: 8227743508398521442}
+  _networkObjectCache: {fileID: 4575299771133537037}
   cam: {fileID: 8227743508193196329}
   jumpForce: 18
   secondJumpForce: 12
@@ -25380,7 +25380,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _componentIndexCache: 1
   _addedNetworkObject: {fileID: 4575299771133537037}
-  _networkObjectCache: {fileID: 8227743508398521442}
+  _networkObjectCache: {fileID: 4575299771133537037}
   _synchronizeParent: 0
   _packing:
     Position: 1
@@ -25422,7 +25422,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _componentIndexCache: 2
   _addedNetworkObject: {fileID: 4575299771133537037}
-  _networkObjectCache: {fileID: 8227743508398521442}
+  _networkObjectCache: {fileID: 4575299771133537037}
   _graphicalObject: {fileID: 7928923847964066659}
   _smoothTicks: 1
   _durationType: 0
@@ -25448,7 +25448,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _componentIndexCache: 3
   _addedNetworkObject: {fileID: 8227743508398521442}
-  _networkObjectCache: {fileID: 8227743508398521442}
+  _networkObjectCache: {fileID: 4575299771133537037}
   hp: 0
   hpPercentage: {fileID: 4198358656015635291}
   dmgScreen: {fileID: 1733089372414222686}
@@ -25564,7 +25564,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _componentIndexCache: 4
   _addedNetworkObject: {fileID: 4575299771133537037}
-  _networkObjectCache: {fileID: 8227743508398521442}
+  _networkObjectCache: {fileID: 4575299771133537037}
   fb: {fileID: 3637627862300843640, guid: f866deb3471328d4ba9602b23bcf41ea, type: 3}
   proj_spawn: {fileID: 5682205087739296379}
   proj_force: 120
@@ -25588,13 +25588,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _componentIndexCache: 5
   _addedNetworkObject: {fileID: 4575299771133537037}
-  _networkObjectCache: {fileID: 8227743508398521442}
+  _networkObjectCache: {fileID: 4575299771133537037}
   mt: {fileID: 4905874205509183725, guid: d764a95b2850e724b9e761ed2722c9f7, type: 3}
   proj_spawn: {fileID: 5682205087739296379}
   proj_force: 80
   chargeTime: 0.5
-  ownerMeteor: {fileID: 8174841152422225905}
   ownerMeteorGM: {fileID: 1372608675301374527}
+  clientMeteorGM: {fileID: 7242760780636473361}
   mt_cd: 1
   cdRepresentation: {fileID: 0}
   Meteor: {fileID: 0}
@@ -25612,7 +25612,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _componentIndexCache: 6
   _addedNetworkObject: {fileID: 4575299771133537037}
-  _networkObjectCache: {fileID: 8227743508398521442}
+  _networkObjectCache: {fileID: 4575299771133537037}
   dashForce: 85
   dashDur: 0.3
   dashDelay: 0.5
@@ -25682,6 +25682,7 @@ Transform:
   m_Children:
   - {fileID: 4756007524078906077}
   - {fileID: 706117557101840799}
+  - {fileID: 6676824765974960957}
   m_Father: {fileID: 6383162011746621454}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -25699,7 +25700,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _componentIndexCache: 7
   _addedNetworkObject: {fileID: 8227743508398521442}
-  _networkObjectCache: {fileID: 8227743508398521442}
+  _networkObjectCache: {fileID: 4575299771133537037}
 --- !u!1 &8227743508193196330
 GameObject:
   m_ObjectHideFlags: 0
@@ -25757,7 +25758,7 @@ MonoBehaviour:
     LocalScale: {x: 1, y: 1, z: 1}
   _isNetworked: 1
   _isGlobal: 0
-  _hasParentNetworkObjectAtEdit: 1
+  _hasParentNetworkObjectAtEdit: 0
   NetworkObserver: {fileID: 0}
   _prefabId: -1
   _scenePathHash: 0
@@ -25780,9 +25781,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 044753e13dd3b2d47b94005fb3cdbcbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 8
+  _componentIndexCache: 0
   _addedNetworkObject: {fileID: 8227743508398521442}
-  _networkObjectCache: {fileID: 8227743508398521442}
+  _networkObjectCache: {fileID: 3886377583055081699}
   sensitivity: 50
   playerLoc: {fileID: 4790489275998527890}
   playerSpawned: 0
@@ -25799,9 +25800,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2836e36774ca1c4bbbee976e17b649c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 9
+  _componentIndexCache: 1
   _addedNetworkObject: {fileID: 8227743508398521442}
-  _networkObjectCache: {fileID: 8227743508398521442}
+  _networkObjectCache: {fileID: 3886377583055081699}
   _synchronizeParent: 0
   _packing:
     Position: 0
@@ -26063,8 +26064,86 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4081632995673970902, guid: 6de3e16bc43ea10439272c3e5a7adf34, type: 3}
   m_PrefabInstance: {fileID: 1405985055252951493}
   m_PrefabAsset: {fileID: 0}
---- !u!198 &8174841152422225905 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 7129709767181932084, guid: 6de3e16bc43ea10439272c3e5a7adf34, type: 3}
-  m_PrefabInstance: {fileID: 1405985055252951493}
+--- !u!1001 &7209144981991113707
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 7928923847964066659}
+    m_Modifications:
+    - target: {fileID: 40378070874000378, guid: 6de3e16bc43ea10439272c3e5a7adf34, type: 3}
+      propertyPath: m_Name
+      value: MeteorParticles
+      objectReference: {fileID: 0}
+    - target: {fileID: 40378070874000378, guid: 6de3e16bc43ea10439272c3e5a7adf34, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4081632995673970902, guid: 6de3e16bc43ea10439272c3e5a7adf34, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4081632995673970902, guid: 6de3e16bc43ea10439272c3e5a7adf34, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.76
+      objectReference: {fileID: 0}
+    - target: {fileID: 4081632995673970902, guid: 6de3e16bc43ea10439272c3e5a7adf34, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.7600011
+      objectReference: {fileID: 0}
+    - target: {fileID: 4081632995673970902, guid: 6de3e16bc43ea10439272c3e5a7adf34, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.7600011
+      objectReference: {fileID: 0}
+    - target: {fileID: 4081632995673970902, guid: 6de3e16bc43ea10439272c3e5a7adf34, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4081632995673970902, guid: 6de3e16bc43ea10439272c3e5a7adf34, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.958
+      objectReference: {fileID: 0}
+    - target: {fileID: 4081632995673970902, guid: 6de3e16bc43ea10439272c3e5a7adf34, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4081632995673970902, guid: 6de3e16bc43ea10439272c3e5a7adf34, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4081632995673970902, guid: 6de3e16bc43ea10439272c3e5a7adf34, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4081632995673970902, guid: 6de3e16bc43ea10439272c3e5a7adf34, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4081632995673970902, guid: 6de3e16bc43ea10439272c3e5a7adf34, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4081632995673970902, guid: 6de3e16bc43ea10439272c3e5a7adf34, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 4081632995673970902, guid: 6de3e16bc43ea10439272c3e5a7adf34, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4081632995673970902, guid: 6de3e16bc43ea10439272c3e5a7adf34, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -90
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6de3e16bc43ea10439272c3e5a7adf34, type: 3}
+--- !u!4 &6676824765974960957 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4081632995673970902, guid: 6de3e16bc43ea10439272c3e5a7adf34, type: 3}
+  m_PrefabInstance: {fileID: 7209144981991113707}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7242760780636473361 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 40378070874000378, guid: 6de3e16bc43ea10439272c3e5a7adf34, type: 3}
+  m_PrefabInstance: {fileID: 7209144981991113707}
   m_PrefabAsset: {fileID: 0}

@@ -11,8 +11,10 @@ public class a_meteor : NetworkBehaviour
     [SerializeField] private Transform proj_spawn;
     [SerializeField] private float proj_force;
     [SerializeField] private float chargeTime;
-    [SerializeField] private ParticleSystem ownerMeteor;
     [SerializeField] private GameObject ownerMeteorGM;
+    private ParticleSystem ownerMeteor;
+    [SerializeField] private GameObject clientMeteorGM;
+    private ParticleSystem clientMeteor;
     AudioSource m_shootingSound;
 
     #region cooldowns
@@ -38,6 +40,8 @@ public class a_meteor : NetworkBehaviour
     void Start()
     {
         m_shootingSound = GetComponent<AudioSource>();
+        ownerMeteor = ownerMeteorGM.GetComponent<ParticleSystem>();
+        clientMeteor = clientMeteorGM.GetComponent<ParticleSystem>();
         mt_offcd = Time.deltaTime;
         chargeStarted = false;
     }
@@ -51,6 +55,7 @@ public class a_meteor : NetworkBehaviour
                 chargeStarted = true;
                 ownerMeteorGM.SetActive(true);
                 ownerMeteor.Play();
+                startMeteorGMServer();
                 chargeReady = Time.time + chargeTime;
             }
         }
@@ -71,8 +76,32 @@ public class a_meteor : NetworkBehaviour
     }
 
     [ServerRpc]
+    private void startMeteorGMServer()
+    {
+        startMeteorGM();
+    }
+
+    [ObserversRpc]
+    private void startMeteorGM()
+    {
+        if (base.IsOwner)
+            return;
+        clientMeteorGM.SetActive(true);
+        clientMeteor.Play();
+    }
+
+    [ObserversRpc]
+    private void endMeteorGM()
+    {
+        if (base.IsOwner)
+            return;
+        clientMeteorGM.SetActive(false);
+    }
+
+    [ServerRpc]
     private void shootMeteor()
     {
+        endMeteorGM();
         playShootSound();
         GameObject spawned = Instantiate(mt, proj_spawn.position, proj_spawn.rotation);
         //Physics.IgnoreCollision(spawned.GetComponent<Collider>(), GetComponent<Collider>());

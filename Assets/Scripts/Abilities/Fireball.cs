@@ -144,4 +144,10 @@ public class Fireball : NetworkBehaviour, Projectile
         GameObject spawned = Instantiate(explosion, pos, transform.rotation);
         //UnitySceneManager.MoveGameObjectToScene(spawned.gameObject, gameObject.scene);
     }
+
+    public virtual void Reflect(Vector3 dir, int conn)
+    {
+        velocity = dir * velocity.magnitude;
+        owner = conn;
+    }
 }

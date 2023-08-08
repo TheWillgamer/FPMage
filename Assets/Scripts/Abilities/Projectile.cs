@@ -9,4 +9,6 @@ public interface Projectile
     /// </summary>
     /// <param name="force"></param>
     void Initialize(PreciseTick pt, Vector3 force, int conn);
+
+    void Reflect(Vector3 dir, int conn);
 }

@@ -25533,6 +25533,8 @@ MonoBehaviour:
   hp: 0
   hpPercentage: {fileID: 4198358656015635291}
   dmgScreen: {fileID: 1733089372414222686}
+  fireDmg: 0
+  fire_cd: 0
   hit: {fileID: 0}
   dead: {fileID: 0}
 --- !u!82 &2399677714019010807
@@ -25672,7 +25674,7 @@ MonoBehaviour:
   _networkObjectCache: {fileID: 8227743508398521442}
   mt: {fileID: 4905874205509183725, guid: d764a95b2850e724b9e761ed2722c9f7, type: 3}
   proj_spawn: {fileID: 5682205087739296379}
-  proj_force: 80
+  proj_force: 60
   chargeTime: 0.5
   ownerMeteorGM: {fileID: 1372608675301374527}
   clientMeteorGM: {fileID: 7242760780636473361}
@@ -26012,7 +26014,7 @@ MonoBehaviour:
     LocalScale: {x: 1, y: 1, z: 1}
   _isNetworked: 1
   _isGlobal: 0
-  _hasParentNetworkObjectAtEdit: 0
+  _hasParentNetworkObjectAtEdit: 1
   NetworkObserver: {fileID: 0}
   _prefabId: -1
   _scenePathHash: 0
@@ -26035,9 +26037,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 044753e13dd3b2d47b94005fb3cdbcbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 0
+  _componentIndexCache: 9
   _addedNetworkObject: {fileID: 8227743508398521442}
-  _networkObjectCache: {fileID: 3886377583055081699}
+  _networkObjectCache: {fileID: 8227743508398521442}
   sensitivity: 50
   playerLoc: {fileID: 4790489275998527890}
   playerSpawned: 0
@@ -26054,9 +26056,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2836e36774ca1c4bbbee976e17b649c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 1
+  _componentIndexCache: 10
   _addedNetworkObject: {fileID: 8227743508398521442}
-  _networkObjectCache: {fileID: 3886377583055081699}
+  _networkObjectCache: {fileID: 8227743508398521442}
   _synchronizeParent: 0
   _packing:
     Position: 0

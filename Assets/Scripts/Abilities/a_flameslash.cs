@@ -40,7 +40,7 @@ public class a_flameslash : NetworkBehaviour
     [ServerRpc]
     private void DoDamage(int owner)
     {
-        Collider[] hitColliders = Physics.OverlapBox(proj_spawn.position, new Vector3(1.5f, .3f, 1.5f), proj_spawn.rotation);
+        Collider[] hitColliders = Physics.OverlapBox(proj_spawn.position, new Vector3(2f, .5f, 2f), proj_spawn.rotation);
         foreach (var hit in hitColliders)
         {
             if (hit.transform.tag == "Player" && hit.transform.parent.GetComponent<NetworkObject>().Owner.ClientId != owner)
@@ -48,6 +48,10 @@ public class a_flameslash : NetworkBehaviour
                 PlayerHealth ph = hit.transform.gameObject.GetComponent<PlayerHealth>();
                 ph.Knockback(proj_spawn.rotation * Vector3.forward, knockback_amount, knockback_growth);
                 ph.TakeDamage(damage);
+            }
+            else if (hit.transform.tag == "Projectile")
+            {
+                hit.GetComponent<Projectile>().Reflect(proj_spawn.rotation * Vector3.forward, owner);
             }
         }
     }

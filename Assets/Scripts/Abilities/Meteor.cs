@@ -86,6 +86,7 @@ public class Meteor : NetworkBehaviour, Projectile
             }
         }
 
+        velocity -= Vector3.up * gravity * timePassed;
         Move(timePassed);
     }
 
@@ -165,5 +166,11 @@ public class Meteor : NetworkBehaviour, Projectile
     {
         GameObject spawned = Instantiate(explosion, pos, transform.rotation);
         //UnitySceneManager.MoveGameObjectToScene(spawned.gameObject, gameObject.scene);
+    }
+
+    public virtual void Reflect(Vector3 dir, int conn)
+    {
+        velocity = dir * velocity.magnitude;
+        owner = conn;
     }
 }

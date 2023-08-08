@@ -24379,7 +24379,7 @@ GameObject:
   - component: {fileID: 7522878043119822081}
   m_Layer: 0
   m_Name: Meteor
-  m_TagString: Untagged
+  m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -24461,7 +24461,7 @@ MonoBehaviour:
   knockback_amount: 40
   knockback_growth: 25
   explosion: {fileID: 8269378603428623236, guid: e6dd4750647e0084a867a90765eea117, type: 3}
-  gravity: 70
+  gravity: 40
   radius: 9
 --- !u!114 &7522878043119822081
 MonoBehaviour:

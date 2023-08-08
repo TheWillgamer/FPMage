@@ -1,5 +1,7 @@
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
+using FishNet.Managing.Logging;
+using FishNet;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,6 +15,12 @@ public class PlayerHealth : NetworkBehaviour
     private Rigidbody rb;
     private Movement mv;
 
+    // OnFire
+    private int onFire;
+    [SerializeField] private int fireDmg;
+    [SerializeField] private float fire_cd;
+    private float fire_offcd;
+
     //Audio
     public AudioSource hit;
     public AudioSource dead;
@@ -21,12 +29,55 @@ public class PlayerHealth : NetworkBehaviour
     {
         rb = GetComponent<Rigidbody>();
         mv = GetComponent<Movement>();
+        onFire = 0;
+        InstanceFinder.TimeManager.OnTick += TimeManager_OnTick;
     }
 
     // Start is called before the first frame update
     void Start()
     {
         hp = 0;
+    }
+
+    private void OnDestroy()
+    {
+        if (InstanceFinder.TimeManager != null)
+        {
+            InstanceFinder.TimeManager.OnTick -= TimeManager_OnTick;
+        }
+    }
+
+    protected virtual void Update()
+    {
+        PerformUpdate(false);
+    }
+
+    private void TimeManager_OnTick()
+    {
+        PerformUpdate(true);
+    }
+
+    [Server(Logging = LoggingType.Off)]
+    private void PerformUpdate(bool onTick)
+    {
+        /* If a tick but also host then do not
+         * update. The update will occur outside of
+         * OnTick, using the update loop. */
+        if (onTick && base.IsHost)
+            return;
+        /* If not called from OnTick and is server
+         * only then exit. OnTick will handle movements. */
+        else if (!onTick && base.IsServerOnly)
+            return;
+
+        float delta = (onTick) ? (float)base.TimeManager.TickDelta : Time.deltaTime;
+        
+
+    }
+
+    public void startFire()
+    {
+
     }
 
     // Reduces hp based on the parameter amount

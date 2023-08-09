@@ -2,7 +2,7 @@
 {
     Properties
     {
-        [MainColor] _Color ("Color", Color) = (1,1,1,1)
+        [MainColor] _BaseColor ("Color", Color) = (1,1,1,1)
 
         [Space(10)]
         [KeywordEnum(None, Single, Steps, Curve)]_CelPrimaryMode("Cel Shading Mode", Float) = 1
@@ -48,27 +48,38 @@
         [Space(10)]
         [Toggle(DR_VERTEX_COLORS_ON)] _VertexColorsEnabled("Enable Vertex Colors", Int) = 0
 
-        _LightContribution("[FOLDOUT(Advanced Lighting){4}]Light Color Contribution", Range(0, 1)) = 0
+        [Space]
+        [Toggle(DR_OUTLINE_ON)] _OutlineEnabled("Enable Outline", Int) = 0
+        _OutlineWidth("[DR_OUTLINE_ON]Width", Float) = 1.0
+        _OutlineColor("[DR_OUTLINE_ON]Color", Color) = (1, 1, 1, 1)
+        _OutlineScale("[DR_OUTLINE_ON]Scale", Float) = 1.0
+        _OutlineDepthOffset("[DR_OUTLINE_ON]Depth Offset", Range(0, 1)) = 0.0
+        _CameraDistanceImpact("[DR_OUTLINE_ON]Camera Distance Impact", Range(0, 1)) = 0.0
+
+        _LightContribution("[FOLDOUT(Advanced Lighting){6}]Light Color Contribution", Range(0, 1)) = 0
+        _LightFalloffSize("Light edge width (point / spot)", Range(0, 1)) = 0
 
         // Used to provide light direction to cel shading if all light in the scene is baked.
-        [Header(Override light direction)]
-        [Toggle]_OverrideLightmapDir("[DR_ENABLE_LIGHTMAP_DIR]Enable", Int) = 0
-        _LightmapDirectionPitch("Pitch", Range(0, 360)) = 0
-        _LightmapDirectionYaw("Yaw", Range(0, 360)) = 0
-        [HideInInspector] _LightmapDirection("Override Light Direction", Vector) = (0, 1, 0, 0)
+        [Space]
+        [Toggle(DR_ENABLE_LIGHTMAP_DIR)]_OverrideLightmapDir("Override light direction", Int) = 0
+        _LightmapDirectionPitch("[DR_ENABLE_LIGHTMAP_DIR]Pitch", Range(0, 360)) = 0
+        _LightmapDirectionYaw("[DR_ENABLE_LIGHTMAP_DIR]Yaw", Range(0, 360)) = 0
+        [HideInInspector] _LightmapDirection("Direction", Vector) = (0, 1, 0, 0)
 
-        [KeywordEnum(None, Multiply, Color)] _UnityShadowMode ("[FOLDOUT(Unity Built-in Shadows){4}]Mode", Float) = 0
+        [KeywordEnum(None, Multiply, Color)] _UnityShadowMode ("[FOLDOUT(Unity Built-in Shadows){5}]Mode", Float) = 0
         _UnityShadowPower("[_UNITYSHADOWMODE_MULTIPLY]Power", Range(0, 1)) = 0.2
         _UnityShadowColor("[_UNITYSHADOWMODE_COLOR]Color", Color) = (0.85023, 0.85034, 0.85045, 0.85056)
         _UnityShadowSharpness("Sharpness", Range(1, 10)) = 1.0
+        [Toggle(_UNITYSHADOW_OCCLUSION)]_UnityShadowOcclusion("Shadow Occlusion", Int) = 0
 
-        [Space(10)]
-        [MainTexture] _MainTex("[FOLDOUT(Texture maps){4}]Albedo", 2D) = "white" {}
-        [KeywordEnum(Multiply, Add)]_TextureBlendingMode("Blending Mode", Float) = 0
-        _TextureImpact("Texture Impact", Range(0, 1)) = 1.0
+        [MainTexture] _BaseMap("[FOLDOUT(Texture maps){6}]Albedo", 2D) = "white" {}
+        [Space][KeywordEnum(Multiply, Add)]_TextureBlendingMode("[_]Blending Mode", Float) = 0
+        [Space]_TextureImpact("[_]Texture Impact", Range(0, 1)) = 1.0
+        _BumpMap ("Normal Map", 2D) = "bump" {}
+        _EmissionMap ("Emission Map", 2D) = "white" {}
+        [HDR]_EmissionColor("Emission Color", Color) = (1, 1, 1, 1)
 
-        [Space(10)]
-        _BumpMap ("Bump Map", 2D) = "bump" {}
+        [HideInInspector] _Cutoff ("Base Alpha cutoff", Range (0, 1)) = .5
 
         // Blending state
         [HideInInspector] _Surface("__surface", Float) = 0.0
@@ -81,37 +92,469 @@
 
         // Editmode props
         [HideInInspector] _QueueOffset("Queue offset", Float) = 0.0
+
+		/* start CurvedWorld */
+		//[CurvedWorldBendSettings] _CurvedWorldBendSettings("0|1|1", Vector) = (0, 0, 0, 0)
+		/* end CurvedWorld */
     }
 
     SubShader
     {
-        Tags {
-            "RenderType"="Opaque"
+        Tags{"RenderType" = "Opaque" "RenderPipeline" = "UniversalPipeline" "IgnoreProjector" = "True"}
+        LOD 300
+
+    	HLSLINCLUDE
+    	#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Version.hlsl"
+    	ENDHLSL
+
+        Pass
+        {
+            Name "ForwardLit"
+            Tags {"LightMode" = "UniversalForwardOnly"}
+
+            Blend[_SrcBlend][_DstBlend]
+            ZWrite[_ZWrite]
+            Cull[_Cull]
+
+            HLSLPROGRAM
+            #pragma shader_feature_local __ _CELPRIMARYMODE_SINGLE _CELPRIMARYMODE_STEPS _CELPRIMARYMODE_CURVE
+            #pragma shader_feature_local DR_CEL_EXTRA_ON
+            #pragma shader_feature_local DR_GRADIENT_ON
+            #pragma shader_feature_local DR_SPECULAR_ON
+            #pragma shader_feature_local DR_RIM_ON
+            #pragma shader_feature_local DR_VERTEX_COLORS_ON
+            #pragma shader_feature_local DR_ENABLE_LIGHTMAP_DIR
+            #pragma shader_feature_local __ _UNITYSHADOWMODE_MULTIPLY _UNITYSHADOWMODE_COLOR
+            #pragma shader_feature_local _TEXTUREBLENDINGMODE_MULTIPLY _TEXTUREBLENDINGMODE_ADD
+            #pragma shader_feature_local _UNITYSHADOW_OCCLUSION
+
+            // -------------------------------------
+            // Material Keywords
+            #pragma shader_feature_local_fragment _ALPHATEST_ON
+            #pragma shader_feature_local_fragment _ALPHAPREMULTIPLY_ON
+            // #pragma shader_feature_local_fragment _ _SPECGLOSSMAP _SPECULAR_COLOR
+            // #pragma shader_feature_local_fragment _GLOSSINESS_FROM_BASE_ALPHA
+            #pragma shader_feature_local _NORMALMAP
+            #pragma shader_feature_local_fragment _EMISSION
+            #pragma shader_feature_local _RECEIVE_SHADOWS_OFF
+
+            // -------------------------------------
+            // Universal Pipeline keywords
+            #if VERSION_GREATER_EQUAL(11, 0)
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
+            #else
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS_CASCADE
+            #endif
+            #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
+            #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
+            #pragma multi_compile _ SHADOWS_SHADOWMASK
+            #pragma multi_compile_fragment _ _ADDITIONAL_LIGHT_SHADOWS
+            #pragma multi_compile_fragment _ _SHADOWS_SOFT
+            #pragma multi_compile_fragment _ _SCREEN_SPACE_OCCLUSION
+            #if VERSION_GREATER_EQUAL(12, 0)
+            #pragma multi_compile_fragment _ _DBUFFER_MRT1 _DBUFFER_MRT2 _DBUFFER_MRT3
+            #pragma multi_compile_fragment _ _LIGHT_LAYERS
+            #pragma multi_compile_fragment _ _LIGHT_COOKIES
+            #pragma multi_compile _ _CLUSTERED_RENDERING
+            #endif
+            #if UNITY_VERSION >= 202220
+            #pragma multi_compile _ _FORWARD_PLUS
+            #pragma multi_compile_fragment _ _WRITE_RENDERING_LAYERS
+            #endif
+
+            // -------------------------------------
+            // Unity defined keywords
+            #pragma multi_compile _ DIRLIGHTMAP_COMBINED
+            #pragma multi_compile _ LIGHTMAP_ON
+            #pragma multi_compile_fog
+            #if UNITY_VERSION >= 202220
+            #pragma multi_compile _ DYNAMICLIGHTMAP_ON
+            #pragma multi_compile_fragment _ DEBUG_DISPLAY
+            #pragma multi_compile_fragment _ LOD_FADE_CROSSFADE
+            #endif
+
+            //--------------------------------------
+            // GPU Instancing
+            #pragma multi_compile_instancing
+            #pragma instancing_options renderinglayer
+            #pragma multi_compile _ DOTS_INSTANCING_ON
+
+            #pragma vertex StylizedPassVertex
+            #pragma fragment StylizedPassFragment
+            #define BUMP_SCALE_NOT_SUPPORTED 1
+
+            // TODO: Toggle _NORMALMAP from the editor script.
+            #define _NORMALMAP
+
+            #include "LibraryUrp/StylizedInput.hlsl"
+            #include "LibraryUrp/LitForwardPass_DR.hlsl"
+            #include "LibraryUrp/Lighting_DR.hlsl"
+
+			/* start CurvedWorld */
+			//#define CURVEDWORLD_BEND_TYPE_CLASSICRUNNER_X_POSITIVE
+			//#define CURVEDWORLD_BEND_ID_1
+			//#pragma shader_feature_local CURVEDWORLD_DISABLED_ON
+			//#pragma shader_feature_local CURVEDWORLD_NORMAL_TRANSFORMATION_ON
+			//#include "Assets/Amazing Assets/Curved World/Shaders/Core/CurvedWorldTransform.cginc"
+			/* end CurvedWorld */
+
+            ENDHLSL
         }
-        LOD 200
 
-        CGPROGRAM
+        Pass
+        {
+            Name "Outline"
+            Tags{"LightMode" = "SRPDefaultUnlit"}
 
-        // Doc: https://docs.unity3d.com/Manual/SL-SurfaceShaders.html
-        #include "DustyroomStylizedLighting.cginc"
-        #pragma surface surfObject DustyroomStylized vertex:vertObject fullforwardshadows exclude_path:deferred
-        #pragma target 3.0
-        #pragma require interpolators15
-        #define Input InputObject
+            Cull Front
 
-        #pragma shader_feature_local __ _CELPRIMARYMODE_SINGLE _CELPRIMARYMODE_STEPS _CELPRIMARYMODE_CURVE
-        #pragma shader_feature_local DR_CEL_EXTRA_ON
-        #pragma shader_feature_local DR_GRADIENT_ON
-        #pragma shader_feature_local DR_SPECULAR_ON
-        #pragma shader_feature_local DR_RIM_ON
-        #pragma shader_feature_local DR_VERTEX_COLORS_ON
-        #pragma shader_feature_local __ _UNITYSHADOWMODE_MULTIPLY _UNITYSHADOWMODE_COLOR
-        #pragma shader_feature_local _TEXTUREBLENDINGMODE_MULTIPLY _TEXTUREBLENDINGMODE_ADD
+            HLSLPROGRAM
+            #include "LibraryUrp/StylizedInput.hlsl"
 
-        #pragma skip_variants POINT_COOKIE DIRECTIONAL_COOKIE
+            #pragma vertex VertexProgram
+            #pragma fragment FragmentProgram
 
-        ENDCG
+            #pragma multi_compile _ DR_OUTLINE_ON
+            #pragma multi_compile_fog
+
+			/* start CurvedWorld */
+			//#define CURVEDWORLD_BEND_TYPE_CLASSICRUNNER_X_POSITIVE
+			//#define CURVEDWORLD_BEND_ID_1
+			//#pragma shader_feature_local CURVEDWORLD_DISABLED_ON
+			//#pragma shader_feature_local CURVEDWORLD_NORMAL_TRANSFORMATION_ON
+			//#include "Assets/Amazing Assets/Curved World/Shaders/Core/CurvedWorldTransform.cginc"
+			/* end CurvedWorld */
+
+            struct VertexInput
+            {
+                float4 position : POSITION;
+                float3 normal : NORMAL;
+                UNITY_VERTEX_INPUT_INSTANCE_ID
+            };
+
+            struct VertexOutput
+            {
+                float4 position : SV_POSITION;
+                float3 normal : NORMAL;
+
+                float fogCoord : TEXCOORD1;
+
+                UNITY_VERTEX_INPUT_INSTANCE_ID
+                UNITY_VERTEX_OUTPUT_STEREO
+            };
+
+            float4 ObjectToClipPos(float4 pos)
+            {
+                return mul(UNITY_MATRIX_VP, mul(UNITY_MATRIX_M, float4(pos.xyz, 1)));
+            }
+
+            VertexOutput VertexProgram(VertexInput v)
+            {
+                #if defined(CURVEDWORLD_IS_INSTALLED) && !defined(CURVEDWORLD_DISABLED_ON)
+                #ifdef CURVEDWORLD_NORMAL_TRANSFORMATION_ON
+                    CURVEDWORLD_TRANSFORM_VERTEX_AND_NORMAL(input.positionOS, input.normalOS, input.tangentOS)
+                #else
+                    CURVEDWORLD_TRANSFORM_VERTEX(input.positionOS)
+                #endif
+                #endif
+
+                UNITY_SETUP_INSTANCE_ID(v);
+
+                VertexOutput o = (VertexOutput)0;
+                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
+
+                #if defined(DR_OUTLINE_ON)
+                float4 clipPosition = ObjectToClipPos(v.position * _OutlineScale);
+                const float3 clipNormal = mul((float3x3)UNITY_MATRIX_VP, mul((float3x3)UNITY_MATRIX_M, v.normal));
+                const half outlineWidth = _OutlineWidth;
+                const half cameraDistanceImpact = lerp(clipPosition.w, 4.0, _CameraDistanceImpact);
+                const float2 aspectRatio = float2(_ScreenParams.x / _ScreenParams.y, 1);
+                const float2 offset = normalize(clipNormal.xy) / aspectRatio * outlineWidth * cameraDistanceImpact * 0.005;
+                clipPosition.xy += offset;
+                const half outlineDepthOffset = _OutlineDepthOffset;
+
+                #if UNITY_REVERSED_Z
+                clipPosition.z -= outlineDepthOffset * 0.1;
+                #else
+                clipPosition.z += outlineDepthOffset * 0.1 * (1.0 - UNITY_NEAR_CLIP_VALUE);
+                #endif
+
+                o.position = clipPosition;
+                o.normal = clipNormal;
+
+                o.fogCoord = ComputeFogFactor(o.position.z);
+                #endif
+
+                return o;
+            }
+
+            half4 FragmentProgram(VertexOutput i) : SV_TARGET
+            {
+                UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(i);
+                half4 color = _OutlineColor;
+                color.rgb = MixFog(color.rgb, i.fogCoord);
+                return color;
+            }
+            ENDHLSL
+        }
+
+        // All the following passes are from URP SimpleLit.shader.
+        // UsePass "Universal Render Pipeline/Simple Lit/..." - not included in build and produces z-buffer glitches in
+        // local and global outlines combination.
+
+        Pass
+        {
+            Name "ShadowCaster"
+            Tags{"LightMode" = "ShadowCaster"}
+
+            ZWrite On
+            ZTest LEqual
+            ColorMask 0
+            Cull[_Cull]
+
+            HLSLPROGRAM
+            // -------------------------------------
+            // Material Keywords
+            #pragma shader_feature_local_fragment _ALPHATEST_ON
+            #pragma shader_feature_local_fragment _GLOSSINESS_FROM_BASE_ALPHA
+
+            //--------------------------------------
+            // GPU Instancing
+            #pragma multi_compile_instancing
+            #pragma multi_compile _ DOTS_INSTANCING_ON
+
+            // -------------------------------------
+            // Universal Pipeline keywords
+
+            // -------------------------------------
+            // Unity defined keywords
+            #if UNITY_VERSION >= 202220
+            #pragma multi_compile_fragment _ LOD_FADE_CROSSFADE
+            #endif
+
+            // This is used during shadow map generation to differentiate between directional and punctual light shadows, as they use different formulas to apply Normal Bias
+            #pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
+
+            #pragma vertex ShadowPassVertex
+            #pragma fragment ShadowPassFragment
+
+            #include "LibraryUrp/StylizedInput.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/Shaders/ShadowCasterPass.hlsl"
+
+			/* start CurvedWorld */
+			//#define CURVEDWORLD_BEND_TYPE_CLASSICRUNNER_X_POSITIVE
+			//#define CURVEDWORLD_BEND_ID_1
+			//#pragma shader_feature_local CURVEDWORLD_DISABLED_ON
+			//#pragma shader_feature_local CURVEDWORLD_NORMAL_TRANSFORMATION_ON
+			//#include "Assets/Amazing Assets/Curved World/Shaders/Core/CurvedWorldTransform.cginc"
+			/* end CurvedWorld */
+
+            ENDHLSL
+        }
+
+		Pass
+        {
+            Name "GBuffer"
+            Tags{"LightMode" = "UniversalGBuffer"}
+
+            ZWrite[_ZWrite]
+            ZTest LEqual
+            Cull[_Cull]
+
+            HLSLPROGRAM
+            // -------------------------------------
+            // Material Keywords
+            #pragma shader_feature_local_fragment _ALPHATEST_ON
+            // #pragma shader_feature _ALPHAPREMULTIPLY_ON
+            // #pragma shader_feature_local_fragment _ _SPECGLOSSMAP _SPECULAR_COLOR
+            // #pragma shader_feature_local_fragment _GLOSSINESS_FROM_BASE_ALPHA
+            #pragma shader_feature_local _NORMALMAP
+            #pragma shader_feature_local_fragment _EMISSION
+            #pragma shader_feature_local _RECEIVE_SHADOWS_OFF
+
+            // -------------------------------------
+            // Universal Pipeline keywords
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
+            //#pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
+            //#pragma multi_compile _ _ADDITIONAL_LIGHT_SHADOWS
+            #pragma multi_compile_fragment _ _SHADOWS_SOFT
+            #pragma multi_compile_fragment _ _DBUFFER_MRT1 _DBUFFER_MRT2 _DBUFFER_MRT3
+            #pragma multi_compile_fragment _ _LIGHT_LAYERS
+
+            // -------------------------------------
+            // Unity defined keywords
+            #pragma multi_compile _ DIRLIGHTMAP_COMBINED
+            #pragma multi_compile _ LIGHTMAP_ON
+            #pragma multi_compile _ DYNAMICLIGHTMAP_ON
+            #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
+            #pragma multi_compile _ SHADOWS_SHADOWMASK
+            #pragma multi_compile_fragment _ _GBUFFER_NORMALS_OCT
+            #pragma multi_compile_fragment _ _RENDER_PASS_ENABLED
+
+            //--------------------------------------
+            // GPU Instancing
+            #pragma multi_compile_instancing
+            #pragma instancing_options renderinglayer
+            #pragma multi_compile _ DOTS_INSTANCING_ON
+
+            #pragma vertex LitPassVertexSimple
+            #pragma fragment LitPassFragmentSimple
+
+            #define BUMP_SCALE_NOT_SUPPORTED 1
+
+            #include "Packages/com.unity.render-pipelines.universal/Shaders/SimpleLitInput.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/Shaders/SimpleLitGBufferPass.hlsl"
+            ENDHLSL
+        }
+
+        Pass
+        {
+            Name "DepthOnly"
+            Tags{"LightMode" = "DepthOnly"}
+
+            ZWrite On
+            ColorMask 0
+            Cull[_Cull]
+
+            HLSLPROGRAM
+            #pragma vertex DepthOnlyVertex
+            #pragma fragment DepthOnlyFragment
+
+            // -------------------------------------
+            // Material Keywords
+            #pragma shader_feature_local_fragment _ALPHATEST_ON
+            #pragma shader_feature_local_fragment _GLOSSINESS_FROM_BASE_ALPHA
+
+            // -------------------------------------
+            // Unity defined keywords
+            #if UNITY_VERSION >= 202220
+            #pragma multi_compile_fragment _ LOD_FADE_CROSSFADE
+            #endif
+
+            //--------------------------------------
+            // GPU Instancing
+            #pragma multi_compile_instancing
+            #pragma multi_compile _ DOTS_INSTANCING_ON
+
+            #include "LibraryUrp/StylizedInput.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/Shaders/DepthOnlyPass.hlsl"
+
+			/* start CurvedWorld */
+			//#define CURVEDWORLD_BEND_TYPE_CLASSICRUNNER_X_POSITIVE
+			//#define CURVEDWORLD_BEND_ID_1
+			//#pragma shader_feature_local CURVEDWORLD_DISABLED_ON
+			//#pragma shader_feature_local CURVEDWORLD_NORMAL_TRANSFORMATION_ON
+			//#include "Assets/Amazing Assets/Curved World/Shaders/Core/CurvedWorldTransform.cginc"
+			/* end CurvedWorld */
+
+            ENDHLSL
+        }
+
+        // This pass is used when drawing to a _CameraNormalsTexture texture
+        Pass
+        {
+            Name "DepthNormals"
+            Tags{"LightMode" = "DepthNormals"}
+
+            ZWrite On
+            Cull[_Cull]
+
+            HLSLPROGRAM
+            #pragma vertex DepthNormalsVertex
+            #pragma fragment DepthNormalsFragment
+
+            // -------------------------------------
+            // Material Keywords
+            #pragma shader_feature_local _NORMALMAP
+            #pragma shader_feature_local_fragment _ALPHATEST_ON
+            #pragma shader_feature_local_fragment _GLOSSINESS_FROM_BASE_ALPHA
+
+            // -------------------------------------
+            // Unity defined keywords
+            #if UNITY_VERSION >= 202220
+            #pragma multi_compile_fragment _ LOD_FADE_CROSSFADE
+            // Universal Pipeline keywords
+            #pragma multi_compile_fragment _ _WRITE_RENDERING_LAYERS
+            #endif
+
+            //--------------------------------------
+            // GPU Instancing
+            #pragma multi_compile_instancing
+            #pragma multi_compile _ DOTS_INSTANCING_ON
+
+            #include "LibraryUrp/StylizedInput.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/Shaders/DepthNormalsPass.hlsl"
+
+			/* start CurvedWorld */
+			//#define CURVEDWORLD_BEND_TYPE_CLASSICRUNNER_X_POSITIVE
+			//#define CURVEDWORLD_BEND_ID_1
+			//#pragma shader_feature_local CURVEDWORLD_DISABLED_ON
+			//#pragma shader_feature_local CURVEDWORLD_NORMAL_TRANSFORMATION_ON
+			//#include "Assets/Amazing Assets/Curved World/Shaders/Core/CurvedWorldTransform.cginc"
+			/* end CurvedWorld */
+
+            ENDHLSL
+        }
+
+        // This pass it not used during regular rendering, only for lightmap baking.
+        Pass
+        {
+            Name "Meta"
+            Tags{ "LightMode" = "Meta" }
+
+            Cull Off
+
+            HLSLPROGRAM
+            #pragma vertex UniversalVertexMeta
+            #pragma fragment UniversalFragmentMetaSimple
+            #if UNITY_VERSION >= 202220
+            #pragma shader_feature EDITOR_VISUALIZATION
+            #endif
+
+            #pragma shader_feature_local_fragment _EMISSION
+            #pragma shader_feature_local_fragment _SPECGLOSSMAP
+
+            #include "LibraryUrp/StylizedInput.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/Shaders/SimpleLitMetaPass.hlsl"
+
+			/* start CurvedWorld */
+			//#define CURVEDWORLD_BEND_TYPE_CLASSICRUNNER_X_POSITIVE
+			//#define CURVEDWORLD_BEND_ID_1
+			//#pragma shader_feature_local CURVEDWORLD_DISABLED_ON
+			//#pragma shader_feature_local CURVEDWORLD_NORMAL_TRANSFORMATION_ON
+			//#include "Assets/Amazing Assets/Curved World/Shaders/Core/CurvedWorldTransform.cginc"
+			/* end CurvedWorld */
+
+            ENDHLSL
+        }
+        Pass
+        {
+            Name "Universal2D"
+            Tags{ "LightMode" = "Universal2D" }
+            Tags{ "RenderType" = "Transparent" "Queue" = "Transparent" }
+
+            HLSLPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma shader_feature_local_fragment _ALPHATEST_ON
+            #pragma shader_feature_local_fragment _ALPHAPREMULTIPLY_ON
+
+            #include "LibraryUrp/StylizedInput.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/Shaders/Utils/Universal2D.hlsl"
+
+			/* start CurvedWorld */
+			//#define CURVEDWORLD_BEND_TYPE_CLASSICRUNNER_X_POSITIVE
+			//#define CURVEDWORLD_BEND_ID_1
+			//#pragma shader_feature_local CURVEDWORLD_DISABLED_ON
+			//#pragma shader_feature_local CURVEDWORLD_NORMAL_TRANSFORMATION_ON
+			//#include "Assets/Amazing Assets/Curved World/Shaders/Core/CurvedWorldTransform.cginc"
+			/* end CurvedWorld */
+
+            ENDHLSL
+        }
     }
-    FallBack "Diffuse"
+
+    Fallback "Hidden/Universal Render Pipeline/FallbackError"
     CustomEditor "StylizedSurfaceEditor"
 }

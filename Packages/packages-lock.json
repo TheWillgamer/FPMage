@@ -23,6 +23,15 @@
       "dependencies": {},
       "hash": "a3fe8091f7237eef3f38becc3faa29b2dc6f9ce9"
     },
+    "com.unity.burst": {
+      "version": "1.8.2",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.mathematics": "1.2.1"
+      },
+      "url": "https://packages.unity.com"
+    },
     "com.unity.collab-proxy": {
       "version": "1.17.7",
       "depth": 0,
@@ -125,6 +134,17 @@
         "com.unity.ugui": "1.0.0",
         "com.unity.modules.physics": "1.0.0",
         "com.unity.modules.jsonserialize": "1.0.0"
+      }
+    },
+    "com.unity.render-pipelines.universal": {
+      "version": "12.1.9",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.mathematics": "1.2.1",
+        "com.unity.burst": "1.8.2",
+        "com.unity.render-pipelines.core": "12.1.9",
+        "com.unity.shadergraph": "12.1.9"
       }
     },
     "com.unity.searcher": {

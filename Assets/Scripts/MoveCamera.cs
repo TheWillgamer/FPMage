@@ -60,7 +60,7 @@ public class MoveCamera : NetworkBehaviour
         {
             _movingTime += Time.deltaTime;
             float smoothingPercent = (_movingTime / 0.75f);
-            float smoothingRate = Mathf.Lerp(30f, 20f, smoothingPercent);
+            float smoothingRate = Mathf.Lerp(50f, 40f, smoothingPercent);
             transform.position = Vector3.MoveTowards(transform.position, playerLoc.position, smoothingRate * distance * Time.deltaTime);
         }
         else

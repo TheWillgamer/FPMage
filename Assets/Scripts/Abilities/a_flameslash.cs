@@ -14,6 +14,12 @@ public class a_flameslash : NetworkBehaviour
     [SerializeField] private Transform proj_spawn;
     [SerializeField] Image Slash;
 
+    // shows the slash on screen
+    [SerializeField] private GameObject ownerSlashGM;
+    private ParticleSystem ownerSlash;
+    [SerializeField] private GameObject clientSlashGM;
+    private ParticleSystem clientSlash;
+
     #region cooldowns
     [SerializeField] private float slash_cd;
     private float slash_offcd;
@@ -23,6 +29,8 @@ public class a_flameslash : NetworkBehaviour
     void Start()
     {
         slash_offcd = Time.deltaTime;
+        ownerSlash = ownerSlashGM.GetComponent<ParticleSystem>();
+        clientSlash = clientSlashGM.GetComponent<ParticleSystem>();
     }
 
     private void Update()
@@ -40,6 +48,7 @@ public class a_flameslash : NetworkBehaviour
     [ServerRpc]
     private void DoDamage(int owner)
     {
+        showSlash();
         Collider[] hitColliders = Physics.OverlapBox(proj_spawn.position, new Vector3(2f, 1f, 2f), proj_spawn.rotation);
         foreach (var hit in hitColliders)
         {
@@ -54,6 +63,20 @@ public class a_flameslash : NetworkBehaviour
             {
                 hit.GetComponent<Projectile>().Reflect(proj_spawn.rotation * Vector3.forward, owner);
             }
+        }
+    }
+
+    [ObserversRpc]
+    private void showSlash()
+    {
+        if (base.IsOwner)
+        {
+            ownerSlash.Play();
+        }
+        else
+        {
+            clientSlashGM.transform.rotation = proj_spawn.rotation;
+            clientSlash.Play();
         }
     }
 

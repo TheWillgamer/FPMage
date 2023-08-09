@@ -30600,7 +30600,7 @@ MonoBehaviour:
   _networkObjectCache: {fileID: 4575299771133537037}
   fb: {fileID: 3637627862300843640, guid: f866deb3471328d4ba9602b23bcf41ea, type: 3}
   proj_spawn: {fileID: 5682205087739296379}
-  proj_force: 120
+  proj_force: 180
   fb_cd: 1.6
   cdRepresentation: {fileID: 5260410080079055999}
   Fireball:
@@ -30628,7 +30628,7 @@ MonoBehaviour:
   chargeTime: 0.5
   ownerMeteorGM: {fileID: 1372608675301374527}
   clientMeteorGM: {fileID: 7242760780636473361}
-  mt_cd: 6
+  mt_cd: 9
   Meteor: {fileID: 9005786515020923336}
 --- !u!114 &2221468856058139811
 MonoBehaviour:

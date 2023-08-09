@@ -44,9 +44,9 @@ public class a_fireball : NetworkBehaviour
 
         if (Input.GetButtonDown("Fire1") && fb_charges > 0)
         {
-            Vector3 endPoint = proj_spawn.position + proj_spawn.forward * 50f;
+            Vector3 endPoint = proj_spawn.position + proj_spawn.forward * 100f;
             RaycastHit hit;
-            if (Physics.Raycast(proj_spawn.position, proj_spawn.forward, out hit, 50f))
+            if (Physics.Raycast(proj_spawn.position, proj_spawn.forward, out hit, 100f))
             {
                 endPoint = hit.point;
             }

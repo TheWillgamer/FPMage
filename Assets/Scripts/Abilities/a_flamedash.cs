@@ -13,6 +13,7 @@ public class a_flamedash : NetworkBehaviour
     [SerializeField] private GameObject charge;
     [SerializeField] private GameObject dashparticles;
     [SerializeField] private Transform cam;
+    [SerializeField] private GameObject hitbox;
 
     AudioSource m_shootingSound;
     Movement mv;
@@ -96,10 +97,13 @@ public class a_flamedash : NetworkBehaviour
     private void startDashingServer()
     {
         startDash();
+        hitbox.transform.rotation = Quaternion.LookRotation(cam.forward);
+        hitbox.SetActive(true);
         dashStarted = true;
         mv.m_dashing = true;
         dash_offcd = Time.time + dash_cd;
         Invoke("endDash", dashDur);
+        Invoke("endDashServer", dashDur);
     }
 
     private IEnumerator SlowDown()
@@ -131,6 +135,12 @@ public class a_flamedash : NetworkBehaviour
     private void endDash()
     {
         dashparticles.SetActive(false);
+    }
+
+    [ObserversRpc]
+    private void endDashServer()
+    {
+        hitbox.SetActive(false);
     }
 
     private void UpdateUI()

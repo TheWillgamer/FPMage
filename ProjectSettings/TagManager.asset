@@ -8,6 +8,7 @@ TagManager:
   - NetworkManager
   - LobbyNetwork
   - Ground
+  - Reflector
   layers:
   - Default
   - TransparentFX

@@ -100,6 +100,7 @@ public class Movement : NetworkBehaviour
 
     private float threshold = 0.01f;
     private Vector2 mag;
+    [SerializeField] GameObject jumpIcon;
     #endregion
 
     /// <summary>
@@ -184,6 +185,7 @@ public class Movement : NetworkBehaviour
             Reconciliation(default, false);
             CheckInput(out MoveData md);
             Move(md, false);
+            UpdateUI();
         }
         if (base.IsServer)
         {
@@ -317,7 +319,9 @@ public class Movement : NetworkBehaviour
         {
             _rigidbody.AddForce(Vector3.up * secondJumpForce * 2f, ForceMode.Impulse);
             if (base.IsServer)
+            {
                 jumpCharge--;
+            }
         }
 
         //If jumping while falling, reset y velocity.
@@ -427,6 +431,12 @@ public class Movement : NetworkBehaviour
         transform.position = rd.Position;
         transform.rotation = rd.Rotation;
         _rigidbody.velocity = rd.Velocity;
+    }
+
+    private void UpdateUI()
+    {
+        if (base.IsOwner)
+            jumpIcon.SetActive(jumpCharge > 0);
     }
 
     //private void CounterMovement(float x, float y, Vector2 mag)

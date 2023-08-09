@@ -48,7 +48,7 @@ public class a_meteor : NetworkBehaviour
 
     private void Update()
     {
-        if (Input.GetButtonDown("Fire2"))
+        if (Input.GetButtonDown("Fire4"))
         {
             if (IsOwner && Time.time > mt_offcd)
             {

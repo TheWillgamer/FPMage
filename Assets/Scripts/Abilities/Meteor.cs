@@ -73,11 +73,13 @@ public class Meteor : NetworkBehaviour, Projectile
         if (timePassed > 0.1f)
             timePassed = 0.1f;
 
+        velocity -= Vector3.up * gravity * timePassed;
+
         // explode meteor is something is directly in front
         float travelDistance = (velocity.magnitude * timePassed);
         float traceDistance = travelDistance + _colliderRadius;
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, traceDistance) && !isExploding)
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, traceDistance + 1f) && !isExploding)
         {
             if ((hit.transform.tag == "Player" && hit.transform.parent.GetComponent<NetworkObject>().Owner.ClientId != owner) || hit.transform.tag == "Ground")
             {
@@ -86,7 +88,6 @@ public class Meteor : NetworkBehaviour, Projectile
             }
         }
 
-        velocity -= Vector3.up * gravity * timePassed;
         Move(timePassed);
     }
 
@@ -133,6 +134,7 @@ public class Meteor : NetworkBehaviour, Projectile
                     PlayerHealth ph = hit.transform.gameObject.GetComponent<PlayerHealth>();
                     ph.Knockback(dir.normalized, knockback_amount, knockback_growth);
                     ph.TakeDamage(damage);
+                    ph.startFire();
                 }
             }
 

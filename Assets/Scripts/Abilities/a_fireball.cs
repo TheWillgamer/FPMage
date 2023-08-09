@@ -44,7 +44,14 @@ public class a_fireball : NetworkBehaviour
 
         if (Input.GetButtonDown("Fire1") && fb_charges > 0)
         {
-            shootFireball();
+            Vector3 endPoint = proj_spawn.position + proj_spawn.forward * 50f;
+            RaycastHit hit;
+            if (Physics.Raycast(proj_spawn.position, proj_spawn.forward, out hit, 50f))
+            {
+                endPoint = hit.point;
+            }
+
+            shootFireball(endPoint);
             fb_charges--;
             if (fb_charges == 2)
             {
@@ -67,7 +74,7 @@ public class a_fireball : NetworkBehaviour
     }
 
     [ServerRpc]
-    private void shootFireball()
+    private void shootFireball(Vector3 endPoint)
     {
         playShootSound();
         GameObject spawned = Instantiate(fb, proj_spawn.position, proj_spawn.rotation);
@@ -77,7 +84,7 @@ public class a_fireball : NetworkBehaviour
         base.Spawn(spawned);
 
         Projectile proj = spawned.GetComponent<Projectile>();
-        proj.Initialize(base.TimeManager.GetPreciseTick(TickType.Tick), proj_spawn.forward * proj_force, base.Owner.ClientId);
+        proj.Initialize(base.TimeManager.GetPreciseTick(TickType.Tick), (endPoint - proj_spawn.position).normalized * proj_force, base.Owner.ClientId);
     }
 
     private void UpdateUI()

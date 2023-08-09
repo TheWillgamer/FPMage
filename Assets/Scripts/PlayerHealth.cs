@@ -140,7 +140,8 @@ public class PlayerHealth : NetworkBehaviour
             if (base.IsOwner)
             {
                 UpdateUI();
-                StartCoroutine(Fade());
+                if (amt > 3)
+                    StartCoroutine(Fade());
             }
         }
     }

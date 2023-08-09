@@ -29,7 +29,7 @@ public class a_flameslash : NetworkBehaviour
     {
         if (!IsOwner) return;
 
-        if (Input.GetButtonDown("Fire4") && Time.time > slash_offcd)
+        if (Input.GetButtonDown("Fire2") && Time.time > slash_offcd)
         {
             DoDamage(base.Owner.ClientId);
             slash_offcd = Time.time + slash_cd;
@@ -40,7 +40,7 @@ public class a_flameslash : NetworkBehaviour
     [ServerRpc]
     private void DoDamage(int owner)
     {
-        Collider[] hitColliders = Physics.OverlapBox(proj_spawn.position, new Vector3(2f, .5f, 2f), proj_spawn.rotation);
+        Collider[] hitColliders = Physics.OverlapBox(proj_spawn.position, new Vector3(2f, 1f, 2f), proj_spawn.rotation);
         foreach (var hit in hitColliders)
         {
             if (hit.transform.tag == "Player" && hit.transform.parent.GetComponent<NetworkObject>().Owner.ClientId != owner)

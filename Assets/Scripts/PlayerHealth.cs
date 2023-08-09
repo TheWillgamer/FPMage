@@ -20,6 +20,10 @@ public class PlayerHealth : NetworkBehaviour
     [SerializeField] private int fireDmg;
     [SerializeField] private float fire_cd;
     private float fire_offcd;
+    [SerializeField] private GameObject baseFireGM;
+    private ParticleSystem baseFire;
+    [SerializeField] private GameObject fireExplosionGM;
+    private ParticleSystem fireExplosion;
 
     //Audio
     public AudioSource hit;
@@ -37,6 +41,8 @@ public class PlayerHealth : NetworkBehaviour
     void Start()
     {
         hp = 0;
+        baseFire = baseFireGM.GetComponent<ParticleSystem>();
+        fireExplosion = fireExplosionGM.GetComponent<ParticleSystem>();
     }
 
     private void OnDestroy()
@@ -71,13 +77,55 @@ public class PlayerHealth : NetworkBehaviour
             return;
 
         float delta = (onTick) ? (float)base.TimeManager.TickDelta : Time.deltaTime;
-        
 
+        DoFireTick(delta);
     }
 
     public void startFire()
     {
+        onFire = 3;
+        fire_offcd = fire_cd;
+        startFireGM();
+    }
 
+    private void DoFireTick(float deltaTime)
+    {
+        fire_offcd -= deltaTime;
+        if (onFire > 0 && fire_offcd <= 0f)
+        {
+            fireBurstGM();
+            TakeDamage(fireDmg);
+            onFire--;
+            fire_offcd += fire_cd;
+            if (onFire == 0)
+                endFireGM();
+        }
+    }
+
+    [ObserversRpc]
+    private void startFireGM()
+    {
+        if (base.IsOwner)
+            return;
+        baseFireGM.SetActive(true);
+        baseFire.Play();
+    }
+
+    [ObserversRpc]
+    private void endFireGM()
+    {
+        if (base.IsOwner)
+            return;
+        baseFireGM.SetActive(false);
+    }
+
+    [ObserversRpc]
+    private void fireBurstGM()
+    {
+        if (base.IsOwner)
+            return;
+        fireExplosionGM.transform.position = transform.position;
+        fireExplosion.Play();
     }
 
     // Reduces hp based on the parameter amount
@@ -138,7 +186,7 @@ public class PlayerHealth : NetworkBehaviour
     IEnumerator Fade()
     {
         Color c = dmgScreen.color;
-        for (float alpha = .2f; alpha >= 0; alpha -= 0.001f)
+        for (float alpha = .2f; alpha >= 0; alpha -= 0.0015f)
         {
             c.a = alpha;
             dmgScreen.color = c;

@@ -94,6 +94,7 @@ public class Fireball : NetworkBehaviour, Projectile
                 PlayerHealth ph = hit.transform.gameObject.GetComponent<PlayerHealth>();
                 ph.Knockback(transform.TransformDirection(Vector3.forward), knockback_amount, knockback_growth);
                 ph.TakeDamage(damage);
+                ph.startFire();
                 explode(transform.position);
                 isExploding = true;
             }

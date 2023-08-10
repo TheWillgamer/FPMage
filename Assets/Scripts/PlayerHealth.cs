@@ -153,9 +153,6 @@ public class PlayerHealth : NetworkBehaviour
     {
         if (dh != null)
             dh.CancelDash();
-        mv.EndDash();
-        mv.h_dashing = false;
-        mv.m_dashing = false;
 
         rb.velocity = Vector3.zero;
         rb.AddForce(Vector3.up * base_kb, ForceMode.Impulse);

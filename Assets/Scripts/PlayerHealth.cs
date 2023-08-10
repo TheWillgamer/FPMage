@@ -153,8 +153,6 @@ public class PlayerHealth : NetworkBehaviour
     {
         if (dh != null)
             dh.CancelDash();
-
-        mv.disableAB = false;
         mv.EndDash();
 
         rb.velocity = Vector3.zero;

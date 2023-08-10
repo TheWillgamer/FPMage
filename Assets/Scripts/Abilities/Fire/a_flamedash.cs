@@ -96,7 +96,7 @@ public class a_flamedash : NetworkBehaviour, Dash
     private void startDashing()
     {
         dashStarted = true;
-        mv.m_dashing = true;
+        //mv.m_dashing = true;
         dash_offcd = Time.time + dash_cd;
     }
 
@@ -109,7 +109,8 @@ public class a_flamedash : NetworkBehaviour, Dash
         hitbox.transform.rotation = Quaternion.LookRotation(cam.forward);
         hitbox.SetActive(true);
         dashStarted = true;
-        mv.m_dashing = true;
+        //mv.m_dashing = true;
+        rb.AddForce(cam.forward * dashForce, ForceMode.Impulse);
         dash_offcd = Time.time + dash_cd;
         Invoke("endDash", dashDur);
         Invoke("endDashServer", dashDur);
@@ -143,15 +144,18 @@ public class a_flamedash : NetworkBehaviour, Dash
     [ObserversRpc]
     private void endDash()
     {
-        Debug.Log("b");
         dashparticles.SetActive(false);
         charge.SetActive(false);
         if (IsOwner)
+        {
             mv.disableAB = false;
+        }
+            
     }
 
     private void endDashServer()
     {
+        mv.EndDash();
         hitbox.SetActive(false);
     }
 
@@ -167,11 +171,11 @@ public class a_flamedash : NetworkBehaviour, Dash
         if (IsOwner && !dashStarted)
             dash_offcd = Time.time + dash_cd;
 
-        Debug.Log("a");
         dashStarted = true;
         CancelInvoke();
         CancelDashClient();
         endDash();
+        mv.EndDash();
         hitbox.SetActive(false);
     }
 

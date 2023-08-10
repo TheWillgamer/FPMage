@@ -231,7 +231,7 @@ public class Movement : NetworkBehaviour
             md.Vertical = 0;
         }
 
-        if (md.Hdash && dashing)
+        if (md.Hdash)
         {
             _rigidbody.velocity = new Vector3(0, 0, 0);
             if (md.Horizontal == 0 && md.Vertical == 0)
@@ -241,7 +241,7 @@ public class Movement : NetworkBehaviour
             Invoke(nameof(EndDash), dashDuration);
         }
 
-        if (md.Mdash && dashing)
+        if (md.Mdash)
         {
             _rigidbody.velocity = new Vector3(0, 0, 0);
             _rigidbody.AddForce(cam.forward * dashModifier, ForceMode.Impulse);
@@ -341,6 +341,7 @@ public class Movement : NetworkBehaviour
     //reduces velocity by a factor of the parameter
     public void EndDash()
     {
+        disableAB = false;
         disableMV = false;
         if (!dashing)
             return;

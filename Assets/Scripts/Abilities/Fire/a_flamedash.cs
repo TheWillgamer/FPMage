@@ -53,11 +53,12 @@ public class a_flamedash : NetworkBehaviour, Dash
 
         if (!mv.disableAB && Input.GetButtonDown("Fire3") && Time.time > dash_offcd)
         {
-            mv.disableAB = true;
             setDashing();
+            Invoke("startDashingServer", dashDelay);
 
             if (!IsServer)
             {
+                mv.disableAB = true;
                 mv.disableMV = true;
                 mv.gravity = false;
                 mv.dashing = true;
@@ -82,6 +83,7 @@ public class a_flamedash : NetworkBehaviour, Dash
     private void setDashing()
     {
         startCharge();
+        mv.disableAB = true;
         mv.disableMV = true;
         mv.gravity = false;
         mv.dashing = true;
@@ -89,7 +91,6 @@ public class a_flamedash : NetworkBehaviour, Dash
         mv.dashDuration = dashDur;
         dashStarted = false;
         slower = StartCoroutine(SlowDown());
-        Invoke("startDashingServer", dashDelay);
     }
 
     private void startDashing()
@@ -147,7 +148,6 @@ public class a_flamedash : NetworkBehaviour, Dash
             mv.disableAB = false;
     }
 
-    [ServerRpc]
     private void endDashServer()
     {
         hitbox.SetActive(false);

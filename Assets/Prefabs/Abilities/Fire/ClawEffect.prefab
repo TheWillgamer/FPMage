@@ -42,7 +42,7 @@ ParticleSystem:
   m_GameObject: {fileID: 4126759046521140932}
   serializedVersion: 8
   lengthInSec: 5
-  simulationSpeed: 2
+  simulationSpeed: 2.5
   stopAction: 0
   cullingMode: 0
   ringBufferMode: 0
@@ -4912,7 +4912,7 @@ ParticleSystem:
   m_GameObject: {fileID: 4126759046774072710}
   serializedVersion: 8
   lengthInSec: 5
-  simulationSpeed: 2
+  simulationSpeed: 2.5
   stopAction: 0
   cullingMode: 0
   ringBufferMode: 0
@@ -9782,7 +9782,7 @@ ParticleSystem:
   m_GameObject: {fileID: 4126759046938799269}
   serializedVersion: 8
   lengthInSec: 5
-  simulationSpeed: 2
+  simulationSpeed: 2.5
   stopAction: 0
   cullingMode: 0
   ringBufferMode: 0
@@ -14652,7 +14652,7 @@ ParticleSystem:
   m_GameObject: {fileID: 4126759047389744137}
   serializedVersion: 8
   lengthInSec: 5
-  simulationSpeed: 2
+  simulationSpeed: 2.5
   stopAction: 0
   cullingMode: 0
   ringBufferMode: 0
@@ -19522,7 +19522,7 @@ ParticleSystem:
   m_GameObject: {fileID: 4126759047432762320}
   serializedVersion: 8
   lengthInSec: 5
-  simulationSpeed: 2
+  simulationSpeed: 2.5
   stopAction: 0
   cullingMode: 0
   ringBufferMode: 0
@@ -24392,7 +24392,7 @@ ParticleSystem:
   m_GameObject: {fileID: 4126759047481047012}
   serializedVersion: 8
   lengthInSec: 5
-  simulationSpeed: 2
+  simulationSpeed: 2.5
   stopAction: 0
   cullingMode: 0
   ringBufferMode: 0
@@ -29262,7 +29262,7 @@ ParticleSystem:
   m_GameObject: {fileID: 4126759047613970669}
   serializedVersion: 8
   lengthInSec: 5
-  simulationSpeed: 2
+  simulationSpeed: 2.5
   stopAction: 0
   cullingMode: 0
   ringBufferMode: 0
@@ -34132,7 +34132,7 @@ ParticleSystem:
   m_GameObject: {fileID: 4126759047948186152}
   serializedVersion: 8
   lengthInSec: 5
-  simulationSpeed: 2
+  simulationSpeed: 2.5
   stopAction: 0
   cullingMode: 0
   ringBufferMode: 0
@@ -43823,7 +43823,7 @@ ParticleSystem:
   m_GameObject: {fileID: 4126759048600193957}
   serializedVersion: 8
   lengthInSec: 5
-  simulationSpeed: 2
+  simulationSpeed: 2.5
   stopAction: 0
   cullingMode: 0
   ringBufferMode: 0

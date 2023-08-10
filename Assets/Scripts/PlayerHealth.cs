@@ -14,6 +14,7 @@ public class PlayerHealth : NetworkBehaviour
     public Image dmgScreen;
     private Rigidbody rb;
     private Movement mv;
+    private Dash dh;
 
     // OnFire
     private int onFire;
@@ -33,6 +34,7 @@ public class PlayerHealth : NetworkBehaviour
     {
         rb = GetComponent<Rigidbody>();
         mv = GetComponent<Movement>();
+        dh = GetComponent<Dash>();
         onFire = 0;
         InstanceFinder.TimeManager.OnTick += TimeManager_OnTick;
     }
@@ -149,8 +151,10 @@ public class PlayerHealth : NetworkBehaviour
     // Knocks back the player in a given direction: kb_growth determines how much percentage determines the knockback amount
     public void Knockback(Vector3 direction, float base_kb, float kb_growth)
     {
-        if (mv.dashing)
-            mv.EndDash();
+        if (dh != null)
+            dh.CancelDash();
+        
+        mv.EndDash();
 
         rb.velocity = Vector3.zero;
         rb.AddForce(Vector3.up * base_kb, ForceMode.Impulse);

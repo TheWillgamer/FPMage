@@ -36036,7 +36036,7 @@ GameObject:
   - component: {fileID: 8884359997335221555}
   m_Layer: 0
   m_Name: FireDashCollider
-  m_TagString: Absorber
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

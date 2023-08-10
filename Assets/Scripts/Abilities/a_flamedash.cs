@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using System.Collections;
 //using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
 
-public class a_flamedash : NetworkBehaviour
+public class a_flamedash : NetworkBehaviour, Dash
 {
     [SerializeField] private float dashForce;
     [SerializeField] private float dashDur;
@@ -23,6 +23,7 @@ public class a_flamedash : NetworkBehaviour
     [SerializeField] private float dash_cd;
     private float dash_offcd;
     private bool dashStarted;
+    private Coroutine slower;       // makes player slow down
     #endregion
 
     #region UI
@@ -62,7 +63,7 @@ public class a_flamedash : NetworkBehaviour
                 mv.dashModifier = dashForce;
                 mv.dashDuration = dashDur;
                 dashStarted = false;
-                StartCoroutine(SlowDown());
+                slower = StartCoroutine(SlowDown());
                 Invoke("startDashing", dashDelay);
             }
         }
@@ -75,6 +76,7 @@ public class a_flamedash : NetworkBehaviour
         //m_shootingSound.Play();
     }
 
+    // Disables movement and slows down player to set up for a dash
     [ServerRpc]
     private void setDashing()
     {
@@ -85,7 +87,7 @@ public class a_flamedash : NetworkBehaviour
         mv.dashModifier = dashForce;
         mv.dashDuration = dashDur;
         dashStarted = false;
-        StartCoroutine(SlowDown());
+        slower = StartCoroutine(SlowDown());
     }
 
     private void startDashing()
@@ -137,9 +139,10 @@ public class a_flamedash : NetworkBehaviour
     private void endDash()
     {
         dashparticles.SetActive(false);
+        charge.SetActive(false);
     }
 
-    [ObserversRpc]
+    [ServerRpc]
     private void endDashServer()
     {
         hitbox.SetActive(false);
@@ -148,5 +151,24 @@ public class a_flamedash : NetworkBehaviour
     private void UpdateUI()
     {
         Wind.fillAmount = 1 - (dash_offcd - Time.time) / dash_cd;
+    }
+
+    public virtual void CancelDash()
+    {
+        StopCoroutine(slower);
+        CancelInvoke();
+        CancelDashClient();
+        endDash();
+        endDashServer();
+    }
+
+    [ObserversRpc]
+    private void CancelDashClient()
+    {
+        if (!IsOwner) return;
+
+        dash_offcd = Time.time + dash_cd;
+        CancelInvoke();
+        StopCoroutine(slower);
     }
 }

@@ -161,10 +161,11 @@ public class a_flamedash : NetworkBehaviour, Dash
     {
         if (slower != null)
             StopCoroutine(slower);
+        dashStarted = true;
         CancelInvoke();
         CancelDashClient();
         endDash();
-        endDashServer();
+        hitbox.SetActive(false);
     }
 
     [ObserversRpc]

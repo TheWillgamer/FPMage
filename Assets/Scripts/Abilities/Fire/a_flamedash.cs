@@ -148,7 +148,7 @@ public class a_flamedash : NetworkBehaviour, Dash
         charge.SetActive(false);
         if (IsOwner)
         {
-            mv.disableAB = false;
+            mv.EndDash();
         }
             
     }

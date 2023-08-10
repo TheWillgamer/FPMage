@@ -161,6 +161,7 @@ public class a_flamedash : NetworkBehaviour, Dash
     {
         if (slower != null)
             StopCoroutine(slower);
+        mv.m_dashing = false;
         dashStarted = true;
         CancelInvoke();
         CancelDashClient();
@@ -178,6 +179,7 @@ public class a_flamedash : NetworkBehaviour, Dash
             dash_offcd = Time.time + dash_cd;
 
         mv.disableAB = false;
+        mv.m_dashing = false;
         dashStarted = true;
         if (slower != null)
             StopCoroutine(slower);

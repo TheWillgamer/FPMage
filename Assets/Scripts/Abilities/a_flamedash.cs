@@ -58,6 +58,7 @@ public class a_flamedash : NetworkBehaviour
             {
                 mv.disableMV = true;
                 mv.gravity = false;
+                mv.dashing = true;
                 mv.dashModifier = dashForce;
                 mv.dashDuration = dashDur;
                 dashStarted = false;
@@ -80,6 +81,7 @@ public class a_flamedash : NetworkBehaviour
         startCharge();
         mv.disableMV = true;
         mv.gravity = false;
+        mv.dashing = true;
         mv.dashModifier = dashForce;
         mv.dashDuration = dashDur;
         dashStarted = false;

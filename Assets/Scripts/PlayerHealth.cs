@@ -149,6 +149,9 @@ public class PlayerHealth : NetworkBehaviour
     // Knocks back the player in a given direction: kb_growth determines how much percentage determines the knockback amount
     public void Knockback(Vector3 direction, float base_kb, float kb_growth)
     {
+        if (mv.dashing)
+            mv.EndDash();
+
         rb.velocity = Vector3.zero;
         rb.AddForce(Vector3.up * base_kb, ForceMode.Impulse);
         if (mv.grounded && direction.y < 0.1f)

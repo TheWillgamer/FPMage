@@ -111,6 +111,7 @@ public class Movement : NetworkBehaviour
     public float dashModifier = 0f;         // speed of dash
     public float dashDuration = 0f;         // duration of dash
     public bool gravity;
+    public bool dashing;
 
     public bool disableMV;      //Disable movement
     //public bool disableCM;      //Disable counter-movement
@@ -134,6 +135,7 @@ public class Movement : NetworkBehaviour
         InstanceFinder.TimeManager.OnPostTick += TimeManager_OnPostTick;
         disableMV = false;
         gravity = true;
+        dashing = false;
         //disableCM = true;
         mag = new Vector2(0f, 0f);
 
@@ -336,12 +338,16 @@ public class Movement : NetworkBehaviour
     }
 
     //reduces velocity by a factor of the parameter
-    private void EndDash()
+    public void EndDash()
     {
+        if (!dashing)
+            return;
+
         Vector3 vel = _rigidbody.velocity;
         _rigidbody.velocity = new Vector3(vel.x / 3, vel.y / 3, vel.z / 3);
         disableMV = false;
         gravity = true;
+        dashing = false;
     }
 
     private void ResetJump()
@@ -399,7 +405,7 @@ public class Movement : NetworkBehaviour
                 //FLOOR
                 if (IsFloor(normal))
                 {
-                    _rigidbody.drag = gravity ? counterMovement : 0f;
+                    _rigidbody.drag = dashing ? 0f : counterMovement;
                     grounded = true;
                     canGroundJump = true;
                     normalVector = normal;

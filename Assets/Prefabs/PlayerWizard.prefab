@@ -24411,7 +24411,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1391941017
 Transform:
   m_ObjectHideFlags: 0
@@ -30394,6 +30394,7 @@ MonoBehaviour:
   dashModifier: 0
   dashDuration: 0
   gravity: 0
+  dashing: 0
   disableMV: 0
 --- !u!54 &6675352565897393522
 Rigidbody:
@@ -36066,7 +36067,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 2
+  m_Radius: 2.5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &8884359997335221555
 MonoBehaviour:

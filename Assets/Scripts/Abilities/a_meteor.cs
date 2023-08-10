@@ -17,6 +17,8 @@ public class a_meteor : NetworkBehaviour
     private ParticleSystem clientMeteor;
     AudioSource m_shootingSound;
 
+    private Movement mv;
+
     #region cooldowns
     //Meteor
     [SerializeField] private float mt_cd;
@@ -44,14 +46,16 @@ public class a_meteor : NetworkBehaviour
         clientMeteor = clientMeteorGM.GetComponent<ParticleSystem>();
         mt_offcd = Time.deltaTime;
         chargeStarted = false;
+        mv = GetComponent<Movement>();
     }
 
     private void Update()
     {
-        if (Input.GetButtonDown("Fire4"))
+        if (!mv.disableAB && Input.GetButtonDown("Fire4"))
         {
             if (IsOwner && Time.time > mt_offcd)
             {
+                mv.disableAB = true;
                 chargeStarted = true;
                 ownerMeteorGM.SetActive(true);
                 ownerMeteor.Play();
@@ -61,6 +65,7 @@ public class a_meteor : NetworkBehaviour
         }
         if (chargeStarted && Time.time > chargeReady)
         {
+            mv.disableAB = false;
             shootMeteor();
             chargeStarted = false;
             ownerMeteorGM.SetActive(false);

@@ -20,6 +20,8 @@ public class a_flameslash : NetworkBehaviour
     [SerializeField] private GameObject clientSlashGM;
     private ParticleSystem clientSlash;
 
+    private Movement mv;
+
     #region cooldowns
     [SerializeField] private float slash_cd;
     private float slash_offcd;
@@ -31,13 +33,14 @@ public class a_flameslash : NetworkBehaviour
         slash_offcd = Time.deltaTime;
         ownerSlash = ownerSlashGM.GetComponent<ParticleSystem>();
         clientSlash = clientSlashGM.GetComponent<ParticleSystem>();
+        mv = GetComponent<Movement>();
     }
 
     private void Update()
     {
         if (!IsOwner) return;
 
-        if (Input.GetButtonDown("Fire2") && Time.time > slash_offcd)
+        if (!mv.disableAB && Input.GetButtonDown("Fire2") && Time.time > slash_offcd)
         {
             DoDamage(base.Owner.ClientId);
             slash_offcd = Time.time + slash_cd;

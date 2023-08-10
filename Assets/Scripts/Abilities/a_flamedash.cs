@@ -22,7 +22,7 @@ public class a_flamedash : NetworkBehaviour, Dash
     #region cooldowns
     [SerializeField] private float dash_cd;
     private float dash_offcd;
-    private bool dashStarted;
+    private bool dashStarted;       // only resets cd when true
     private Coroutine slower;       // makes player slow down
     #endregion
 
@@ -44,17 +44,19 @@ public class a_flamedash : NetworkBehaviour, Dash
         mv = GetComponent<Movement>();
         rb = GetComponent<Rigidbody>();
         dash_offcd = Time.deltaTime;
-        dashStarted = false;
+        dashStarted = true;
     }
 
     private void Update()
     {
         if (!IsOwner) return;
 
-        if (Input.GetButtonDown("Fire3") && Time.time > dash_offcd)
+        if (!mv.disableAB && Input.GetButtonDown("Fire3") && Time.time > dash_offcd)
         {
+            mv.disableAB = true;
             setDashing();
             Invoke("startDashingServer", dashDelay);
+
             if (!IsServer)
             {
                 mv.disableMV = true;
@@ -140,6 +142,8 @@ public class a_flamedash : NetworkBehaviour, Dash
     {
         dashparticles.SetActive(false);
         charge.SetActive(false);
+        if (IsOwner)
+            mv.disableAB = false;
     }
 
     [ServerRpc]
@@ -168,7 +172,11 @@ public class a_flamedash : NetworkBehaviour, Dash
     {
         if (!IsOwner) return;
 
-        dash_offcd = Time.time + dash_cd;
+        if (!dashStarted)
+            dash_offcd = Time.time + dash_cd;
+
+        mv.disableAB = false;
+        dashStarted = true;
         CancelInvoke();
         if (slower != null)
             StopCoroutine(slower);

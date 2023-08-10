@@ -114,7 +114,7 @@ public class Movement : NetworkBehaviour
     public bool dashing;
 
     public bool disableMV;      //Disable movement
-    //public bool disableCM;      //Disable counter-movement
+    public bool disableAB;      //Disable abilities
     private float _colliderRadius;
 
     private bool paused;
@@ -134,6 +134,7 @@ public class Movement : NetworkBehaviour
         InstanceFinder.TimeManager.OnTick += TimeManager_OnTick;
         InstanceFinder.TimeManager.OnPostTick += TimeManager_OnPostTick;
         disableMV = false;
+        disableAB = false;
         gravity = true;
         dashing = false;
         //disableCM = true;

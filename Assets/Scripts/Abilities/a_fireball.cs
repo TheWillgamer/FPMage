@@ -12,6 +12,8 @@ public class a_fireball : NetworkBehaviour
     [SerializeField] private float proj_force;
     AudioSource m_shootingSound;
 
+    private Movement mv;
+
     #region cooldowns
     //Fireball
     private int fb_charges;
@@ -36,13 +38,14 @@ public class a_fireball : NetworkBehaviour
         m_shootingSound = GetComponent<AudioSource>();
         fb_charges = 3;
         fb_offcd = Time.deltaTime;
+        mv = GetComponent<Movement>();
     }
 
     private void Update()
     {
         if (!IsOwner) return;
 
-        if (Input.GetButtonDown("Fire1") && fb_charges > 0)
+        if (!mv.disableAB && Input.GetButtonDown("Fire1") && fb_charges > 0)
         {
             Vector3 endPoint = proj_spawn.position + proj_spawn.forward * 100f;
             RaycastHit hit;

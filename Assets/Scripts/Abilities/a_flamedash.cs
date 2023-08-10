@@ -55,7 +55,6 @@ public class a_flamedash : NetworkBehaviour, Dash
         {
             mv.disableAB = true;
             setDashing();
-            Invoke("startDashingServer", dashDelay);
 
             if (!IsServer)
             {
@@ -90,6 +89,7 @@ public class a_flamedash : NetworkBehaviour, Dash
         mv.dashDuration = dashDur;
         dashStarted = false;
         slower = StartCoroutine(SlowDown());
+        Invoke("startDashingServer", dashDelay);
     }
 
     private void startDashing()

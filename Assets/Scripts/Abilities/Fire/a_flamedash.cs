@@ -140,6 +140,7 @@ public class a_flamedash : NetworkBehaviour, Dash
     [ObserversRpc]
     private void endDash()
     {
+        Debug.Log("b");
         dashparticles.SetActive(false);
         charge.SetActive(false);
         if (IsOwner)
@@ -161,7 +162,10 @@ public class a_flamedash : NetworkBehaviour, Dash
     {
         if (slower != null)
             StopCoroutine(slower);
-        
+        if (IsOwner && !dashStarted)
+            dash_offcd = Time.time + dash_cd;
+
+        Debug.Log("a");
         dashStarted = true;
         CancelInvoke();
         CancelDashClient();
@@ -177,7 +181,6 @@ public class a_flamedash : NetworkBehaviour, Dash
 
         if (!dashStarted)
             dash_offcd = Time.time + dash_cd;
-        mv.dashing = false;
 
         dashStarted = true;
         if (slower != null)

@@ -341,12 +341,12 @@ public class Movement : NetworkBehaviour
     //reduces velocity by a factor of the parameter
     public void EndDash()
     {
+        disableMV = false;
         if (!dashing)
             return;
 
         Vector3 vel = _rigidbody.velocity;
         _rigidbody.velocity = new Vector3(vel.x / 3, vel.y / 3, vel.z / 3);
-        disableMV = false;
         gravity = true;
         dashing = false;
     }

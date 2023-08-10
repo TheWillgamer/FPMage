@@ -170,6 +170,7 @@ public class a_flamedash : NetworkBehaviour, Dash
     [ObserversRpc]
     private void CancelDashClient()
     {
+        CancelInvoke();
         if (!IsOwner) return;
 
         if (!dashStarted)
@@ -177,7 +178,6 @@ public class a_flamedash : NetworkBehaviour, Dash
 
         mv.disableAB = false;
         dashStarted = true;
-        CancelInvoke();
         if (slower != null)
             StopCoroutine(slower);
     }

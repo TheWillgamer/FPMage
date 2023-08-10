@@ -155,7 +155,8 @@ public class a_flamedash : NetworkBehaviour, Dash
 
     public virtual void CancelDash()
     {
-        StopCoroutine(slower);
+        if (slower != null)
+            StopCoroutine(slower);
         CancelInvoke();
         CancelDashClient();
         endDash();
@@ -169,6 +170,7 @@ public class a_flamedash : NetworkBehaviour, Dash
 
         dash_offcd = Time.time + dash_cd;
         CancelInvoke();
-        StopCoroutine(slower);
+        if (slower != null)
+            StopCoroutine(slower);
     }
 }

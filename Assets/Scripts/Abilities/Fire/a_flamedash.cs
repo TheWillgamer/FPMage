@@ -103,6 +103,8 @@ public class a_flamedash : NetworkBehaviour, Dash
     [ServerRpc]
     private void startDashingServer()
     {
+        if (dashStarted)
+            return;
         startDash();
         hitbox.transform.rotation = Quaternion.LookRotation(cam.forward);
         hitbox.SetActive(true);

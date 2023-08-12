@@ -35881,7 +35881,7 @@ GameObject:
   - component: {fileID: 8227743508398521441}
   - component: {fileID: 8227743508398521442}
   m_Layer: 0
-  m_Name: PlayerWizard
+  m_Name: FireWizard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

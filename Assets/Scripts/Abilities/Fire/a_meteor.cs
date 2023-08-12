@@ -44,7 +44,7 @@ public class a_meteor : NetworkBehaviour
         m_shootingSound = GetComponent<AudioSource>();
         ownerMeteor = ownerMeteorGM.GetComponent<ParticleSystem>();
         clientMeteor = clientMeteorGM.GetComponent<ParticleSystem>();
-        mt_offcd = Time.deltaTime;
+        mt_offcd = Time.time;
         chargeStarted = false;
         mv = GetComponent<Movement>();
     }

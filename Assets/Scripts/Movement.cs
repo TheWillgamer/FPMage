@@ -51,6 +51,7 @@ public class Movement : NetworkBehaviour
     private float jumpForce = 15f;
     [SerializeField]
     private float secondJumpForce = 15f;
+    public bool tripleJump = false;
     [SerializeField]
     private float wallJumpUpModifier = 1.5f;
     [SerializeField]
@@ -101,6 +102,7 @@ public class Movement : NetworkBehaviour
     private float threshold = 0.01f;
     private Vector2 mag;
     [SerializeField] GameObject jumpIcon;
+    [SerializeField] GameObject jumpIcon2;
     #endregion
 
     /// <summary>
@@ -412,7 +414,7 @@ public class Movement : NetworkBehaviour
                     grounded = true;
                     canGroundJump = true;
                     normalVector = normal;
-                    jumpCharge = 1;
+                    jumpCharge = tripleJump ? 2 : 1;
                     cancellingGrounded = false;
                     CancelInvoke(nameof(StopGrounded));
                 }
@@ -445,7 +447,12 @@ public class Movement : NetworkBehaviour
     private void UpdateUI()
     {
         if (base.IsOwner)
+        {
             jumpIcon.SetActive(jumpCharge > 0);
+            if (tripleJump)
+                jumpIcon2.SetActive(jumpCharge > 1);
+        }
+            
     }
 
     //private void CounterMovement(float x, float y, Vector2 mag)

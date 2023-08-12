@@ -37,7 +37,7 @@ public class a_fireball : NetworkBehaviour
     {
         m_shootingSound = GetComponent<AudioSource>();
         fb_charges = 3;
-        fb_offcd = Time.deltaTime;
+        fb_offcd = Time.time;
         mv = GetComponent<Movement>();
     }
 

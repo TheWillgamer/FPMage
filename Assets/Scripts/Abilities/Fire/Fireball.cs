@@ -13,9 +13,11 @@ public class Fireball : NetworkBehaviour, Projectile
     private Vector3 velocity = Vector3.zero;
     private int owner;
     [SerializeField] private GameObject explosion;
+    [SerializeField] private float aliveTime;
     private float _colliderRadius;
     private bool isExploding = false;
 
+    private float counter;
 
     public override void OnStartServer()
     {
@@ -107,6 +109,12 @@ public class Fireball : NetworkBehaviour, Projectile
         }
 
         transform.position += (velocity * deltaTime);
+        counter += deltaTime;
+        if (counter > aliveTime)
+        {
+            explode(transform.position);
+            isExploding = true;
+        }
     }
 
     [Server(Logging = LoggingType.Off)]

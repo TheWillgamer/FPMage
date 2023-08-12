@@ -16,6 +16,8 @@ public class a_windSlash : NetworkBehaviour
     #region cooldowns
     //WindSlash
     private float ws_charge;
+    [SerializeField] private float ws_chargeRate;
+    [SerializeField] private float ws_dechargeRate;
     [SerializeField] private float ws_cd;
     private float ws_offcd;
     private bool readyToFire;
@@ -38,7 +40,7 @@ public class a_windSlash : NetworkBehaviour
     {
         m_shootingSound = GetComponent<AudioSource>();
         ws_charge = 0f;
-        ws_offcd = Time.deltaTime;
+        ws_offcd = Time.time;
         mv = GetComponent<Movement>();
     }
 
@@ -46,7 +48,7 @@ public class a_windSlash : NetworkBehaviour
     {
         if (!IsOwner) return;
 
-        if (!mv.disableAB && Input.GetButton("Fire1") && readyToFire)
+        if (!mv.disableAB && !coolingDown && Input.GetButton("Fire1") && Time.time > ws_offcd)
         {
             Vector3 endPoint = proj_spawn.position + proj_spawn.forward * 30f;
             RaycastHit hit;
@@ -56,7 +58,26 @@ public class a_windSlash : NetworkBehaviour
             }
 
             shootWind(endPoint);
+            ws_offcd = Time.time + ws_cd;
+
+            ws_charge += ws_chargeRate;
+
+            if (ws_charge > 100f)
+            {
+                ws_charge = 100f;
+                WindSlash.color = new Color32(255, 210, 80, 180);
+                coolingDown = true;
+            }
         }
+
+        ws_charge -= ws_dechargeRate * Time.deltaTime;
+        if (ws_charge < 0f)
+        {
+            ws_charge = 0f;
+            WindSlash.color = new Color32(255, 255, 255, 180);
+            coolingDown = false;
+        }
+
         UpdateUI();
     }
 
@@ -80,5 +101,6 @@ public class a_windSlash : NetworkBehaviour
 
     private void UpdateUI()
     {
+        WindSlash.fillAmount = ws_charge / 100f;
     }
 }

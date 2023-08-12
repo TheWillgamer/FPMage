@@ -43,7 +43,7 @@ public class a_flamedash : NetworkBehaviour, Dash
         //m_shootingSound = GetComponent<AudioSource>();
         mv = GetComponent<Movement>();
         rb = GetComponent<Rigidbody>();
-        dash_offcd = Time.deltaTime;
+        dash_offcd = Time.time;
         dashStarted = true;
     }
 

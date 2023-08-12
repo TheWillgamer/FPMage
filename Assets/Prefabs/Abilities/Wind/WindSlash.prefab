@@ -4971,7 +4971,7 @@ MonoBehaviour:
   knockback_amount: 15
   knockback_growth: 40
   explosion: {fileID: 2916528441304133865, guid: 96f92734b9b44ec459032d2511f619b2, type: 3}
-  aliveTime: 0.12
+  aliveTime: 0.13
 --- !u!114 &2164252731766674324
 MonoBehaviour:
   m_ObjectHideFlags: 0

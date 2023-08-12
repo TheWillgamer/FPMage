@@ -49,7 +49,7 @@ public class a_windDash : NetworkBehaviour, Dash
             {
                 dash_offcd = Time.time + dash_cd;
             }
-            startDashingServer();
+            startDashingServer(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 
             if (!IsServer)
             {
@@ -75,7 +75,7 @@ public class a_windDash : NetworkBehaviour, Dash
     }
 
     [ServerRpc]
-    private void startDashingServer()
+    private void startDashingServer(float horizontal, float vertical)
     {
         mv.disableAB = true;
         mv.disableMV = true;
@@ -83,9 +83,6 @@ public class a_windDash : NetworkBehaviour, Dash
         mv.dashing = true;
 
         startDash();
-
-        float horizontal = Input.GetAxisRaw("Horizontal");
-        float vertical = Input.GetAxisRaw("Vertical");
 
         rb.velocity = Vector3.zero;
         if (horizontal == 0 && vertical == 0)

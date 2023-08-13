@@ -4,7 +4,7 @@ using FishNet.Managing.Logging;
 using FishNet.Managing.Timing;
 using UnityEngine;
 
-public class Meteor : NetworkBehaviour, Projectile
+public class WindExplosion : NetworkBehaviour, Projectile
 {
     [SerializeField] private int damage = 15;
     [SerializeField] private float knockback_amount = 1f;
@@ -13,7 +13,6 @@ public class Meteor : NetworkBehaviour, Projectile
     private Vector3 velocity = Vector3.zero;
     private int owner;
     [SerializeField] private GameObject explosion;
-    [SerializeField] private float gravity;
     [SerializeField] private float radius;
     private float _colliderRadius;
     private bool isExploding = false;
@@ -55,7 +54,6 @@ public class Meteor : NetworkBehaviour, Projectile
             return;
 
         float delta = (onTick) ? (float)base.TimeManager.TickDelta : Time.deltaTime;
-        velocity -= Vector3.up * gravity * delta;
         //If host move every update for smooth movement. Otherwise move OnTick.
         Move(delta);
     }
@@ -73,69 +71,56 @@ public class Meteor : NetworkBehaviour, Projectile
         if (timePassed > 0.1f)
             timePassed = 0.1f;
 
-        velocity -= Vector3.up * gravity * timePassed;
-
-        // explode meteor is something is directly in front
-        float travelDistance = (velocity.magnitude * timePassed);
-        float traceDistance = travelDistance + _colliderRadius;
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, traceDistance + 1f) && !isExploding)
-        {
-            if ((hit.transform.tag == "Player" && hit.transform.parent.GetComponent<NetworkObject>().Owner.ClientId != owner) || hit.transform.tag == "Ground")
-            {
-                explode(transform.position);
-                isExploding = true;
-            }
-        }
-
         Move(timePassed);
     }
 
     [Server(Logging = LoggingType.Off)]
     private void Move(float deltaTime)
     {
-        transform.rotation = Quaternion.LookRotation(velocity);
         //Determine how far object should travel this frame.
         float travelDistance = (velocity.magnitude * deltaTime);
         //Set trace distance to be travel distance + collider radius.
         float traceDistance = travelDistance + _colliderRadius;
 
+        //Reflect bullet if it hits a wall
+        int layerMask = 1 << 6;
+
         RaycastHit hit;
         // Does the ray intersect any walls
 
-        if (Physics.SphereCast(transform.position, _colliderRadius, transform.TransformDirection(Vector3.forward), out hit, traceDistance) && !isExploding)
+        if (Physics.Raycast(transform.position, velocity, out hit, traceDistance, layerMask) && !isExploding)
         {
-            if ((hit.transform.tag == "Player" && hit.transform.parent.GetComponent<NetworkObject>().Owner.ClientId != owner) || hit.transform.tag == "Ground")
-            {
-                explode(transform.position);
-                isExploding = true;
-            }
+            // Find the line from the gun to the point that was clicked.
+            Vector3 incomingVec = hit.point - transform.position;
+            // Use the point's normal to calculate the reflection vector.
+            Vector3 reflectVec = Vector3.Reflect(incomingVec, hit.normal);
+
+            velocity = reflectVec.normalized * velocity.magnitude;
         }
 
         transform.position += (velocity * deltaTime);
     }
 
     [Server(Logging = LoggingType.Off)]
-    private void explode(Vector3 pos)
+    public void explode()
     {
         if (base.IsServer)
         {
-            Collider[] hitColliders = Physics.OverlapSphere(pos, radius);
+            Collider[] hitColliders = Physics.OverlapSphere(transform.position, radius);
             foreach (var hit in hitColliders)
             {
                 if (hit.transform.tag == "Player")
                 {
                     // knockback direction
-                    Vector3 dir = (hit.transform.position - pos).normalized;
-                    
+                    Vector3 dir = (hit.transform.position - transform.position).normalized;
+
                     PlayerHealth ph = hit.transform.gameObject.GetComponent<PlayerHealth>();
                     ph.Knockback(dir.normalized, knockback_amount, knockback_growth);
                     ph.TakeDamage(damage);
-                    ph.startFire();
                 }
             }
 
-            ObserversSpawnExplodePrefab(pos);
+            ObserversSpawnExplodePrefab(transform.position);
 
             /* If server only then call destroy now. It will follow in order
              * so clients will receive it after they get the RPC. 

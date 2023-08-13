@@ -6323,7 +6323,7 @@ MonoBehaviour:
   we: {fileID: 2423090785593715163, guid: b3a00bb986e28014aab0c7063333dbbd, type: 3}
   proj_spawn: {fileID: 5682205087739296379}
   proj_force: 50
-  we_cd: 1
+  we_cd: 8
   Explosion: {fileID: 8012989213054258335}
 --- !u!1 &6820114073900090435
 GameObject:

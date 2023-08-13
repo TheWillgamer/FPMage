@@ -5968,7 +5968,7 @@ MonoBehaviour:
     LocalScale: {x: 1, y: 1, z: 1}
   _isNetworked: 1
   _isGlobal: 0
-  _hasParentNetworkObjectAtEdit: 1
+  _hasParentNetworkObjectAtEdit: 0
   NetworkObserver: {fileID: 0}
   _prefabId: -1
   _scenePathHash: 0
@@ -6007,7 +6007,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _componentIndexCache: 0
   _addedNetworkObject: {fileID: 4575299771133537037}
-  _networkObjectCache: {fileID: 8227743508398521442}
+  _networkObjectCache: {fileID: 4575299771133537037}
   cam: {fileID: 8227743508193196329}
   jumpForce: 18
   secondJumpForce: 12
@@ -6061,7 +6061,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _componentIndexCache: 1
   _addedNetworkObject: {fileID: 4575299771133537037}
-  _networkObjectCache: {fileID: 8227743508398521442}
+  _networkObjectCache: {fileID: 4575299771133537037}
   _synchronizeParent: 0
   _packing:
     Position: 1
@@ -6103,7 +6103,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _componentIndexCache: 2
   _addedNetworkObject: {fileID: 4575299771133537037}
-  _networkObjectCache: {fileID: 8227743508398521442}
+  _networkObjectCache: {fileID: 4575299771133537037}
   _graphicalObject: {fileID: 7928923847964066659}
   _smoothTicks: 1
   _durationType: 0
@@ -6129,7 +6129,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _componentIndexCache: 3
   _addedNetworkObject: {fileID: 8227743508398521442}
-  _networkObjectCache: {fileID: 8227743508398521442}
+  _networkObjectCache: {fileID: 4575299771133537037}
   hp: 0
   hpPercentage: {fileID: 4198358656015635291}
   dmgScreen: {fileID: 1733089372414222686}
@@ -6249,7 +6249,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _componentIndexCache: 4
   _addedNetworkObject: {fileID: 4575299771133537037}
-  _networkObjectCache: {fileID: 8227743508398521442}
+  _networkObjectCache: {fileID: 4575299771133537037}
   ws: {fileID: 3637627862300843640, guid: 775fc4930612c914abc7c2cc4759f0e3, type: 3}
   wsr: {fileID: 3637627862300843640, guid: aaa6abe2520ede84f9618f13e12272e4, type: 3}
   proj_spawn: {fileID: 5682205087739296379}
@@ -6273,10 +6273,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _componentIndexCache: 5
   _addedNetworkObject: {fileID: 4575299771133537037}
-  _networkObjectCache: {fileID: 8227743508398521442}
+  _networkObjectCache: {fileID: 4575299771133537037}
   dashForce: 110
   dashDur: 0.08
-  dash_cd: 6
+  dash_cd: 9
   Wind: {fileID: 8961857325175973703}
 --- !u!114 &1548865369264753726
 MonoBehaviour:
@@ -6292,7 +6292,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _componentIndexCache: 6
   _addedNetworkObject: {fileID: 4575299771133537037}
-  _networkObjectCache: {fileID: 8227743508398521442}
+  _networkObjectCache: {fileID: 4575299771133537037}
   dashSpeed: 30
   directionModifier: 35
   damage: 18
@@ -6319,11 +6319,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _componentIndexCache: 7
   _addedNetworkObject: {fileID: 4575299771133537037}
-  _networkObjectCache: {fileID: 8227743508398521442}
+  _networkObjectCache: {fileID: 4575299771133537037}
   we: {fileID: 2423090785593715163, guid: b3a00bb986e28014aab0c7063333dbbd, type: 3}
   proj_spawn: {fileID: 5682205087739296379}
   proj_force: 50
-  we_cd: 8
+  minTimeToExplode: 0.3
+  we_cd: 6
   Explosion: {fileID: 8012989213054258335}
 --- !u!1 &6820114073900090435
 GameObject:
@@ -11293,7 +11294,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _componentIndexCache: 8
   _addedNetworkObject: {fileID: 8227743508398521442}
-  _networkObjectCache: {fileID: 8227743508398521442}
+  _networkObjectCache: {fileID: 4575299771133537037}
 --- !u!1 &7652931878624776276
 GameObject:
   m_ObjectHideFlags: 0
@@ -11427,7 +11428,7 @@ MonoBehaviour:
     LocalScale: {x: 1, y: 1, z: 1}
   _isNetworked: 1
   _isGlobal: 0
-  _hasParentNetworkObjectAtEdit: 1
+  _hasParentNetworkObjectAtEdit: 0
   NetworkObserver: {fileID: 0}
   _prefabId: -1
   _scenePathHash: 0
@@ -11450,9 +11451,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 044753e13dd3b2d47b94005fb3cdbcbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 9
+  _componentIndexCache: 0
   _addedNetworkObject: {fileID: 8227743508398521442}
-  _networkObjectCache: {fileID: 8227743508398521442}
+  _networkObjectCache: {fileID: 3886377583055081699}
   sensitivity: 50
   playerLoc: {fileID: 4790489275998527890}
   playerSpawned: 0
@@ -11469,9 +11470,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2836e36774ca1c4bbbee976e17b649c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 10
+  _componentIndexCache: 1
   _addedNetworkObject: {fileID: 8227743508398521442}
-  _networkObjectCache: {fileID: 8227743508398521442}
+  _networkObjectCache: {fileID: 3886377583055081699}
   _synchronizeParent: 0
   _packing:
     Position: 0

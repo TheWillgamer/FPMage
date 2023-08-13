@@ -10,9 +10,12 @@ public class a_windExplosion : NetworkBehaviour
     [SerializeField] private GameObject we;
     [SerializeField] private Transform proj_spawn;
     [SerializeField] private float proj_force;
+    [SerializeField] private float minTimeToExplode;
     private Projectile proj;
     private bool chargeStarted;
     AudioSource m_shootingSound;
+    private bool explodable;
+    private bool letGo;
 
     private Movement mv;
 
@@ -37,6 +40,8 @@ public class a_windExplosion : NetworkBehaviour
         we_offcd = Time.time;
         mv = GetComponent<Movement>();
         chargeStarted = false;
+        letGo = false;
+        explodable = false;
     }
 
     private void Update()
@@ -54,20 +59,30 @@ public class a_windExplosion : NetworkBehaviour
                 shootWind(endPoint);
                 mv.disableAB = true;
                 chargeStarted = true;
+                explodable = false;
+                Invoke("makeExplodable", minTimeToExplode);
             }
         }
+
         if (chargeStarted && Input.GetButtonUp("Fire2"))
         {
-            if (proj != null)
-            {
-                WindExplosion we = (WindExplosion)proj;
-                we.explode();
-            }
+            letGo = true;
+        }
+
+        if (letGo && explodable)
+        {
+            explodeWind();
             mv.disableAB = false;
             chargeStarted = false;
             we_offcd = Time.time + we_cd;
+            letGo = false;
         }
         UpdateUI();
+    }
+
+    private void makeExplodable()
+    {
+        explodable = true;
     }
 
     [ObserversRpc]
@@ -88,6 +103,16 @@ public class a_windExplosion : NetworkBehaviour
 
         proj = spawned.GetComponent<Projectile>();
         proj.Initialize(base.TimeManager.GetPreciseTick(TickType.Tick), (endPoint - proj_spawn.position).normalized * proj_force, base.Owner.ClientId);
+    }
+
+    [ServerRpc]
+    private void explodeWind()
+    {
+        if (proj != null)
+        {
+            WindExplosion we = (WindExplosion)proj;
+            we.explode();
+        }
     }
 
     private void UpdateUI()

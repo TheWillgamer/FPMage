@@ -7,9 +7,11 @@ using System.Collections;
 public class a_windSlash : NetworkBehaviour
 {
     [SerializeField] private GameObject ws;
+    [SerializeField] private GameObject wsr;
     [SerializeField] private Transform proj_spawn;
     [SerializeField] private float proj_force;
     AudioSource m_shootingSound;
+    private bool wdir;          // Direction of wind slash effect
 
     private Movement mv;
 
@@ -91,7 +93,12 @@ public class a_windSlash : NetworkBehaviour
     private void shootWind(Vector3 endPoint)
     {
         playShootSound();
-        GameObject spawned = Instantiate(ws, proj_spawn.position, proj_spawn.rotation);
+        GameObject spawned;
+        if (wdir)
+            spawned = Instantiate(ws, proj_spawn.position, proj_spawn.rotation);
+        else
+            spawned = Instantiate(wsr, proj_spawn.position, proj_spawn.rotation);
+        wdir = !wdir;
 
         base.Spawn(spawned);
 

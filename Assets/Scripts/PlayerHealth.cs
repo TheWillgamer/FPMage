@@ -155,7 +155,7 @@ public class PlayerHealth : NetworkBehaviour
             dh.CancelDash();
 
         rb.velocity = Vector3.zero;
-        rb.AddForce(Vector3.up * base_kb, ForceMode.Impulse);
+        rb.AddForce(Vector3.up * base_kb / 2f, ForceMode.Impulse);
         if (mv.grounded && direction.y < 0.1f)
         {
             Vector3 newDir = new Vector3(direction.x, 0f, direction.z);
@@ -166,7 +166,6 @@ public class PlayerHealth : NetworkBehaviour
         {
             direction = direction + 2 * Vector3.ProjectOnPlane(direction, Vector3.up).normalized;
             rb.AddForce(direction.normalized * (((hp / kb_growth) + 1) * base_kb), ForceMode.Impulse);
-            Debug.Log(direction.normalized);
         }
         else
             rb.AddForce(direction * (((hp / kb_growth) + 1) * base_kb), ForceMode.Impulse);

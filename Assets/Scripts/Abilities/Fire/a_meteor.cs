@@ -10,6 +10,7 @@ public class a_meteor : NetworkBehaviour
     [SerializeField] private GameObject mt;
     [SerializeField] private Transform proj_spawn;
     [SerializeField] private float proj_force;
+    [SerializeField] private float upAmt;
     [SerializeField] private float chargeTime;
     [SerializeField] private GameObject ownerMeteorGM;
     private ParticleSystem ownerMeteor;
@@ -115,7 +116,7 @@ public class a_meteor : NetworkBehaviour
         base.Spawn(spawned);
 
         Projectile proj = spawned.GetComponent<Projectile>();
-        proj.Initialize(base.TimeManager.GetPreciseTick(TickType.Tick), proj_spawn.forward * proj_force, base.Owner.ClientId);
+        proj.Initialize(base.TimeManager.GetPreciseTick(TickType.Tick), proj_spawn.forward * proj_force + Vector3.up * upAmt, base.Owner.ClientId);
     }
 
     private void UpdateUI()

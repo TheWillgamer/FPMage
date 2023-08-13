@@ -160,13 +160,16 @@ public class PlayerHealth : NetworkBehaviour
         {
             Vector3 newDir = new Vector3(direction.x, 0f, direction.z);
             float force = (((hp / kb_growth) + 1) * base_kb);
-            rb.AddForce((newDir.normalized/2f + newDir/2f) * force, ForceMode.Impulse);
+            rb.AddForce((newDir.normalized / 2f + newDir / 2f) * force, ForceMode.Impulse);
         }
         else if (direction.y > 0f)
         {
             direction = direction + 2 * Vector3.ProjectOnPlane(direction, Vector3.up).normalized;
             rb.AddForce(direction.normalized * (((hp / kb_growth) + 1) * base_kb), ForceMode.Impulse);
+            Debug.Log(direction.normalized);
         }
+        else
+            rb.AddForce(direction * (((hp / kb_growth) + 1) * base_kb), ForceMode.Impulse);
     }
 
     [ObserversRpc]

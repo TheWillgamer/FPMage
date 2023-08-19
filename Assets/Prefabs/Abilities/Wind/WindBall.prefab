@@ -4904,8 +4904,8 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 6553572143710192731}
   _networkObjectCache: {fileID: 6553572143710192731}
   damage: 20
-  knockback_amount: 45
-  knockback_growth: 25
+  knockback_amount: 35
+  knockback_growth: 28
   explosion: {fileID: 2423090785593715163, guid: e9747a9d8e6789948b9ad70c86a347b7, type: 3}
   radius: 5
 --- !u!114 &6553572143710192731
@@ -4931,7 +4931,7 @@ MonoBehaviour:
   _isGlobal: 0
   _hasParentNetworkObjectAtEdit: 0
   NetworkObserver: {fileID: 0}
-  _prefabId: 21
+  _prefabId: 22
   _scenePathHash: 0
   _sceneId: 0
   _sceneNetworkObjects: []

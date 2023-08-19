@@ -4907,7 +4907,7 @@ MonoBehaviour:
   knockback_amount: 45
   knockback_growth: 25
   explosion: {fileID: 2423090785593715163, guid: e9747a9d8e6789948b9ad70c86a347b7, type: 3}
-  radius: 4
+  radius: 5
 --- !u!114 &6553572143710192731
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -6253,7 +6253,7 @@ MonoBehaviour:
   ws: {fileID: 3637627862300843640, guid: 775fc4930612c914abc7c2cc4759f0e3, type: 3}
   wsr: {fileID: 3637627862300843640, guid: aaa6abe2520ede84f9618f13e12272e4, type: 3}
   proj_spawn: {fileID: 5682205087739296379}
-  proj_force: 190
+  proj_force: 200
   ws_chargeRate: 35
   ws_dechargeRate: 40
   ws_cd: 0.25
@@ -6276,7 +6276,7 @@ MonoBehaviour:
   _networkObjectCache: {fileID: 8227743508398521442}
   dashForce: 110
   dashDur: 0.08
-  dash_cd: 9
+  dash_cd: 7
   Wind: {fileID: 8961857325175973703}
 --- !u!114 &1548865369264753726
 MonoBehaviour:
@@ -6296,8 +6296,8 @@ MonoBehaviour:
   dashSpeed: 30
   directionModifier: 35
   damage: 18
-  knockback_amount: 35
-  knockback_growth: 28
+  knockback_amount: 38
+  knockback_growth: 27
   blastDelay: 0.2
   proj_spawn: {fileID: 5682205087739296379}
   Blast: {fileID: 9005786515020923336}

@@ -1,58 +1,79 @@
-using UnityEngine;
-using FishNet;
 using FishNet.Connection;
+using FishNet.Managing;
 using FishNet.Object;
+using FishNet;
+using System;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Serialization;
 
-public class GameplayManager : NetworkBehaviour
+public class GameplayManager : MonoBehaviour
 {
-    public Transform[] Startingspawns = new Transform[0];
+    public event Action<NetworkObject> OnSpawned;
+
+    public Transform[] StartingSpawns = new Transform[0];       // where they spawn
     private int _nextSpawn;
-    [SerializeField] private NetworkObject playerPrefab;
+    [SerializeField] private NetworkObject[] playerPrefabs;     // what is spawned
 
-    /// <summary>
-    /// Currently spawned player objects. Only exist on the server.
-    /// </summary>
-    private List<NetworkObject> _spawnedPlayerObjects = new List<NetworkObject>();
+    private NetworkManager _networkManager;
 
-    public override void OnStartClient()
+    private void Start()
     {
-        base.OnStartClient();
-        Debug.Log(base.IsOwner);
-        if (base.IsOwner)
+        InitializeOnce();
+    }
+
+    private void InitializeOnce()
+    {
+        _networkManager = InstanceFinder.NetworkManager;
+        if (_networkManager == null)
         {
-            Debug.Log("boy");
-            SpawnPlayer();
+            Debug.LogWarning($"PlayerSpawner on {gameObject.name} cannot work as NetworkManager wasn't found on this object or within parent objects.");
+            return;
         }
     }
 
-    private void SpawnPlayer()
+    public void SpawnWizard(NetworkConnection conn, int type)
     {
         Vector3 position;
         Quaternion rotation;
-        SetSpawn(out position, out rotation);
+        SetSpawn(playerPrefabs[0].transform, out position, out rotation);
 
-        //Make object and move it to proper scene.
-        NetworkObject netIdent;
-        netIdent = Instantiate<NetworkObject>(playerPrefab, position, rotation);
-        _spawnedPlayerObjects.Add(netIdent);
-        
-        base.Spawn(netIdent.gameObject, netIdent.Owner);
+        NetworkObject nob = Instantiate(playerPrefabs[type], position, rotation);
+        _networkManager.ServerManager.Spawn(nob, conn);
+        _networkManager.SceneManager.AddOwnerToDefaultScene(nob);
 
-        //NetworkObject netIdent = conn.identity;            
-        netIdent.transform.position = position;
-        //RpcTeleport(netIdent, position);
+        OnSpawned?.Invoke(nob);
     }
 
-    private void SetSpawn(out Vector3 pos, out Quaternion rot)
+    private void SetSpawn(Transform prefab, out Vector3 pos, out Quaternion rot)
     {
-        Transform result = Startingspawns[_nextSpawn];
-        pos = result.position;
-        rot = result.rotation;
+        //No spawns specified.
+        if (StartingSpawns.Length == 0)
+        {
+            SetSpawnUsingPrefab(prefab, out pos, out rot);
+            return;
+        }
+
+        Transform result = StartingSpawns[_nextSpawn];
+        if (result == null)
+        {
+            SetSpawnUsingPrefab(prefab, out pos, out rot);
+        }
+        else
+        {
+            pos = result.position;
+            rot = result.rotation;
+        }
 
         //Increase next spawn and reset if needed.
         _nextSpawn++;
-        if (_nextSpawn >= Startingspawns.Length)
+        if (_nextSpawn >= StartingSpawns.Length)
             _nextSpawn = 0;
+    }
+
+    private void SetSpawnUsingPrefab(Transform prefab, out Vector3 pos, out Quaternion rot)
+    {
+        pos = prefab.position;
+        rot = prefab.rotation;
     }
 }

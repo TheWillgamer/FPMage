@@ -25,6 +25,7 @@ public class LobbyUIController : MonoBehaviour
     public GameObject startButton;
 
     private FishySteamworks.FishySteamworks _fishySteamworks;
+    private GameplayManager gm;
 
     // cash of the members of the lobby other than my self
     private List<LobbyMemberData> partyMembersOtherThanMe = new List<LobbyMemberData>();
@@ -36,6 +37,7 @@ public class LobbyUIController : MonoBehaviour
     public void Start()
     {
         _fishySteamworks = GameObject.FindGameObjectWithTag("NetworkManager").GetComponent<FishySteamworks.FishySteamworks>();
+        gm = GameObject.FindGameObjectWithTag("NetworkManager").GetComponent<GameplayManager>();
     }
 
     /// <summary>

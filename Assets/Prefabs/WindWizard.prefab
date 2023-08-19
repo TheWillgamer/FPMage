@@ -6254,9 +6254,9 @@ MonoBehaviour:
   wsr: {fileID: 3637627862300843640, guid: aaa6abe2520ede84f9618f13e12272e4, type: 3}
   proj_spawn: {fileID: 5682205087739296379}
   proj_force: 200
-  ws_chargeRate: 35
+  ws_chargeRate: 30
   ws_dechargeRate: 40
-  ws_cd: 0.25
+  ws_cd: 0.2
   cdRepresentation: {fileID: 5260410080079055999}
   WindSlash: {fileID: 1795926906755849343}
 --- !u!114 &1417503818524670645

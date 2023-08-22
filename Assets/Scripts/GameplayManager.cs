@@ -76,4 +76,13 @@ public class GameplayManager : MonoBehaviour
         pos = prefab.position;
         rot = prefab.rotation;
     }
+
+    // Kill player if touching the death zone
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.tag == "Player")
+        {
+            other.GetComponent<PlayerHealth>().Die();
+        }
+    }
 }

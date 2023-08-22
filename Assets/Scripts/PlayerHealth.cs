@@ -9,12 +9,15 @@ using TMPro;
 
 public class PlayerHealth : NetworkBehaviour
 {
+    [SerializeField] private int wizardType;            // for respawn
     [SyncVar] public int hp;  //keeps track of player health
     public TMP_Text hpPercentage;
     public Image dmgScreen;
     private Rigidbody rb;
     private Movement mv;
     private Dash dh;
+    private bool alive;
+    private GameplayManager gm;
 
     // OnFire
     private int onFire;
@@ -35,6 +38,7 @@ public class PlayerHealth : NetworkBehaviour
         rb = GetComponent<Rigidbody>();
         mv = GetComponent<Movement>();
         dh = GetComponent<Dash>();
+        gm = GameObject.FindWithTag("GameplayManager").GetComponent<GameplayManager>();
         onFire = 0;
         InstanceFinder.TimeManager.OnTick += TimeManager_OnTick;
     }
@@ -45,6 +49,7 @@ public class PlayerHealth : NetworkBehaviour
         hp = 0;
         baseFire = baseFireGM.GetComponent<ParticleSystem>();
         fireExplosion = fireExplosionGM.GetComponent<ParticleSystem>();
+        alive = true;
     }
 
     private void OnDestroy()
@@ -205,5 +210,32 @@ public class PlayerHealth : NetworkBehaviour
     private void UpdateUI()
     {
         hpPercentage.text = hp.ToString() + "%";
+    }
+
+    public void Die()
+    {
+        if (base.IsServer && alive)
+        {
+            SaveCam();
+            alive = false;
+        }
+    }
+
+    [ObserversRpc]
+    // Doesnt destroy main camera with the rest of the objects
+    private void SaveCam()
+    {
+        if (base.IsOwner)
+        {
+            GameObject.FindWithTag("MainCamera").transform.parent = null;
+            Death();
+        }
+    }
+
+    [ServerRpc]
+    private void Death()
+    {
+        gm.SpawnWizard(base.Owner, wizardType);
+        base.Despawn();
     }
 }

@@ -5811,7 +5811,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6133464915387238276}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1.5}
+  m_LocalPosition: {x: 0, y: 0, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6256,7 +6256,7 @@ MonoBehaviour:
   proj_spawn: {fileID: 5682205087739296379}
   proj_force: 200
   ws_chargeRate: 30
-  ws_dechargeRate: 40
+  ws_dechargeRate: 60
   ws_cd: 0.2
   cdRepresentation: {fileID: 5260410080079055999}
   WindSlash: {fileID: 1795926906755849343}
@@ -11650,6 +11650,70 @@ PrefabInstance:
     - target: {fileID: 1248243741517754967, guid: a5ca502e8c02f70409cc3ed9e5af3217, type: 3}
       propertyPath: m_Name
       value: WindBlastClients
+      objectReference: {fileID: 0}
+    - target: {fileID: 1927678042990138220, guid: a5ca502e8c02f70409cc3ed9e5af3217, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1927678042990138220, guid: a5ca502e8c02f70409cc3ed9e5af3217, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1927678042990138220, guid: a5ca502e8c02f70409cc3ed9e5af3217, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1927678042990138222, guid: a5ca502e8c02f70409cc3ed9e5af3217, type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1927678043731357324, guid: a5ca502e8c02f70409cc3ed9e5af3217, type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1927678043731357330, guid: a5ca502e8c02f70409cc3ed9e5af3217, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1927678043731357330, guid: a5ca502e8c02f70409cc3ed9e5af3217, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1927678043731357330, guid: a5ca502e8c02f70409cc3ed9e5af3217, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1927678044528768093, guid: a5ca502e8c02f70409cc3ed9e5af3217, type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1927678044528768163, guid: a5ca502e8c02f70409cc3ed9e5af3217, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1927678044528768163, guid: a5ca502e8c02f70409cc3ed9e5af3217, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1927678044528768163, guid: a5ca502e8c02f70409cc3ed9e5af3217, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1927678045100631488, guid: a5ca502e8c02f70409cc3ed9e5af3217, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1927678045100631488, guid: a5ca502e8c02f70409cc3ed9e5af3217, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1927678045100631488, guid: a5ca502e8c02f70409cc3ed9e5af3217, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1927678045100631489, guid: a5ca502e8c02f70409cc3ed9e5af3217, type: 3}
+      propertyPath: looping
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4021872410823323777, guid: a5ca502e8c02f70409cc3ed9e5af3217, type: 3}
       propertyPath: m_RootOrder

@@ -6294,7 +6294,7 @@ MonoBehaviour:
   _componentIndexCache: 6
   _addedNetworkObject: {fileID: 4575299771133537037}
   _networkObjectCache: {fileID: 8227743508398521442}
-  dashSpeed: 30
+  dashSpeed: 40
   directionModifier: 35
   damage: 18
   knockback_amount: 38

@@ -52,7 +52,7 @@ public class a_flameslash : NetworkBehaviour
     private void DoDamage(int owner)
     {
         showSlash();
-        Collider[] hitColliders = Physics.OverlapBox(proj_spawn.position, new Vector3(2f, 1f, 2f), proj_spawn.rotation);
+        Collider[] hitColliders = Physics.OverlapBox(proj_spawn.position + proj_spawn.forward, new Vector3(2f, 1f, 2f), proj_spawn.rotation);
         foreach (var hit in hitColliders)
         {
             if (hit.transform.tag == "Player" && hit.transform.parent.GetComponent<NetworkObject>().Owner.ClientId != owner)

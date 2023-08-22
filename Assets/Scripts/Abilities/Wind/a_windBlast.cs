@@ -86,7 +86,7 @@ public class a_windBlast : NetworkBehaviour
 
 
         // Actually doing damage
-        RaycastHit[] hitColliders = Physics.SphereCastAll(transform.position, 1.5f, proj_spawn.rotation * Vector3.forward, 6.5f);
+        RaycastHit[] hitColliders = Physics.SphereCastAll(transform.position, 2f, proj_spawn.rotation * Vector3.forward, 8f);
         foreach (var hit in hitColliders)
         {
             

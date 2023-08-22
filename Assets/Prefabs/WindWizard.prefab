@@ -6130,6 +6130,7 @@ MonoBehaviour:
   _componentIndexCache: 3
   _addedNetworkObject: {fileID: 8227743508398521442}
   _networkObjectCache: {fileID: 8227743508398521442}
+  wizardType: 1
   hp: 0
   hpPercentage: {fileID: 4198358656015635291}
   dmgScreen: {fileID: 1733089372414222686}

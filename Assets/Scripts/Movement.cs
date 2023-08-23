@@ -218,7 +218,9 @@ public class Movement : NetworkBehaviour
 
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
-        bool floating = Input.GetButton("Jump");
+        bool floating = false;
+        if (canFloat)
+            floating = Input.GetButton("Jump");
 
         //if (horizontal == 0 && vertical == 0 && !jumping && !h_dashing && !floating)
         //    return;

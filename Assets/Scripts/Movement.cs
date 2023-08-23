@@ -247,7 +247,7 @@ public class Movement : NetworkBehaviour
                 _rigidbody.AddForce(transform.forward * dashModifier, ForceMode.Impulse);
             else
                 _rigidbody.AddForce((transform.forward * md.Vertical + transform.right * md.Horizontal).normalized * dashModifier, ForceMode.Impulse);
-            Invoke(nameof(EndDash), dashDuration);
+            //Invoke(nameof(EndDash), dashDuration);
         }
 
         if (md.Jump && !disableMV)

@@ -31,7 +31,7 @@ public class a_lightningblink : NetworkBehaviour
     {
         if (!IsOwner) return;
 
-        if (Input.GetButtonUp("Fire3") && Time.time > blink_offcd)
+        if (Input.GetButtonDown("Fire3") && Time.time > blink_offcd)
         {
             Teleport();
             blink_offcd = Time.time + blink_cd;

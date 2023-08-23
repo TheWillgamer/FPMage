@@ -10842,7 +10842,7 @@ MonoBehaviour:
     LocalScale: {x: 1, y: 1, z: 1}
   _isNetworked: 1
   _isGlobal: 0
-  _hasParentNetworkObjectAtEdit: 1
+  _hasParentNetworkObjectAtEdit: 0
   NetworkObserver: {fileID: 0}
   _prefabId: -1
   _scenePathHash: 0
@@ -10881,7 +10881,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _componentIndexCache: 0
   _addedNetworkObject: {fileID: 4575299771133537037}
-  _networkObjectCache: {fileID: 8227743508398521442}
+  _networkObjectCache: {fileID: 4575299771133537037}
   cam: {fileID: 8227743508193196329}
   jumpForce: 18
   secondJumpForce: 12
@@ -10938,7 +10938,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _componentIndexCache: 1
   _addedNetworkObject: {fileID: 4575299771133537037}
-  _networkObjectCache: {fileID: 8227743508398521442}
+  _networkObjectCache: {fileID: 4575299771133537037}
   _synchronizeParent: 0
   _packing:
     Position: 1
@@ -10980,7 +10980,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _componentIndexCache: 2
   _addedNetworkObject: {fileID: 4575299771133537037}
-  _networkObjectCache: {fileID: 8227743508398521442}
+  _networkObjectCache: {fileID: 4575299771133537037}
   _graphicalObject: {fileID: 7928923847964066659}
   _smoothTicks: 1
   _durationType: 0
@@ -11006,7 +11006,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _componentIndexCache: 3
   _addedNetworkObject: {fileID: 8227743508398521442}
-  _networkObjectCache: {fileID: 8227743508398521442}
+  _networkObjectCache: {fileID: 4575299771133537037}
   wizardType: 2
   hp: 0
   hpPercentage: {fileID: 4198358656015635291}
@@ -11127,7 +11127,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _componentIndexCache: 4
   _addedNetworkObject: {fileID: 4575299771133537037}
-  _networkObjectCache: {fileID: 8227743508398521442}
+  _networkObjectCache: {fileID: 4575299771133537037}
   lb: {fileID: 3637627862300843640, guid: 3aea9894c81153b40810476bdbac062a, type: 3}
   proj_spawn: {fileID: 5682205087739296379}
   proj_force: 280
@@ -11148,17 +11148,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _componentIndexCache: 5
   _addedNetworkObject: {fileID: 4575299771133537037}
-  _networkObjectCache: {fileID: 8227743508398521442}
+  _networkObjectCache: {fileID: 4575299771133537037}
   damage: 20
   knockback_amount: 40
   knockback_growth: 25
   explosion: {fileID: 2423090785593715163, guid: d58cb8d9dba2c234bbb1888233bc4018, type: 3}
   indicator: {fileID: 2423090785593715163, guid: 301b294ccb6ce9143a973ccf65369515, type: 3}
   cam: {fileID: 8227743508193196329}
-  radius: 5
+  radius: 4
   timeTillStrike: 1
   Crash: {fileID: 8012989213054258335}
-  crash_cd: 9
+  crash_cd: 0.1
 --- !u!114 &8732987765180491363
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11173,7 +11173,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _componentIndexCache: 6
   _addedNetworkObject: {fileID: 4575299771133537037}
-  _networkObjectCache: {fileID: 8227743508398521442}
+  _networkObjectCache: {fileID: 4575299771133537037}
   maxDistance: 20
   endVelocityMultiplier: 12
   Blink: {fileID: 8961857325175973703}
@@ -11192,7 +11192,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _componentIndexCache: 7
   _addedNetworkObject: {fileID: 4575299771133537037}
-  _networkObjectCache: {fileID: 8227743508398521442}
+  _networkObjectCache: {fileID: 4575299771133537037}
   damage: 25
   range: 1000
   knockback_amount: 40
@@ -16307,7 +16307,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _componentIndexCache: 8
   _addedNetworkObject: {fileID: 8227743508398521442}
-  _networkObjectCache: {fileID: 8227743508398521442}
+  _networkObjectCache: {fileID: 4575299771133537037}
 --- !u!1 &7492923311113678924
 GameObject:
   m_ObjectHideFlags: 0

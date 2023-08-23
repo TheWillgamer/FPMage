@@ -18,7 +18,9 @@ public class a_lightningcrash : NetworkBehaviour
     [SerializeField] Image Crash;
 
     private Movement mv;
-    private Vector3 crashLoc;
+    private Vector3 crashLoc1;
+    private Vector3 crashLoc2;
+    private Vector3 crashLoc3;
 
     #region cooldowns
     [SerializeField] private float crash_cd;
@@ -30,6 +32,10 @@ public class a_lightningcrash : NetworkBehaviour
     {
         crash_offcd = Time.deltaTime;
         mv = GetComponent<Movement>();
+
+        crashLoc1 = null;
+        crashLoc2 = null;
+        crashLoc3 = null;
     }
 
     private void Update()

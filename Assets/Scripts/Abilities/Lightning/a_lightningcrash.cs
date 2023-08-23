@@ -32,10 +32,6 @@ public class a_lightningcrash : NetworkBehaviour
     {
         crash_offcd = Time.deltaTime;
         mv = GetComponent<Movement>();
-
-        crashLoc1 = null;
-        crashLoc2 = null;
-        crashLoc3 = null;
     }
 
     private void Update()
@@ -50,7 +46,7 @@ public class a_lightningcrash : NetworkBehaviour
             RaycastHit hit;
             if (Physics.Raycast(cam.position, cam.forward, out hit, 1000f, layerMask))
             {
-                DamageSetup(hit.point);
+                DamageSetup(hit.point, 1);
                 crash_offcd = Time.time + crash_cd;
             }
 
@@ -59,24 +55,77 @@ public class a_lightningcrash : NetworkBehaviour
     }
 
     [ServerRpc]
-    private void DamageSetup(Vector3 pos)
+    private void DamageSetup(Vector3 pos, int crashNum)
     {
-        crashLoc = pos;
-        showIndicator(crashLoc);
-        Invoke("DoDamage", timeTillStrike);
+        showIndicator(pos);
+
+        switch (crashNum)
+        {
+            case 1:
+                crashLoc1 = pos;
+                Invoke("DoDamage1", timeTillStrike);
+                break;
+            case 2:
+                crashLoc2 = pos;
+                Invoke("DoDamage2", timeTillStrike);
+                break;
+            case 3:
+                crashLoc3 = pos;
+                Invoke("DoDamage3", timeTillStrike);
+                break;
+            default:
+                print("Not valid crash number.");
+                break;
+        }
     }
 
-    private void DoDamage()
+    private void DoDamage1()
     {
-        showCrash(crashLoc);
+        showCrash(crashLoc1);
 
-        Collider[] hitColliders = Physics.OverlapSphere(crashLoc, radius);
+        Collider[] hitColliders = Physics.OverlapSphere(crashLoc1, radius);
         foreach (var hit in hitColliders)
         {
             if (hit.transform.tag == "Player")
             {
                 // knockback direction
-                Vector3 dir = (hit.transform.position - crashLoc).normalized;
+                Vector3 dir = (hit.transform.position - crashLoc1).normalized;
+
+                PlayerHealth ph = hit.transform.gameObject.GetComponent<PlayerHealth>();
+                ph.Knockback(dir.normalized, knockback_amount, knockback_growth);
+                ph.TakeDamage(damage);
+            }
+        }
+    }
+    private void DoDamage2()
+    {
+        showCrash(crashLoc2);
+
+        Collider[] hitColliders = Physics.OverlapSphere(crashLoc2, radius);
+        foreach (var hit in hitColliders)
+        {
+            if (hit.transform.tag == "Player")
+            {
+                // knockback direction
+                Vector3 dir = (hit.transform.position - crashLoc2).normalized;
+
+                PlayerHealth ph = hit.transform.gameObject.GetComponent<PlayerHealth>();
+                ph.Knockback(dir.normalized, knockback_amount, knockback_growth);
+                ph.TakeDamage(damage);
+            }
+        }
+    }
+    private void DoDamage3()
+    {
+        showCrash(crashLoc3);
+
+        Collider[] hitColliders = Physics.OverlapSphere(crashLoc3, radius);
+        foreach (var hit in hitColliders)
+        {
+            if (hit.transform.tag == "Player")
+            {
+                // knockback direction
+                Vector3 dir = (hit.transform.position - crashLoc3).normalized;
 
                 PlayerHealth ph = hit.transform.gameObject.GetComponent<PlayerHealth>();
                 ph.Knockback(dir.normalized, knockback_amount, knockback_growth);

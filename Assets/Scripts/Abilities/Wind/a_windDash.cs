@@ -49,14 +49,16 @@ public class a_windDash : NetworkBehaviour, Dash
             {
                 dash_offcd = Time.time + dash_cd;
             }
-            startDashingServer(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+            startDashingServer();
 
             if (!IsServer)
             {
                 mv.disableAB = true;
-                mv.disableMV = true;
                 mv.gravity = false;
                 mv.dashing = true;
+                mv.h_dashing = true;
+                mv.dashModifier = dashForce;
+                mv.dashDuration = dashDur;
             }
         }
 
@@ -75,20 +77,22 @@ public class a_windDash : NetworkBehaviour, Dash
     }
 
     [ServerRpc]
-    private void startDashingServer(float horizontal, float vertical)
+    private void startDashingServer()
     {
         mv.disableAB = true;
-        mv.disableMV = true;
         mv.gravity = false;
         mv.dashing = true;
+        mv.h_dashing = true;
+        mv.dashModifier = dashForce;
+        mv.dashDuration = dashDur;
 
         startDash();
 
-        rb.velocity = Vector3.zero;
-        if (horizontal == 0 && vertical == 0)
-            rb.AddForce(transform.forward * dashForce, ForceMode.Impulse);
-        else
-            rb.AddForce((transform.forward * vertical + transform.right * horizontal).normalized * dashForce, ForceMode.Impulse);
+        //rb.velocity = Vector3.zero;
+        //if (horizontal == 0 && vertical == 0)
+        //    rb.AddForce(transform.forward * dashForce, ForceMode.Impulse);
+        //else
+        //    rb.AddForce((transform.forward * vertical + transform.right * horizontal).normalized * dashForce, ForceMode.Impulse);
 
         Invoke("endDash", dashDur);
         Invoke("endDashServer", dashDur);

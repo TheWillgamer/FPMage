@@ -583,7 +583,7 @@
     },
     "m_ActiveTargets": [
         {
-            "m_Id": "16080c1c6e954c489fd5aed599732994"
+            "m_Id": "3dbc0ed3fa774e37aee011659678ef5b"
         }
     ]
 }
@@ -893,23 +893,6 @@
     "m_Property": {
         "m_Id": "2ca3bc96e5144278957b92cabd54c052"
     }
-}
-
-{
-    "m_SGVersion": 2,
-    "m_Type": "UnityEditor.Rendering.BuiltIn.ShaderGraph.BuiltInTarget",
-    "m_ObjectId": "16080c1c6e954c489fd5aed599732994",
-    "m_ActiveSubTarget": {
-        "m_Id": "a958f83fbdc5474ea973088b448043ee"
-    },
-    "m_AllowMaterialOverride": false,
-    "m_SurfaceType": 1,
-    "m_ZWriteControl": 0,
-    "m_ZTestMode": 4,
-    "m_AlphaMode": 0,
-    "m_RenderFace": 2,
-    "m_AlphaClip": false,
-    "m_CustomEditorGUI": ""
 }
 
 {
@@ -1543,6 +1526,26 @@
     "m_Property": {
         "m_Id": "cb45f156a2664d6e96f2293919d75427"
     }
+}
+
+{
+    "m_SGVersion": 1,
+    "m_Type": "UnityEditor.Rendering.Universal.ShaderGraph.UniversalTarget",
+    "m_ObjectId": "3dbc0ed3fa774e37aee011659678ef5b",
+    "m_ActiveSubTarget": {
+        "m_Id": "ac5f646ee56f469eb93428e8f63e334d"
+    },
+    "m_AllowMaterialOverride": false,
+    "m_SurfaceType": 0,
+    "m_ZTestMode": 4,
+    "m_ZWriteControl": 0,
+    "m_AlphaMode": 0,
+    "m_RenderFace": 2,
+    "m_AlphaClip": false,
+    "m_CastShadows": true,
+    "m_ReceiveShadows": true,
+    "m_CustomEditorGUI": "",
+    "m_SupportVFX": false
 }
 
 {
@@ -3001,14 +3004,6 @@
 
 {
     "m_SGVersion": 0,
-    "m_Type": "UnityEditor.Rendering.BuiltIn.ShaderGraph.BuiltInLitSubTarget",
-    "m_ObjectId": "a958f83fbdc5474ea973088b448043ee",
-    "m_WorkflowMode": 1,
-    "m_NormalDropOffSpace": 0
-}
-
-{
-    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.ColorRGBMaterialSlot",
     "m_ObjectId": "ab6a5c1328d741da92d927000dd7c004",
     "m_Id": 0,
@@ -3035,6 +3030,15 @@
         "b": 0.5,
         "a": 1.0
     }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.Rendering.Universal.ShaderGraph.UniversalLitSubTarget",
+    "m_ObjectId": "ac5f646ee56f469eb93428e8f63e334d",
+    "m_WorkflowMode": 1,
+    "m_NormalDropOffSpace": 0,
+    "m_ClearCoat": false
 }
 
 {

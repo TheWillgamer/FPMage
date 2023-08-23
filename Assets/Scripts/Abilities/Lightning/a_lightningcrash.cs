@@ -15,12 +15,14 @@ public class a_lightningcrash : NetworkBehaviour
     [SerializeField] private Transform cam;
     [SerializeField] private float radius;
     [SerializeField] private float timeTillStrike;
+    [SerializeField] private float timeToSpam;
     [SerializeField] Image Crash;
 
     private Movement mv;
     private Vector3 crashLoc1;
     private Vector3 crashLoc2;
     private Vector3 crashLoc3;
+    private int charges;
 
     #region cooldowns
     [SerializeField] private float crash_cd;
@@ -32,13 +34,14 @@ public class a_lightningcrash : NetworkBehaviour
     {
         crash_offcd = Time.deltaTime;
         mv = GetComponent<Movement>();
+        charges = 0;
     }
 
     private void Update()
     {
         if (!IsOwner) return;
 
-        if (!mv.disableAB && Input.GetButtonUp("Fire2") && Time.time > crash_offcd)
+        if (!mv.disableAB && Input.GetButtonUp("Fire2") && charges < 3 && Time.time > crash_offcd)
         {
             // only detects walls
             int layerMask = 1 << 6;
@@ -46,12 +49,19 @@ public class a_lightningcrash : NetworkBehaviour
             RaycastHit hit;
             if (Physics.Raycast(cam.position, cam.forward, out hit, 1000f, layerMask))
             {
-                DamageSetup(hit.point, 1);
-                crash_offcd = Time.time + crash_cd;
+                CancelInvoke("StartCD");
+                charges++;
+                DamageSetup(hit.point, charges);
+                Invoke("StartCD", timeToSpam);
             }
-
         }
         UpdateUI();
+    }
+
+    private void StartCD()
+    {
+        crash_offcd = Time.time + crash_cd;
+        charges = 0;
     }
 
     [ServerRpc]

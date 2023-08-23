@@ -20,14 +20,14 @@ public class Movement : NetworkBehaviour
         public float Horizontal;
         public float Vertical;
         public bool Hdash;
-        public bool Mdash;
-        public MoveData(bool jump, float horizontal, float vertical, bool hdash, bool mdash)
+        public bool Floating;
+        public MoveData(bool jump, float horizontal, float vertical, bool hdash, bool floating)
         {
             Jump = jump;
             Horizontal = horizontal;
             Vertical = vertical;
             Hdash = hdash;
-            Mdash = mdash;
+            Floating = floating;
         }
     }
     public struct ReconcileData
@@ -52,6 +52,9 @@ public class Movement : NetworkBehaviour
     [SerializeField]
     private float secondJumpForce = 15f;
     public bool tripleJump = false;
+    public bool canFloat = false;
+    public float floatFallRate = 20f;
+    public float floatFallStopper = -20f;
     [SerializeField]
     private float wallJumpUpModifier = 1.5f;
     [SerializeField]
@@ -159,9 +162,10 @@ public class Movement : NetworkBehaviour
     {
         if (base.IsOwner)
         {
-            if (Input.GetButtonDown("Jump") && readyToJump && jumpCharge > 0)
+            if (Input.GetButtonDown("Jump"))
             {
-                jumping = true;
+                if (readyToJump && jumpCharge > 0)
+                    jumping = true;
             }
             if (Input.GetKeyDown(KeyCode.Escape))
             {
@@ -214,11 +218,12 @@ public class Movement : NetworkBehaviour
 
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
+        bool floating = Input.GetButton("Jump");
 
-        if (horizontal == 0 && vertical == 0 && !jumping && !h_dashing && !m_dashing)
-            return;
+        //if (horizontal == 0 && vertical == 0 && !jumping && !h_dashing && !floating)
+        //    return;
 
-        md = new MoveData(jumping, horizontal, vertical, h_dashing, m_dashing);
+        md = new MoveData(jumping, horizontal, vertical, h_dashing, floating);
         jumping = false;
         h_dashing = false;
         m_dashing = false;
@@ -243,19 +248,19 @@ public class Movement : NetworkBehaviour
             Invoke(nameof(EndDash), dashDuration);
         }
 
-        if (md.Mdash)
-        {
-            _rigidbody.velocity = new Vector3(0, 0, 0);
-            _rigidbody.AddForce(cam.forward * dashModifier, ForceMode.Impulse);
-            Invoke(nameof(EndDash), dashDuration);
-        }
-
         if (md.Jump && !disableMV)
             Jump();
 
         //Extra gravity
         if (gravity)
-            _rigidbody.AddForce(Vector3.down * 40);
+        {
+            if (_rigidbody.velocity.y > 0 || jumpCharge > 0 || !md.Floating)
+                _rigidbody.AddForce(Vector3.down * 40);
+            else if (_rigidbody.velocity.y > floatFallStopper)      // doesnt exceed a certain velocity while floating
+                _rigidbody.AddForce(Vector3.down * floatFallRate);
+            else
+                _rigidbody.velocity = new Vector3(_rigidbody.velocity.x, floatFallStopper, _rigidbody.velocity.z);
+        }
 
         //Find actual velocity relative to where player is looking
         float xMag = mag.x, yMag = mag.y;

@@ -250,7 +250,8 @@ public class Movement : NetworkBehaviour
 
             dashing = true;
             gravity = false;
-            Invoke(nameof(EndDash), dashDuration);
+            if (base.IsServer)
+                Invoke(nameof(EndDash), dashDuration);
         }
 
         if (md.Jump && !disableMV)
@@ -350,7 +351,6 @@ public class Movement : NetworkBehaviour
 
     }
 
-    [ServerRpc]
     //reduces velocity by a factor of the parameter
     public void EndDash()
     {

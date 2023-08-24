@@ -247,6 +247,9 @@ public class Movement : NetworkBehaviour
                 _rigidbody.AddForce(transform.forward * dashModifier, ForceMode.Impulse);
             else
                 _rigidbody.AddForce((transform.forward * md.Vertical + transform.right * md.Horizontal).normalized * dashModifier, ForceMode.Impulse);
+
+            dashing = true;
+            gravity = false;
             Invoke(nameof(EndDash), dashDuration);
         }
 

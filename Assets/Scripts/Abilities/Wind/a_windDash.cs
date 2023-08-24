@@ -50,8 +50,6 @@ public class a_windDash : NetworkBehaviour, Dash
                 dash_offcd = Time.time + dash_cd;
             }
             startDashingServer();
-            mv.gravity = false;
-            mv.dashing = true;
             mv.dashModifier = dashForce;
             mv.dashDuration = dashDur;
             mv.h_dashing = true;
@@ -74,9 +72,6 @@ public class a_windDash : NetworkBehaviour, Dash
     [ServerRpc]
     private void startDashingServer()
     {
-        mv.gravity = false;
-        mv.dashing = true;
-        //mv.h_dashing = true;
         mv.dashModifier = dashForce;
         mv.dashDuration = dashDur;
 

@@ -248,7 +248,7 @@ public class Movement : NetworkBehaviour
             else
                 _rigidbody.AddForce((transform.forward * md.Vertical + transform.right * md.Horizontal).normalized * dashModifier, ForceMode.Impulse);
 
-            //dashing = true;
+            dashing = true;
             gravity = false;
             Invoke(nameof(EndDash), dashDuration);
         }
@@ -362,7 +362,10 @@ public class Movement : NetworkBehaviour
             return;
 
         Vector3 vel = _rigidbody.velocity;
-        _rigidbody.velocity = new Vector3(vel.x / 3, vel.y / 3, vel.z / 3);
+        if (base.IsOwner && !base.IsServer)
+            _rigidbody.velocity = new Vector3(vel.x / 4, vel.y / 4, vel.z / 4);
+        else
+            _rigidbody.velocity = new Vector3(vel.x / 3, vel.y / 3, vel.z / 3);
         dashing = false;
     }
 

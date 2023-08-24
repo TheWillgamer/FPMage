@@ -74,7 +74,6 @@ public class a_windDash : NetworkBehaviour, Dash
     {
         mv.dashModifier = dashForce;
         mv.dashDuration = dashDur;
-        mv.dashing = true;
 
         startDash();
 

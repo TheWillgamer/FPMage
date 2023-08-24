@@ -158,6 +158,8 @@ public class Movement : NetworkBehaviour
     {
         if (base.IsOwner)
         {
+            Debug.Log(grounded);
+            Debug.Log(counterMovement);
             if (Input.GetButtonDown("Jump"))
             {
                 if (readyToJump && jumpCharge > 0)
@@ -445,27 +447,4 @@ public class Movement : NetworkBehaviour
         }
             
     }
-
-    //private void CounterMovement(float x, float y, Vector2 mag)
-    //{
-    //    if (!grounded || !readyToJump || disableCM) return;
-
-    //    //Counter movement
-    //    if (Math.Abs(mag.x) > threshold && Math.Abs(x) < 0.05f || (mag.x < -threshold && x > 0) || (mag.x > threshold && x < 0))
-    //    {
-    //        _rigidbody.AddForce(moveSpeed * transform.right * -mag.x * counterMovement);
-    //    }
-    //    if (Math.Abs(mag.y) > threshold && Math.Abs(y) < 0.05f || (mag.y < -threshold && y > 0) || (mag.y > threshold && y < 0))
-    //    {
-    //        _rigidbody.AddForce(moveSpeed * transform.forward * -mag.y * counterMovement);
-    //    }
-
-    //    //Limit diagonal running. This will also cause a full stop if sliding fast and un-crouching, so not optimal.
-    //    if (Mathf.Sqrt((Mathf.Pow(_rigidbody.velocity.x, 2) + Mathf.Pow(_rigidbody.velocity.z, 2))) > maxSpeed)
-    //    {
-    //        float fallspeed = _rigidbody.velocity.y;
-    //        Vector3 n = _rigidbody.velocity.normalized * maxSpeed;
-    //        _rigidbody.velocity = new Vector3(n.x, fallspeed, n.z);
-    //    }
-    //}
 }

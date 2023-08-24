@@ -62,8 +62,6 @@ public class a_flamedash : NetworkBehaviour, Dash
                 mv.disableMV = true;
                 mv.gravity = false;
                 mv.dashing = true;
-                mv.dashModifier = dashForce;
-                mv.dashDuration = dashDur;
                 dashStarted = false;
                 slower = StartCoroutine(SlowDown());
                 Invoke("startDashing", dashDelay);
@@ -87,8 +85,6 @@ public class a_flamedash : NetworkBehaviour, Dash
         mv.disableMV = true;
         mv.gravity = false;
         mv.dashing = true;
-        mv.dashModifier = dashForce;
-        mv.dashDuration = dashDur;
         dashStarted = false;
         slower = StartCoroutine(SlowDown());
     }

@@ -6,8 +6,9 @@ using System.Collections;
 
 public class a_windDash : NetworkBehaviour, Dash
 {
-    [SerializeField] private float dashForce;
-    [SerializeField] private float dashDur;
+    [SerializeField] private float dashTime;
+    [SerializeField] private float dashDistance;
+    [SerializeField] private float endDashSpeed;
 
     AudioSource m_shootingSound;
     Movement mv;
@@ -17,17 +18,12 @@ public class a_windDash : NetworkBehaviour, Dash
     [SerializeField] private float dash_cd;
     private float dash_offcd;
     private int dashCharges;
-    private Coroutine slower;       // makes player slow down
+    private Coroutine dashing;       // controls dash
     #endregion
 
     #region UI
     [SerializeField] Image Wind;
     #endregion
-
-    public override void OnStartClient()
-    {
-        base.OnStartClient();
-    }
 
     void Start()
     {
@@ -53,18 +49,18 @@ public class a_windDash : NetworkBehaviour, Dash
             float horizontal = Input.GetAxisRaw("Horizontal");
             float vertical = Input.GetAxisRaw("Vertical");
 
-            startDashingServer(horizontal, vertical);
-            //mv.dashModifier = dashForce;
-            //mv.dashDuration = dashDur;
-            //mv.h_dashing = true;
+            if (horizontal == 0 && vertical == 0)
+                vertical = 1;
+            Vector3 endPos = transform.position + (transform.forward * vertical + transform.right * horizontal).normalized * dashDistance;
+
+            startDashingServer(endPos);
 
             if (!IsServer)
             {
+                rb.velocity = Vector3.zero;
                 mv.disableMV = true;
                 mv.gravity = false;
-                mv.dashing = true;
-
-                Invoke("endDash", dashDur);
+                dashing = StartCoroutine(DashTo(endPos));
             }
         }
 
@@ -83,35 +79,33 @@ public class a_windDash : NetworkBehaviour, Dash
     }
 
     [ServerRpc]
-    private void startDashingServer(float horizontal, float vertical)
+    private void startDashingServer(Vector3 endPos)
     {
-        //mv.dashModifier = dashForce;
-        //mv.dashDuration = dashDur;
+        rb.velocity = Vector3.zero;
         mv.disableMV = true;
         mv.gravity = false;
-        mv.dashing = true;
+        dashing = StartCoroutine(DashTo(endPos));
 
         startDash();
+    }
 
-        rb.velocity = Vector3.zero;
-        if (horizontal == 0 && vertical == 0)
-            rb.AddForce(transform.forward * dashForce, ForceMode.Impulse);
-        else
-            rb.AddForce((transform.forward * vertical + transform.right * horizontal).normalized * dashForce, ForceMode.Impulse);
-
-        
-        Invoke("endDash", dashDur);
+    private IEnumerator DashTo(Vector3 endPos)
+    {
+        float startingTime = Time.time;
+        Vector3 startingPos = transform.position;
+        while (Time.time - startingTime <= dashTime)
+        {
+            transform.position = Vector3.Lerp(startingPos, endPos, (Time.time - startingTime) / dashTime);
+            yield return null;
+        }
+        mv.EndDash();
+        rb.velocity = (endPos - startingPos).normalized * endDashSpeed;
     }
 
     // For any dash effects
     [ObserversRpc]
     private void startDash()
     {
-    }
-
-    private void endDash()
-    {
-        mv.EndDash();
     }
 
     private void UpdateUI()
@@ -133,7 +127,9 @@ public class a_windDash : NetworkBehaviour, Dash
 
     public virtual void CancelDash()
     {
-        CancelInvoke();
+        if (dashing != null)
+            StopCoroutine(dashing);
+
         CancelDashClient();
         mv.EndDash();
     }
@@ -143,7 +139,9 @@ public class a_windDash : NetworkBehaviour, Dash
     {
         if (!base.IsOwner) return;
 
-        CancelInvoke();
+        if (dashing != null)
+            StopCoroutine(dashing);
+
         mv.EndDash();
     }
 }

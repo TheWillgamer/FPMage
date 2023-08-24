@@ -225,7 +225,7 @@ public class Movement : NetworkBehaviour
         //if (horizontal == 0 && vertical == 0 && !jumping && !h_dashing && !floating)
         //    return;
 
-        md = new MoveData(jumping, horizontal, vertical, h_dashing, floating);
+        md = new MoveData(jumping, horizontal, vertical, h_dashing, floating, endingDash);
         jumping = false;
         h_dashing = false;
         m_dashing = false;
@@ -247,6 +247,9 @@ public class Movement : NetworkBehaviour
                 _rigidbody.AddForce(transform.forward * dashModifier, ForceMode.Impulse);
             else
                 _rigidbody.AddForce((transform.forward * md.Vertical + transform.right * md.Horizontal).normalized * dashModifier, ForceMode.Impulse);
+
+            dashing = true;
+            gravity = false;
             Invoke(nameof(EndDash), dashDuration);
         }
 

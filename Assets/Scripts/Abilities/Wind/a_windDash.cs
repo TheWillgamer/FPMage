@@ -46,8 +46,8 @@ public class a_windDash : NetworkBehaviour, Dash
                 dash_offcd = Time.time + dash_cd;
             }
 
-            float horizontal = Input.GetAxisRaw("Horizontal");
-            float vertical = Input.GetAxisRaw("Vertical");
+            //float horizontal = Input.GetAxisRaw("Horizontal");
+            //float vertical = Input.GetAxisRaw("Vertical");
 
             if (horizontal == 0 && vertical == 0)
                 vertical = 1;

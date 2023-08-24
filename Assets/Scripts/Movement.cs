@@ -250,8 +250,7 @@ public class Movement : NetworkBehaviour
 
             dashing = true;
             gravity = false;
-            if (base.IsServer)
-                Invoke(nameof(EndDash), dashDuration);
+            Invoke(nameof(EndDash), dashDuration);
         }
 
         if (md.Jump && !disableMV)

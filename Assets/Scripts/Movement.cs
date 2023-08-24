@@ -96,7 +96,7 @@ public class Movement : NetworkBehaviour
     private bool jumping = false;
     private bool readyToJump = true;
     [SyncVar]
-    private int jumpCharge = 1;
+    private int jumpCharge = 0;
     private float jumpCooldown = 0.2f;
     private bool canGroundJump;
 
@@ -218,8 +218,8 @@ public class Movement : NetworkBehaviour
         if (canFloat)
             floating = Input.GetButton("Jump");
 
-        //if (horizontal == 0 && vertical == 0 && !jumping && !floating)
-        //    return;
+        if (horizontal == 0 && vertical == 0 && !jumping && !floating)
+            return;
 
         md = new MoveData(jumping, horizontal, vertical, floating);
         jumping = false;

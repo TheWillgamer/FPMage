@@ -49,11 +49,11 @@ public class a_windDash : NetworkBehaviour, Dash
             //float horizontal = Input.GetAxisRaw("Horizontal");
             //float vertical = Input.GetAxisRaw("Vertical");
 
-            if (horizontal == 0 && vertical == 0)
-                vertical = 1;
+            //if (horizontal == 0 && vertical == 0)
+            //    vertical = 1;
 
-            Vector3 endPos = transform.position + (transform.forward * vertical + transform.right * horizontal).normalized * dashDistance;
-            startDashingServer(endPos);
+            //Vector3 endPos = transform.position + (transform.forward * vertical + transform.right * horizontal).normalized * dashDistance;
+            //startDashingServer(endPos);
 
             if (!IsServer)
             {

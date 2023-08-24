@@ -109,7 +109,7 @@ public class AbilityManager : NetworkBehaviour
                 setDashing();
                 if (!IsServer)
                 {
-                    mv.h_dashing = true;
+                    //mv.h_dashing = true;
                     mv.dashModifier = dashForce;
                     mv.dashDuration = dashDur;
                 }
@@ -161,7 +161,7 @@ public class AbilityManager : NetworkBehaviour
     private void setDashing()
     {
         Movement mv = GetComponent<Movement>();
-        mv.h_dashing = true;
+        //mv.h_dashing = true;
         mv.dashModifier = dashForce;
         mv.dashDuration = dashDur;
     }

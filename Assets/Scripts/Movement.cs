@@ -19,14 +19,12 @@ public class Movement : NetworkBehaviour
         public bool Jump;
         public float Horizontal;
         public float Vertical;
-        public bool Hdash;
         public bool Floating;
-        public MoveData(bool jump, float horizontal, float vertical, bool hdash, bool floating)
+        public MoveData(bool jump, float horizontal, float vertical, bool floating)
         {
             Jump = jump;
             Horizontal = horizontal;
             Vertical = vertical;
-            Hdash = hdash;
             Floating = floating;
         }
     }
@@ -111,8 +109,6 @@ public class Movement : NetworkBehaviour
     /// <summary>
     /// Dashing
     /// </summary>
-    public bool h_dashing = false;          // tells movement system to dash horizontally
-    public bool m_dashing = false;          // tells movement system to dash towards the mouse
     public float dashModifier = 0f;         // speed of dash
     public float dashDuration = 0f;         // duration of dash
     public bool gravity;
@@ -222,13 +218,11 @@ public class Movement : NetworkBehaviour
         if (canFloat)
             floating = Input.GetButton("Jump");
 
-        //if (horizontal == 0 && vertical == 0 && !jumping && !h_dashing && !floating)
+        //if (horizontal == 0 && vertical == 0 && !jumping && !floating)
         //    return;
 
-        md = new MoveData(jumping, horizontal, vertical, h_dashing, floating);
+        md = new MoveData(jumping, horizontal, vertical, floating);
         jumping = false;
-        h_dashing = false;
-        m_dashing = false;
     }
 
     [Replicate]
@@ -238,19 +232,6 @@ public class Movement : NetworkBehaviour
         {
             md.Horizontal = 0;
             md.Vertical = 0;
-        }
-
-        if (md.Hdash)
-        {
-            _rigidbody.velocity = new Vector3(0, 0, 0);
-            if (md.Horizontal == 0 && md.Vertical == 0)
-                _rigidbody.AddForce(transform.forward * dashModifier, ForceMode.Impulse);
-            else
-                _rigidbody.AddForce((transform.forward * md.Vertical + transform.right * md.Horizontal).normalized * dashModifier, ForceMode.Impulse);
-
-            dashing = true;
-            gravity = false;
-            Invoke(nameof(EndDash), dashDuration);
         }
 
         if (md.Jump && !disableMV)
@@ -353,7 +334,6 @@ public class Movement : NetworkBehaviour
     //reduces velocity by a factor of the parameter
     public void EndDash()
     {
-        CancelInvoke("EndDash");
         disableAB = false;
         disableMV = false;
         gravity = true;

@@ -350,6 +350,7 @@ public class Movement : NetworkBehaviour
 
     }
 
+    [ServerRpc]
     //reduces velocity by a factor of the parameter
     public void EndDash()
     {

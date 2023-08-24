@@ -51,14 +51,13 @@ public class a_windDash : NetworkBehaviour, Dash
 
             if (horizontal == 0 && vertical == 0)
                 vertical = 1;
-            
 
-            startDashingServer(horizontal, vertical);
+            Vector3 endPos = transform.position + (transform.forward * vertical + transform.right * horizontal).normalized * dashDistance;
+            startDashingServer(endPos);
 
             if (!IsServer)
             {
                 rb.velocity = Vector3.zero;
-                mv.disableMV = true;
                 mv.gravity = false;
             }
         }
@@ -78,12 +77,9 @@ public class a_windDash : NetworkBehaviour, Dash
     }
 
     [ServerRpc]
-    private void startDashingServer(float horizontal, float vertical)
+    private void startDashingServer(Vector3 endPos)
     {
-        Vector3 endPos = transform.position + (transform.forward * vertical + transform.right * horizontal).normalized * dashDistance;
-
         rb.velocity = Vector3.zero;
-        mv.disableMV = true;
         mv.gravity = false;
         dashing = StartCoroutine(DashTo(endPos));
 
@@ -100,15 +96,21 @@ public class a_windDash : NetworkBehaviour, Dash
             yield return null;
         }
         mv.EndDash();
-        rb.velocity = (endPos - startingPos).normalized * endDashSpeed;
+        Vector3 endVelocity = (endPos - startingPos).normalized * endDashSpeed;
+        endDash(endVelocity);
+        rb.velocity = endVelocity;
     }
 
     // For any dash effects
     [ObserversRpc]
-    private void endDash()
+    private void endDash(Vector3 endVel)
     {
         if (base.IsOwner)
+        {
             mv.EndDash();
+            if (endVel != Vector3.zero)
+                rb.velocity = endVel;
+        }
     }
 
     // For any dash effects
@@ -139,7 +141,7 @@ public class a_windDash : NetworkBehaviour, Dash
         if (dashing != null)
             StopCoroutine(dashing);
 
-        endDash();
+        endDash(Vector3.zero);
         mv.EndDash();
     }
 }

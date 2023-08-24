@@ -225,7 +225,7 @@ public class Movement : NetworkBehaviour
         //if (horizontal == 0 && vertical == 0 && !jumping && !h_dashing && !floating)
         //    return;
 
-        md = new MoveData(jumping, horizontal, vertical, h_dashing, floating, endingDash);
+        md = new MoveData(jumping, horizontal, vertical, h_dashing, floating);
         jumping = false;
         h_dashing = false;
         m_dashing = false;

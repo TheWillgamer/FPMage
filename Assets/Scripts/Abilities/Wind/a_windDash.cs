@@ -49,15 +49,12 @@ public class a_windDash : NetworkBehaviour, Dash
             {
                 dash_offcd = Time.time + dash_cd;
             }
-            startDashingServer(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-
-            if (!IsServer)
-            {
-                mv.disableAB = true;
-                mv.disableMV = true;
-                mv.gravity = false;
-                //mv.dashing = true;
-            }
+            startDashingServer();
+            mv.gravity = false;
+            mv.dashing = true;
+            mv.dashModifier = dashForce;
+            mv.dashDuration = dashDur;
+            mv.h_dashing = true;
         }
 
         if (dashCharges < 2 && Time.time > dash_offcd)
@@ -75,23 +72,24 @@ public class a_windDash : NetworkBehaviour, Dash
     }
 
     [ServerRpc]
-    private void startDashingServer(float horizontal, float vertical)
+    private void startDashingServer()
     {
-        mv.disableAB = true;
-        mv.disableMV = true;
         mv.gravity = false;
         mv.dashing = true;
+        //mv.h_dashing = true;
+        mv.dashModifier = dashForce;
+        mv.dashDuration = dashDur;
 
         startDash();
 
-        rb.velocity = Vector3.zero;
-        if (horizontal == 0 && vertical == 0)
-            rb.AddForce(transform.forward * dashForce, ForceMode.Impulse);
-        else
-            rb.AddForce((transform.forward * vertical + transform.right * horizontal).normalized * dashForce, ForceMode.Impulse);
+        //rb.velocity = Vector3.zero;
+        //if (horizontal == 0 && vertical == 0)
+        //    rb.AddForce(transform.forward * dashForce, ForceMode.Impulse);
+        //else
+        //    rb.AddForce((transform.forward * vertical + transform.right * horizontal).normalized * dashForce, ForceMode.Impulse);
 
-        Invoke("endDash", dashDur);
-        Invoke("endDashServer", dashDur);
+        //Invoke("endDash", dashDur);
+        //Invoke("endDashServer", dashDur);
     }
 
     // For any dash effects
@@ -136,8 +134,8 @@ public class a_windDash : NetworkBehaviour, Dash
 
     public virtual void CancelDash()
     {
-        CancelInvoke();
-        CancelDashClient();
+        //CancelInvoke();
+        //CancelDashClient();
         endDash();
         mv.EndDash();
     }

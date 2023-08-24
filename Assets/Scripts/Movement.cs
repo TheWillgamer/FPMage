@@ -247,7 +247,7 @@ public class Movement : NetworkBehaviour
                 _rigidbody.AddForce(transform.forward * dashModifier, ForceMode.Impulse);
             else
                 _rigidbody.AddForce((transform.forward * md.Vertical + transform.right * md.Horizontal).normalized * dashModifier, ForceMode.Impulse);
-            //Invoke(nameof(EndDash), dashDuration);
+            Invoke(nameof(EndDash), dashDuration);
         }
 
         if (md.Jump && !disableMV)
@@ -350,6 +350,7 @@ public class Movement : NetworkBehaviour
     //reduces velocity by a factor of the parameter
     public void EndDash()
     {
+        CancelInvoke("EndDash");
         disableAB = false;
         disableMV = false;
         gravity = true;

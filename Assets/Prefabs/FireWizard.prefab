@@ -30380,6 +30380,9 @@ MonoBehaviour:
   jumpForce: 18
   secondJumpForce: 12
   tripleJump: 0
+  canFloat: 0
+  floatFallRate: 20
+  floatFallStopper: -20
   wallJumpUpModifier: 1.9
   wallJumpModifier: 1.5
   coyoteTime: 0.15

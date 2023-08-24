@@ -363,7 +363,7 @@ public class Movement : NetworkBehaviour
 
         Vector3 vel = _rigidbody.velocity;
         if (base.IsOwner && !base.IsServer)
-            _rigidbody.velocity = new Vector3(vel.x / 4, vel.y / 4, vel.z / 4);
+            _rigidbody.velocity = Vector3.zero;
         else
             _rigidbody.velocity = new Vector3(vel.x / 3, vel.y / 3, vel.z / 3);
         dashing = false;

@@ -57,7 +57,6 @@ public class a_windDash : NetworkBehaviour, Dash
 
             if (!IsServer)
             {
-                rb.velocity = Vector3.zero;
                 mv.gravity = false;
             }
         }

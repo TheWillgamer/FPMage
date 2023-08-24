@@ -158,8 +158,6 @@ public class Movement : NetworkBehaviour
     {
         if (base.IsOwner)
         {
-            Debug.Log(grounded);
-            Debug.Log(counterMovement);
             if (Input.GetButtonDown("Jump"))
             {
                 if (readyToJump && jumpCharge > 0)

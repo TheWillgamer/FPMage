@@ -49,10 +49,23 @@ public class a_windDash : NetworkBehaviour, Dash
             {
                 dash_offcd = Time.time + dash_cd;
             }
-            startDashingServer();
-            mv.dashModifier = dashForce;
-            mv.dashDuration = dashDur;
-            mv.h_dashing = true;
+
+            float horizontal = Input.GetAxisRaw("Horizontal");
+            float vertical = Input.GetAxisRaw("Vertical");
+
+            startDashingServer(horizontal, vertical);
+            //mv.dashModifier = dashForce;
+            //mv.dashDuration = dashDur;
+            //mv.h_dashing = true;
+
+            if (!IsServer)
+            {
+                mv.disableMV = true;
+                mv.gravity = false;
+                mv.dashing = true;
+
+                Invoke("endDash", dashDur);
+            }
         }
 
         if (dashCharges < 2 && Time.time > dash_offcd)
@@ -70,21 +83,24 @@ public class a_windDash : NetworkBehaviour, Dash
     }
 
     [ServerRpc]
-    private void startDashingServer()
+    private void startDashingServer(float horizontal, float vertical)
     {
-        mv.dashModifier = dashForce;
-        mv.dashDuration = dashDur;
+        //mv.dashModifier = dashForce;
+        //mv.dashDuration = dashDur;
+        mv.disableMV = true;
+        mv.gravity = false;
+        mv.dashing = true;
 
         startDash();
 
-        //rb.velocity = Vector3.zero;
-        //if (horizontal == 0 && vertical == 0)
-        //    rb.AddForce(transform.forward * dashForce, ForceMode.Impulse);
-        //else
-        //    rb.AddForce((transform.forward * vertical + transform.right * horizontal).normalized * dashForce, ForceMode.Impulse);
+        rb.velocity = Vector3.zero;
+        if (horizontal == 0 && vertical == 0)
+            rb.AddForce(transform.forward * dashForce, ForceMode.Impulse);
+        else
+            rb.AddForce((transform.forward * vertical + transform.right * horizontal).normalized * dashForce, ForceMode.Impulse);
 
-        //Invoke("endDash", dashDur);
-        //Invoke("endDashServer", dashDur);
+        
+        Invoke("endDash", dashDur);
     }
 
     // For any dash effects
@@ -93,19 +109,7 @@ public class a_windDash : NetworkBehaviour, Dash
     {
     }
 
-    [ObserversRpc]
     private void endDash()
-    {
-        //dashparticles.SetActive(false);
-
-        if (IsOwner)
-        {
-            mv.EndDash();
-        }
-
-    }
-
-    private void endDashServer()
     {
         mv.EndDash();
     }
@@ -129,15 +133,17 @@ public class a_windDash : NetworkBehaviour, Dash
 
     public virtual void CancelDash()
     {
-        //CancelInvoke();
-        //CancelDashClient();
-        endDash();
+        CancelInvoke();
+        CancelDashClient();
         mv.EndDash();
     }
 
     [ObserversRpc]
     private void CancelDashClient()
     {
+        if (!base.IsOwner) return;
+
         CancelInvoke();
+        mv.EndDash();
     }
 }

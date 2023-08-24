@@ -362,10 +362,7 @@ public class Movement : NetworkBehaviour
             return;
 
         Vector3 vel = _rigidbody.velocity;
-        if (base.IsOwner && !base.IsServer)
-            _rigidbody.velocity = Vector3.zero;
-        else
-            _rigidbody.velocity = new Vector3(vel.x / 3, vel.y / 3, vel.z / 3);
+        _rigidbody.velocity = new Vector3(vel.x / 3, vel.y / 3, vel.z / 3);
         dashing = false;
     }
 

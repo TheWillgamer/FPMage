@@ -316,6 +316,7 @@ public class Movement : NetworkBehaviour
     private void Jump()
     {
         readyToJump = false;
+        _rigidbody.drag = 0;
 
         if (canGroundJump)
         {

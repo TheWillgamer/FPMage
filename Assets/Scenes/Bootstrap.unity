@@ -204,7 +204,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   menuName: MainMenu
   _networkManager: {fileID: 4351310061922095196}
-  _fishySteamworks: {fileID: 6570392866187309436}
+  _fishySteamworks: {fileID: 0}
 --- !u!1 &1448712823
 GameObject:
   m_ObjectHideFlags: 0
@@ -406,9 +406,10 @@ MonoBehaviour:
   _refreshDefaultPrefabs: 0
   _runInBackground: 1
   _dontDestroyOnLoad: 1
+  _objectPool: {fileID: 0}
   _persistence: 0
   _logging: {fileID: 0}
-  _spawnablePrefabs: {fileID: 11400000, guid: ec64eb18c93ab344892891f33edbf82a, type: 2}
+  _spawnablePrefabs: {fileID: 11400000, guid: 8edb3692a58d620478d8341c73992f4b, type: 2}
 --- !u!1 &4351310061922095197
 GameObject:
   m_ObjectHideFlags: 0
@@ -420,7 +421,7 @@ GameObject:
   - component: {fileID: 4351310061922095199}
   - component: {fileID: 4351310061922095196}
   - component: {fileID: 6570392866187309434}
-  - component: {fileID: 6570392866187309436}
+  - component: {fileID: 6570392866187309439}
   - component: {fileID: 6570392866187309435}
   - component: {fileID: 6570392866187309438}
   - component: {fileID: 6570392866187309437}
@@ -458,7 +459,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d331f979d46e8e4a9fc90070c596d44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _setHostVisibility: 1
+  _enableNetworkLod: 0
+  _levelOfDetailDistances: []
+  _updateHostVisibility: 1
   _defaultConditions:
   - {fileID: 11400000, guid: 2033f54fd2794464bae08fa5a55c8996, type: 2}
 --- !u!114 &6570392866187309435
@@ -473,25 +476,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34e4a322dca349547989b14021da4e23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Transport: {fileID: 6570392866187309436}
---- !u!114 &6570392866187309436
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4351310061922095197}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59963da54138dbf44a1a621a00bd8352, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _steamAppID: 480
-  _serverBindAddress: 
-  _port: 7770
-  _maximumClients: 9001
-  _peerToPeer: 1
-  _clientAddress: 
+  Transport: {fileID: 6570392866187309439}
+  _intermediateLayer: {fileID: 0}
+  _latencySimulator:
+    _enabled: 0
+    _simulateHost: 1
+    _latency: 0
+    _outOfOrder: 0
+    _packetLoss: 0
 --- !u!114 &6570392866187309437
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -504,11 +496,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fdaae44044276a49a52229c1597e33b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _updateOrder: 0
+  _timingType: 0
+  _allowTickDropping: 0
+  _maximumFrameTicks: 2
   _tickRate: 60
   _pingInterval: 1
-  _timingInterval: 2
   _physicsMode: 1
-  _maximumBufferedInputs: 20
 --- !u!114 &6570392866187309438
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -524,3 +518,21 @@ MonoBehaviour:
   _playerPrefab: {fileID: 1393966960444398379, guid: f331a39269891464c9941991e96c5ac6, type: 3}
   _addToDefaultScene: 1
   Spawns: []
+--- !u!114 &6570392866187309439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4351310061922095197}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3900d46003d80d4a9e124107c21c1fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _steamAppID: 480
+  _serverBindAddress: 
+  _port: 7770
+  _maximumClients: 9001
+  _peerToPeer: 1
+  _clientAddress: 

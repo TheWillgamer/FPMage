@@ -2,6 +2,7 @@ using FishNet;
 using FishNet.Object;
 using FishNet.Object.Prediction;
 using FishNet.Object.Synchronizing;
+using FishNet.Transporting;
 using UnityEngine;
 using System;
 
@@ -14,7 +15,7 @@ using System;
 public class Movement : NetworkBehaviour
 {
     #region Types.
-    public struct MoveData
+    public struct MoveData : IReplicateData
     {
         public bool Jump;
         public float Horizontal;
@@ -26,9 +27,17 @@ public class Movement : NetworkBehaviour
             Horizontal = horizontal;
             Vertical = vertical;
             Floating = floating;
+            _tick = 0;
         }
+
+        private uint _tick;
+        public void Dispose() { }
+        public uint GetTick() => _tick;
+        public void SetTick(uint value) => _tick = value;
     }
-    public struct ReconcileData
+
+
+    public struct ReconcileData : IReconcileData
     {
         public Vector3 Position;
         public Quaternion Rotation;
@@ -38,7 +47,13 @@ public class Movement : NetworkBehaviour
             Position = position;
             Rotation = rotation;
             Velocity = velocity;
+            _tick = 0;
         }
+
+        private uint _tick;
+        public void Dispose() { }
+        public uint GetTick() => _tick;
+        public void SetTick(uint value) => _tick = value;
     }
     #endregion
 
@@ -226,7 +241,7 @@ public class Movement : NetworkBehaviour
     }
 
     [Replicate]
-    private void Move(MoveData md, bool asServer, bool replaying = false)
+    private void Move(MoveData md, bool asServer, Channel channel = Channel.Unreliable, bool replaying = false)
     {
         if (disableMV)
         {
@@ -428,7 +443,7 @@ public class Movement : NetworkBehaviour
     }
 
     [Reconcile]
-    private void Reconciliation(ReconcileData rd, bool asServer)
+    private void Reconciliation(ReconcileData rd, bool asServer, Channel channel = Channel.Unreliable)
     {
         transform.position = rd.Position;
         transform.rotation = rd.Rotation;

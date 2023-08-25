@@ -2,7 +2,7 @@
 
 namespace FishNet.Object
 {
-    public sealed partial class NetworkObject : MonoBehaviour
+    public partial class NetworkObject : MonoBehaviour
     {
         /// <summary>
         /// Writers dirty SyncTypes for all Networkbehaviours if their write tick has been met.
@@ -18,17 +18,6 @@ namespace FishNet.Object
                 nb.WriteDirtySyncTypes(true, true);
                 nb.WriteDirtySyncTypes(false, true);
             }
-        }
-
-        /// <summary>
-        /// Resets SyncTypes for all NetworkBehaviours.
-        /// </summary>
-        internal void ResetSyncTypes(bool asServer)
-        {
-            NetworkBehaviour[] nbs = NetworkBehaviours;
-            int count = nbs.Length;
-            for (int i = 0; i < count; i++)
-                nbs[i].ResetSyncTypes(asServer);
         }
     }
 

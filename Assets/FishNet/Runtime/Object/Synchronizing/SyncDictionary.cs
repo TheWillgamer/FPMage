@@ -2,7 +2,7 @@
 using FishNet.Managing.Logging;
 using FishNet.Object.Synchronizing.Internal;
 using FishNet.Serializing;
-using FishNet.Utility.Extension;
+using GameKit.Utilities;
 using JetBrains.Annotations;
 using System;
 using System.Collections;
@@ -119,6 +119,10 @@ namespace FishNet.Object.Synchronizing
         /// The only reasonable way to reset this during a Reset call is by duplicating the original list and setting all values to it on reset.
         /// </summary>
         private bool _valuesChanged;
+        /// <summary>
+        /// True to send all values in the next WriteDelta.
+        /// </summary>
+        private bool _sendAll;
         #endregion
 
         [APIExclude]
@@ -167,35 +171,25 @@ namespace FishNet.Object.Synchronizing
             if (!base.IsRegistered)
                 return;
 
-            if (base.NetworkManager != null && base.Settings.WritePermission == WritePermission.ServerOnly && !base.NetworkBehaviour.IsServer)
+            /* asServer might be true if the client is setting the value
+            * through user code. Typically synctypes can only be set
+            * by the server, that's why it is assumed asServer via user code.
+            * However, when excluding owner for the synctype the client should
+            * have permission to update the value locally for use with
+            * prediction. */
+            bool asServerInvoke = (!base.IsNetworkInitialized || base.NetworkBehaviour.IsServer);
+
+            if (asServerInvoke)
             {
-                if (NetworkManager.CanLog(LoggingType.Warning))
-                    Debug.LogWarning($"Cannot complete operation {operation} as server when server is not active.");
-                return;
+                _valuesChanged = true;
+                if (base.Dirty())
+                {
+                    ChangeData change = new ChangeData(operation, key, value);
+                    _changed.Add(change);
+                }
             }
 
-            /* Set as changed even if cannot dirty.
-            * Dirty is only set when there are observers,
-            * but even if there are not observers
-            * values must be marked as changed so when
-            * there are observers, new values are sent. */
-            _valuesChanged = true;
-
-            /* If unable to dirty then do not add to changed.
-             * A dirty may fail if the server is not started
-             * or if there's no observers. Changed doesn't need
-             * to be populated in this situations because clients
-             * will get the full collection on spawn. If we
-             * were to also add to changed clients would get the full
-             * collection as well the changed, which would double results. */
-            if (base.Dirty())
-            {
-                ChangeData change = new ChangeData(operation, key, value);
-                _changed.Add(change);
-            }
-
-            bool asServer = true;
-            InvokeOnChange(operation, key, value, asServer);
+            InvokeOnChange(operation, key, value, asServerInvoke);
         }
 
 
@@ -203,7 +197,7 @@ namespace FishNet.Object.Synchronizing
         /// Called after OnStartXXXX has occurred.
         /// </summary>
         /// <param name="asServer">True if OnStartServer was called, false if OnStartClient.</param>
-        protected internal override void OnStartCallback(bool asServer)
+        public override void OnStartCallback(bool asServer)
         {
             base.OnStartCallback(asServer);
             List<CachedOnChange> collection = (asServer) ? _serverOnChanges : _clientOnChanges;
@@ -229,29 +223,40 @@ namespace FishNet.Object.Synchronizing
         public override void WriteDelta(PooledWriter writer, bool resetSyncTick = true)
         {
             base.WriteDelta(writer, resetSyncTick);
-            //False for not full write.
-            writer.WriteBoolean(false);
-            writer.WriteUInt32((uint)_changed.Count);
 
-            for (int i = 0; i < _changed.Count; i++)
+            //If sending all then clear changed and write full.
+            if (_sendAll)
             {
-                ChangeData change = _changed[i];
-                writer.WriteByte((byte)change.Operation);
-
-                //Clear does not need to write anymore data so it is not included in checks.
-                if (change.Operation == SyncDictionaryOperation.Add ||
-                    change.Operation == SyncDictionaryOperation.Set)
-                {
-                    writer.Write(change.Key);
-                    writer.Write(change.Value);
-                }
-                else if (change.Operation == SyncDictionaryOperation.Remove)
-                {
-                    writer.Write(change.Key);
-                }
+                _sendAll = false;
+                _changed.Clear();
+                WriteFull(writer);
             }
+            else
+            {
+                //False for not full write.
+                writer.WriteBoolean(false);
+                writer.WriteInt32(_changed.Count);
 
-            _changed.Clear();
+                for (int i = 0; i < _changed.Count; i++)
+                {
+                    ChangeData change = _changed[i];
+                    writer.WriteByte((byte)change.Operation);
+
+                    //Clear does not need to write anymore data so it is not included in checks.
+                    if (change.Operation == SyncDictionaryOperation.Add ||
+                        change.Operation == SyncDictionaryOperation.Set)
+                    {
+                        writer.Write(change.Key);
+                        writer.Write(change.Value);
+                    }
+                    else if (change.Operation == SyncDictionaryOperation.Remove)
+                    {
+                        writer.Write(change.Key);
+                    }
+                }
+
+                _changed.Clear();
+            }
         }
 
 
@@ -270,7 +275,7 @@ namespace FishNet.Object.Synchronizing
             base.WriteHeader(writer, false);
             //True for full write.
             writer.WriteBoolean(true);
-            writer.WriteUInt32((uint)Collection.Count);
+            writer.WriteInt32(Collection.Count);
             foreach (KeyValuePair<TKey, TValue> item in Collection)
             {
                 writer.WriteByte((byte)SyncDictionaryOperation.Add);
@@ -281,21 +286,22 @@ namespace FishNet.Object.Synchronizing
 
 
         /// <summary>
-        /// Sets current values.
-        /// Internal use.
-        /// May be used for custom SyncObjects.
+        /// Reads and sets the current values for server or client.
         /// </summary>
-        /// <param name="reader"></param>
         [APIExclude]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override void Read(PooledReader reader)
+        public override void Read(PooledReader reader, bool asServer)
         {
-            bool asServer = false;
             /* When !asServer don't make changes if server is running.
             * This is because changes would have already been made on
             * the server side and doing so again would result in duplicates
             * and potentially overwrite data not yet sent. */
             bool asClientAndHost = (!asServer && base.NetworkBehaviour.IsServer);
+            //True to warn if this object was deinitialized on the server.
+            bool deinitialized = (asClientAndHost && !base.OnStartServerCalled);
+            if (deinitialized)
+                base.NetworkManager.LogWarning($"SyncType {GetType().Name} received a Read but was deinitialized on the server. Client callback values may be incorrect. This is a ClientHost limitation.");
+
             IDictionary<TKey, TValue> collection = (asClientAndHost) ? ClientHostCollection : Collection;
 
             //Clear collection since it's a full write.
@@ -303,7 +309,7 @@ namespace FishNet.Object.Synchronizing
             if (fullWrite)
                 collection.Clear();
 
-            int changes = (int)reader.ReadUInt32();
+            int changes = reader.ReadInt32();
             for (int i = 0; i < changes; i++)
             {
                 SyncDictionaryOperation operation = (SyncDictionaryOperation)reader.ReadByte();
@@ -318,18 +324,21 @@ namespace FishNet.Object.Synchronizing
                 {
                     key = reader.Read<TKey>();
                     value = reader.Read<TValue>();
-                    collection[key] = value;
+                    if (!deinitialized)
+                        collection[key] = value;
                 }
                 //Clear.
                 else if (operation == SyncDictionaryOperation.Clear)
                 {
-                    collection.Clear();
+                    if (!deinitialized)
+                        collection.Clear();
                 }
                 //Remove.
                 else if (operation == SyncDictionaryOperation.Remove)
                 {
                     key = reader.Read<TKey>();
-                    collection.Remove(key);
+                    if (!deinitialized)
+                        collection.Remove(key);
                 }
 
                 InvokeOnChange(operation, key, value, false);
@@ -367,9 +376,10 @@ namespace FishNet.Object.Synchronizing
         /// Resets to initialized values.
         /// </summary>
         [APIExclude]
-        public override void Reset()
+        public override void ResetState()
         {
-            base.Reset();
+            base.ResetState();
+            _sendAll = false;
             _changed.Clear();
             Collection.Clear();
             ClientHostCollection.Clear();
@@ -402,6 +412,9 @@ namespace FishNet.Object.Synchronizing
         }
         private void Add(TKey key, TValue value, bool asServer)
         {
+            if (!base.CanNetworkSetValues(true))
+                return;
+
             Collection.Add(key, value);
             if (asServer)
                 AddOperation(SyncDictionaryOperation.Add, key, value);
@@ -416,6 +429,9 @@ namespace FishNet.Object.Synchronizing
         }
         private void Clear(bool asServer)
         {
+            if (!base.CanNetworkSetValues(true))
+                return;
+
             Collection.Clear();
             if (asServer)
                 AddOperation(SyncDictionaryOperation.Clear, default, default);
@@ -451,16 +467,14 @@ namespace FishNet.Object.Synchronizing
         {
             if (offset <= -1 || offset >= array.Length)
             {
-                if (NetworkManager.CanLog(LoggingType.Error))
-                    Debug.LogError($"Index is out of range.");
+                base.NetworkManager.LogError($"Index is out of range.");
                 return;
             }
 
             int remaining = array.Length - offset;
             if (remaining < Count)
             {
-                if (NetworkManager.CanLog(LoggingType.Error))
-                    Debug.LogError($"Array is not large enough to copy data. Array is of length {array.Length}, index is {offset}, and number of values to be copied is {Count.ToString()}.");
+                base.NetworkManager.LogError($"Array is not large enough to copy data. Array is of length {array.Length}, index is {offset}, and number of values to be copied is {Count.ToString()}.");
                 return;
             }
 
@@ -480,6 +494,9 @@ namespace FishNet.Object.Synchronizing
         /// <returns>True if removed.</returns>
         public bool Remove(TKey key)
         {
+            if (!base.CanNetworkSetValues(true))
+                return false;
+
             if (Collection.Remove(key))
             {
                 AddOperation(SyncDictionaryOperation.Remove, key, default);
@@ -522,9 +539,26 @@ namespace FishNet.Object.Synchronizing
             get => Collection[key];
             set
             {
+                if (!base.CanNetworkSetValues(true))
+                    return;
+
                 Collection[key] = value;
                 AddOperation(SyncDictionaryOperation.Set, key, value);
             }
+        }
+
+        /// <summary>
+        /// Dirties the entire collection forcing a full send.
+        /// </summary>
+        public void DirtyAll()
+        {
+            if (!base.IsRegistered)
+                return;
+            if (!base.CanNetworkSetValues(true))
+                return;
+
+            if (base.Dirty())
+                _sendAll = true;
         }
 
         /// <summary>
@@ -533,6 +567,11 @@ namespace FishNet.Object.Synchronizing
         /// <param name="key">Key to dirty.</param>
         public void Dirty(TKey key)
         {
+            if (!base.IsRegistered)
+                return;
+            if (!base.CanNetworkSetValues(true))
+                return;
+
             if (Collection.TryGetValueIL2CPP(key, out TValue value))
                 AddOperation(SyncDictionaryOperation.Set, key, value);
         }
@@ -545,6 +584,11 @@ namespace FishNet.Object.Synchronizing
         /// <returns>True if value was found and marked dirty.</returns>
         public bool Dirty(TValue value, EqualityComparer<TValue> comparer = null)
         {
+            if (!base.IsRegistered)
+                return false;
+            if (!base.CanNetworkSetValues(true))
+                return false;
+
             if (comparer == null)
                 comparer = EqualityComparer<TValue>.Default;
 

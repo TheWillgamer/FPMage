@@ -48,22 +48,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26b716c41e9b56b4baafaf13a523ba2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <IsNested>k__BackingField: 0
+  <ComponentIndex>k__BackingField: 0
+  <PredictedSpawn>k__BackingField: {fileID: 0}
   _networkBehaviours:
   - {fileID: 4060215603889557328}
-  SceneTransformProperties:
+  <ParentNetworkObject>k__BackingField: {fileID: 0}
+  <ChildNetworkObjects>k__BackingField: []
+  SerializedTransformProperties:
     Position: {x: 0, y: 0, z: 0}
-    Rotation: {x: -0, y: -0, z: -0, w: 1}
-    LocalScale: {x: 1, y: 1, z: 1}
+    Rotation: {x: 0, y: 0, z: 0, w: 0}
+    LocalScale: {x: 0, y: 0, z: 0}
   _isNetworked: 1
   _isGlobal: 0
-  _hasParentNetworkObjectAtEdit: 0
+  _initializeOrder: 0
+  _defaultDespawnType: 0
   NetworkObserver: {fileID: 0}
-  _prefabId: 12
+  <PrefabId>k__BackingField: 0
+  <SpawnableCollectionId>k__BackingField: 0
   _scenePathHash: 0
-  _sceneId: 0
-  _sceneNetworkObjects:
-  - {fileID: 2479976140121468190}
-  - {fileID: 0}
+  <SceneId>k__BackingField: 0
+  <AssetPathHash>k__BackingField: 16999213367927791075
 --- !u!114 &4060215603889557328
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -80,6 +85,7 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 2479976140121468190}
   _networkObjectCache: {fileID: 2479976140121468190}
   damage: 40
+  chargeTime: 0.5
   knockback_amount: 20
   knockback_growth: 60
   spell: {fileID: 1689910728261740611}

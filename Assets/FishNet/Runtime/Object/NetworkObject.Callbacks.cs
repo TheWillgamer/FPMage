@@ -1,14 +1,16 @@
 ﻿using FishNet.Connection;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace FishNet.Object
 {
-    public sealed partial class NetworkObject : MonoBehaviour
+    public partial class NetworkObject : MonoBehaviour
     {
         /// <summary>
         /// Called after all data is synchronized with this NetworkObject.
         /// </summary>
-        private void InitializeCallbacks(bool asServer)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void InitializeCallbacks(bool asServer, bool invokeSyncTypeCallbacks)
         {
             /* Note: When invoking OnOwnership here previous owner will
              * always be an empty connection, since the object is just
@@ -22,36 +24,46 @@ namespace FishNet.Object
 
             //Invoke OnStartNetwork.
             for (int i = 0; i < NetworkBehaviours.Length; i++)
-                NetworkBehaviours[i].InvokeOnNetwork(true);            
+                NetworkBehaviours[i].InvokeOnNetwork(true);
 
             //As server.
             if (asServer)
             {
                 for (int i = 0; i < NetworkBehaviours.Length; i++)
-                    NetworkBehaviours[i].OnStartServer();
+                    NetworkBehaviours[i].OnStartServer_Internal();
                 for (int i = 0; i < NetworkBehaviours.Length; i++)
-                    NetworkBehaviours[i].InvokeSyncTypeCallbacks(true);
-
-                if (Owner.IsValid)
-                {
-                    for (int i = 0; i < NetworkBehaviours.Length; i++)
-                        NetworkBehaviours[i].OnOwnershipServer(FishNet.Managing.NetworkManager.EmptyConnection);
-                }
+                    NetworkBehaviours[i].OnOwnershipServer_Internal(FishNet.Managing.NetworkManager.EmptyConnection);
             }
             //As client.
             else
             {
                 for (int i = 0; i < NetworkBehaviours.Length; i++)
-                    NetworkBehaviours[i].OnStartClient();
+                    NetworkBehaviours[i].OnStartClient_Internal();
                 for (int i = 0; i < NetworkBehaviours.Length; i++)
-                    NetworkBehaviours[i].InvokeSyncTypeCallbacks(false);
-
-                if (IsOwner)
-                {
-                    for (int i = 0; i < NetworkBehaviours.Length; i++)
-                        NetworkBehaviours[i].OnOwnershipClient(FishNet.Managing.NetworkManager.EmptyConnection);
-                }
+                    NetworkBehaviours[i].OnOwnershipClient_Internal(FishNet.Managing.NetworkManager.EmptyConnection);
             }
+
+            if (invokeSyncTypeCallbacks)
+                InvokeOnStartSyncTypeCallbacks(true);
+        }
+
+
+        /// <summary>
+        /// Invokes OnStartXXXX for synctypes, letting them know the NetworkBehaviour start cycle has been completed.
+        /// </summary>
+        internal void InvokeOnStartSyncTypeCallbacks(bool asServer)
+        {
+            for (int i = 0; i < NetworkBehaviours.Length; i++)
+                NetworkBehaviours[i].InvokeSyncTypeOnStartCallbacks(asServer);
+        }
+
+        /// <summary>
+        /// Invokes OnStopXXXX for synctypes, letting them know the NetworkBehaviour stop cycle is about to start.
+        /// </summary>
+        internal void InvokeOnStopSyncTypeCallbacks(bool asServer)
+        {
+            for (int i = 0; i < NetworkBehaviours.Length; i++)
+                NetworkBehaviours[i].InvokeSyncTypeOnStopCallbacks(asServer);
         }
 
         /// <summary>
@@ -59,10 +71,10 @@ namespace FishNet.Object
         /// This is made one method to save instruction calls.
         /// </summary>
         /// <param name=""></param>
-        internal void InvokePostOnServerStart(NetworkConnection conn)
+        internal void OnSpawnServer(NetworkConnection conn)
         {
             for (int i = 0; i < NetworkBehaviours.Length; i++)
-                NetworkBehaviours[i].OnSendBufferedRpcs(conn);
+                NetworkBehaviours[i].SendBufferedRpcs(conn);
 
             for (int i = 0; i < NetworkBehaviours.Length; i++)
                 NetworkBehaviours[i].OnSpawnServer(conn);
@@ -82,17 +94,20 @@ namespace FishNet.Object
         /// Invokes OnStop callbacks.
         /// </summary>
         /// <param name="asServer"></param>
-        private void InvokeStopCallbacks(bool asServer)
+        internal void InvokeStopCallbacks(bool asServer)
         {
+            for (int i = 0; i < NetworkBehaviours.Length; i++)
+                NetworkBehaviours[i].InvokeSyncTypeOnStopCallbacks(asServer);
+
             if (asServer)
             {
                 for (int i = 0; i < NetworkBehaviours.Length; i++)
-                    NetworkBehaviours[i].OnStopServer();
+                    NetworkBehaviours[i].OnStopServer_Internal();
             }
             else
             {
                 for (int i = 0; i < NetworkBehaviours.Length; i++)
-                    NetworkBehaviours[i].OnStopClient();
+                    NetworkBehaviours[i].OnStopClient_Internal();
             }
 
             /* Invoke OnStopNetwork if server is calling
@@ -118,12 +133,25 @@ namespace FishNet.Object
             if (asServer)
             {
                 for (int i = 0; i < NetworkBehaviours.Length; i++)
-                    NetworkBehaviours[i].OnOwnershipServer(prevOwner);
+                    NetworkBehaviours[i].OnOwnershipServer_Internal(prevOwner);
             }
             else
             {
-                for (int i = 0; i < NetworkBehaviours.Length; i++)
-                    NetworkBehaviours[i].OnOwnershipClient(prevOwner);
+                /* If local client is owner and not server then only
+                 * invoke if the prevOwner is different. This prevents
+                 * the owner change callback from happening twice when
+                 * using TakeOwnership. 
+                 * 
+                 * Further explained, the TakeOwnership sets local client
+                 * as owner client-side, which invokes the OnOwnership method.
+                 * Then when the server approves the owner change it would invoke
+                 * again, which is not needed. */
+                bool blockInvoke = ((IsOwner && !IsServer) && (prevOwner == Owner));
+                if (!blockInvoke)
+                {
+                    for (int i = 0; i < NetworkBehaviours.Length; i++)
+                        NetworkBehaviours[i].OnOwnershipClient_Internal(prevOwner);
+                }
             }
         }
     }

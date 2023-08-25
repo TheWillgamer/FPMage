@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
 using System;
-using FishNet.Object.Helping;
-using System.Linq;
+using GameKit.Utilities;
 #if UNITY_EDITOR
 using UnityEditor.Experimental.SceneManagement;
 using UnityEditor.SceneManagement;
@@ -11,27 +9,20 @@ using UnityEditor;
 
 namespace FishNet.Object
 {
-    public sealed partial class NetworkObject : MonoBehaviour
+    public partial class NetworkObject : MonoBehaviour
     {
         #region Serialized.
 
         /// <summary>
-        /// 
+        /// Networked PrefabId assigned to this Prefab.
         /// </summary>
-        [SerializeField, HideInInspector]
-        private short _prefabId = -1;
+        [field: SerializeField, HideInInspector]
+        public ushort PrefabId { get; internal set; } = 0;
         /// <summary>
-        /// Id to use when spawning this object over the network as a prefab.
+        /// Spawn collection to use assigned to this Prefab.
         /// </summary>
-        public short PrefabId => _prefabId;
-        /// <summary>
-        /// Sets PrefabId.
-        /// </summary>
-        /// <param name="value"></param>
-        internal void SetPrefabId(short value)
-        {
-            _prefabId = value;
-        }
+        [field: SerializeField, HideInInspector]
+        public ushort SpawnableCollectionId { get; internal set; } = 0;
 #pragma warning disable 414 //Disabled because Unity thinks tihs is unused when building.
         /// <summary>
         /// Hash to the scene which this object resides.
@@ -40,28 +31,21 @@ namespace FishNet.Object
         private uint _scenePathHash;
 #pragma warning restore 414
         /// <summary>
-        /// 
+        /// Network Id for this scene object.
         /// </summary>
-        [SerializeField, HideInInspector]
-        private ulong _sceneId;
+        [field: SerializeField, HideInInspector]
+        internal ulong SceneId { get; private set; }
         /// <summary>
-        /// Id for this scene object.
+        /// Hash for the path which this asset resides. This value is set during edit time.
+        /// </summary> 
+        [field: SerializeField, HideInInspector]
+        public ulong AssetPathHash { get; private set; }
+        /// <summary>
+        /// Sets AssetPathhash value.
         /// </summary>
-        internal ulong SceneId
-        {
-            get => _sceneId;
-            private set => _sceneId = value;
-        }
+        /// <param name="value">Value to use.</param>
+        public void SetAssetPathHash(ulong value) => AssetPathHash = value;
         #endregion
-
-#if UNITY_EDITOR
-        /// <summary>
-        /// This is used to store NetworkObjects in the scene during edit time.
-        /// SceneIds are compared against this collection to ensure there are no duplicated.
-        /// </summary>
-        [SerializeField, HideInInspector]
-        private List<NetworkObject> _sceneNetworkObjects = new List<NetworkObject>();
-#endif
 
         /// <summary>
         /// Removes SceneObject state.
@@ -86,7 +70,7 @@ namespace FishNet.Object
         {
             if (Application.isPlaying)
                 return;
-            //Potential Unity bug? Can sometimes be null based on editor callback order.
+            //Unity bug, sometimes this can be null depending on editor callback orders.
             if (gameObject == null)
                 return;
             //Not a scene object.
@@ -109,12 +93,11 @@ namespace FishNet.Object
              EditorUtility.IsPersistent(this))
             {
                 //These are all failing conditions, don't do additional checks.
-                SceneId = 0;
             }
             else
             {
                 System.Random rnd = new System.Random();
-                scenePathHash = gameObject.scene.path.ToLower().GetStableHash32();
+                scenePathHash = gameObject.scene.path.ToLower().GetStableHashU32();
                 sceneId = SceneId;
                 //Not a valid sceneId or is a duplicate. 
                 if (scenePathHash != _scenePathHash || SceneId == 0 || IsDuplicateSceneId(SceneId))
@@ -193,11 +176,10 @@ namespace FishNet.Object
         /// <returns></returns>
         private bool IsDuplicateSceneId(ulong id)
         {
-            //Find all nobs in scene.
-            _sceneNetworkObjects = GameObject.FindObjectsOfType<NetworkObject>().ToList();
-            foreach (NetworkObject nob in _sceneNetworkObjects)
+            NetworkObject[] nobs = GameObject.FindObjectsOfType<NetworkObject>();
+            foreach (NetworkObject n in nobs)
             {
-                if (nob != null && nob != this && nob.SceneId == id)
+                if (n != null && n != this && n.SceneId == id)
                     return true;
             }
             //If here all checks pass.

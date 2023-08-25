@@ -69,7 +69,8 @@ namespace FishNet.Object.Synchronizing
 
             public bool MoveNext()
             {
-                if (++_index >= _list.Count)
+                _index++;
+                if (_index >= _list.Count)
                     return false;
                 Current = _list[_index];
                 return true;
@@ -140,6 +141,10 @@ namespace FishNet.Object.Synchronizing
         /// The only reasonable way to reset this during a Reset call is by duplicating the original list and setting all values to it on reset.
         /// </summary>
         private bool _valuesChanged;
+        /// <summary>
+        /// True to send all values in the next WriteDelta.
+        /// </summary>
+        private bool _sendAll;
         #endregion
 
         [APIExclude]
@@ -191,41 +196,49 @@ namespace FishNet.Object.Synchronizing
             if (!base.IsRegistered)
                 return;
 
-            if (base.NetworkManager != null && base.Settings.WritePermission == WritePermission.ServerOnly && !base.NetworkBehaviour.IsServer)
+            /* asServer might be true if the client is setting the value
+            * through user code. Typically synctypes can only be set
+            * by the server, that's why it is assumed asServer via user code.
+            * However, when excluding owner for the synctype the client should
+            * have permission to update the value locally for use with
+            * prediction. */
+            bool asServerInvoke = (!base.IsNetworkInitialized || base.NetworkBehaviour.IsServer);
+
+            /* Only the adds asServer may set
+             * this synctype as dirty and add
+             * to pending changes. However, the event may still
+             * invoke for clientside. */
+            if (asServerInvoke)
             {
-                if (NetworkManager.CanLog(LoggingType.Warning))
-                    Debug.LogWarning($"Cannot complete operation as server when server is not active.");
-                return;
+                /* Set as changed even if cannot dirty.
+                * Dirty is only set when there are observers,
+                * but even if there are not observers
+                * values must be marked as changed so when
+                * there are observers, new values are sent. */
+                _valuesChanged = true;
+
+                /* If unable to dirty then do not add to changed.
+                 * A dirty may fail if the server is not started
+                 * or if there's no observers. Changed doesn't need
+                 * to be populated in this situations because clients
+                 * will get the full collection on spawn. If we
+                 * were to also add to changed clients would get the full
+                 * collection as well the changed, which would double results. */
+                if (base.Dirty())
+                {
+                    ChangeData change = new ChangeData(operation, index, next);
+                    _changed.Add(change);
+                }
             }
 
-            /* Set as changed even if cannot dirty.
-            * Dirty is only set when there are observers,
-            * but even if there are not observers
-            * values must be marked as changed so when
-            * there are observers, new values are sent. */
-            _valuesChanged = true;
-
-            /* If unable to dirty then do not add to changed.
-             * A dirty may fail if the server is not started
-             * or if there's no observers. Changed doesn't need
-             * to be populated in this situations because clients
-             * will get the full collection on spawn. If we
-             * were to also add to changed clients would get the full
-             * collection as well the changed, which would double results. */
-            if (base.Dirty())
-            {
-                ChangeData change = new ChangeData(operation, index, next);
-                _changed.Add(change);
-            }
-            bool asServer = true;
-            InvokeOnChange(operation, index, prev, next, asServer);
+            InvokeOnChange(operation, index, prev, next, asServerInvoke);
         }
 
         /// <summary>
         /// Called after OnStartXXXX has occurred.
         /// </summary>
         /// <param name="asServer">True if OnStartServer was called, false if OnStartClient.</param>
-        protected internal override void OnStartCallback(bool asServer)
+        public override void OnStartCallback(bool asServer)
         {
             base.OnStartCallback(asServer);
             List<CachedOnChange> collection = (asServer) ? _serverOnChanges : _clientOnChanges;
@@ -246,33 +259,43 @@ namespace FishNet.Object.Synchronizing
         ///<param name="resetSyncTick">True to set the next time data may sync.</param>
         public override void WriteDelta(PooledWriter writer, bool resetSyncTick = true)
         {
-            base.WriteDelta(writer, resetSyncTick);
-            //False for not full write.
-            writer.WriteBoolean(false);
-            writer.WriteUInt32((uint)_changed.Count);
-
-            for (int i = 0; i < _changed.Count; i++)
+            //If sending all then clear changed and write full.
+            if (_sendAll)
             {
-                ChangeData change = _changed[i];
-                writer.WriteByte((byte)change.Operation);
-
-                //Clear does not need to write anymore data so it is not included in checks.
-                if (change.Operation == SyncListOperation.Add)
-                {
-                    writer.Write(change.Item);
-                }
-                else if (change.Operation == SyncListOperation.RemoveAt)
-                {
-                    writer.WriteUInt32((uint)change.Index);
-                }
-                else if (change.Operation == SyncListOperation.Insert || change.Operation == SyncListOperation.Set)
-                {
-                    writer.WriteUInt32((uint)change.Index);
-                    writer.Write(change.Item);
-                }
+                _sendAll = false;
+                _changed.Clear();
+                WriteFull(writer);
             }
+            else
+            {
+                base.WriteDelta(writer, resetSyncTick);
+                //False for not full write.
+                writer.WriteBoolean(false);
+                writer.WriteInt32(_changed.Count);
 
-            _changed.Clear();
+                for (int i = 0; i < _changed.Count; i++)
+                {
+                    ChangeData change = _changed[i];
+                    writer.WriteByte((byte)change.Operation);
+
+                    //Clear does not need to write anymore data so it is not included in checks.
+                    if (change.Operation == SyncListOperation.Add)
+                    {
+                        writer.Write(change.Item);
+                    }
+                    else if (change.Operation == SyncListOperation.RemoveAt)
+                    {
+                        writer.WriteInt32(change.Index);
+                    }
+                    else if (change.Operation == SyncListOperation.Insert || change.Operation == SyncListOperation.Set)
+                    {
+                        writer.WriteInt32(change.Index);
+                        writer.Write(change.Item);
+                    }
+                }
+
+                _changed.Clear();
+            }
         }
 
         /// <summary>
@@ -287,7 +310,7 @@ namespace FishNet.Object.Synchronizing
             base.WriteHeader(writer, false);
             //True for full write.
             writer.WriteBoolean(true);
-            writer.WriteUInt32((uint)Collection.Count);
+            writer.WriteInt32(Collection.Count);
             for (int i = 0; i < Collection.Count; i++)
             {
                 writer.WriteByte((byte)SyncListOperation.Add);
@@ -296,19 +319,22 @@ namespace FishNet.Object.Synchronizing
         }
 
         /// <summary>
-        /// Sets current values.
+        /// Reads and sets the current values for server or client.
         /// </summary>
-        /// <param name="reader"></param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [APIExclude]
-        public override void Read(PooledReader reader)
+        public override void Read(PooledReader reader, bool asServer)
         {
-            bool asServer = false;
             /* When !asServer don't make changes if server is running.
             * This is because changes would have already been made on
             * the server side and doing so again would result in duplicates
             * and potentially overwrite data not yet sent. */
             bool asClientAndHost = (!asServer && base.NetworkManager.IsServer);
+            //True to warn if this object was deinitialized on the server.
+            bool deinitialized = (asClientAndHost && !base.OnStartServerCalled);
+            if (deinitialized)
+                base.NetworkManager.LogWarning($"SyncType {GetType().Name} received a Read but was deinitialized on the server. Client callback values may be incorrect. This is a ClientHost limitation.");
+
             IList<T> collection = (asClientAndHost) ? ClientHostCollection : Collection;
 
             //Clear collection since it's a full write.
@@ -316,7 +342,7 @@ namespace FishNet.Object.Synchronizing
             if (fullWrite)
                 collection.Clear();
 
-            int changes = (int)reader.ReadUInt32();
+            int changes = reader.ReadInt32();
 
             for (int i = 0; i < changes; i++)
             {
@@ -329,35 +355,46 @@ namespace FishNet.Object.Synchronizing
                 if (operation == SyncListOperation.Add)
                 {
                     next = reader.Read<T>();
-                    index = collection.Count;
-                    collection.Add(next);
+                    if (!deinitialized)
+                    {
+                        index = collection.Count;
+                        collection.Add(next);
+                    }
                 }
                 //Clear.
                 else if (operation == SyncListOperation.Clear)
                 {
-                    collection.Clear();
+                    if (!deinitialized)
+                        collection.Clear();
                 }
                 //Insert.
                 else if (operation == SyncListOperation.Insert)
                 {
-                    index = (int)reader.ReadUInt32();
+                    index = reader.ReadInt32();
                     next = reader.Read<T>();
-                    collection.Insert(index, next);
+                    if (!deinitialized)
+                        collection.Insert(index, next);
                 }
                 //RemoveAt.
                 else if (operation == SyncListOperation.RemoveAt)
                 {
-                    index = (int)reader.ReadUInt32();
-                    prev = collection[index];
-                    collection.RemoveAt(index);
+                    index = reader.ReadInt32();
+                    if (!deinitialized)
+                    {
+                        prev = collection[index];
+                        collection.RemoveAt(index);
+                    }
                 }
                 //Set
                 else if (operation == SyncListOperation.Set)
                 {
-                    index = (int)reader.ReadUInt32();
+                    index = reader.ReadInt32();
                     next = reader.Read<T>();
-                    prev = collection[index];
-                    collection[index] = next;
+                    if (!deinitialized)
+                    {
+                        prev = collection[index];
+                        collection[index] = next;
+                    }
                 }
 
                 InvokeOnChange(operation, index, prev, next, false);
@@ -392,9 +429,10 @@ namespace FishNet.Object.Synchronizing
         /// <summary>
         /// Resets to initialized values.
         /// </summary>
-        public override void Reset()
+        public override void ResetState()
         {
-            base.Reset();
+            base.ResetState();
+            _sendAll = false;
             _changed.Clear();
             ClientHostCollection.Clear();
             Collection.Clear();
@@ -417,6 +455,9 @@ namespace FishNet.Object.Synchronizing
         }
         private void Add(T item, bool asServer)
         {
+            if (!base.CanNetworkSetValues(true))
+                return;
+
             Collection.Add(item);
             if (asServer)
             {
@@ -444,6 +485,9 @@ namespace FishNet.Object.Synchronizing
         }
         private void Clear(bool asServer)
         {
+            if (!base.CanNetworkSetValues(true))
+                return;
+
             Collection.Clear();
             if (asServer)
             {
@@ -535,6 +579,9 @@ namespace FishNet.Object.Synchronizing
         }
         private void Insert(int index, T item, bool asServer)
         {
+            if (!base.CanNetworkSetValues(true))
+                return;
+
             Collection.Insert(index, item);
             if (asServer)
             {
@@ -584,6 +631,9 @@ namespace FishNet.Object.Synchronizing
         }
         private void RemoveAt(int index, bool asServer)
         {
+            if (!base.CanNetworkSetValues(true))
+                return;
+
             T oldItem = Collection[index];
             Collection.RemoveAt(index);
             if (asServer)
@@ -624,22 +674,37 @@ namespace FishNet.Object.Synchronizing
         }
 
         /// <summary>
+        /// Dirties the entire collection forcing a full send.
+        /// This will not invoke the callback on server.
+        /// </summary>
+        public void DirtyAll()
+        {
+            if (!base.IsRegistered)
+                return;
+
+            if (base.NetworkManager != null && !base.NetworkBehaviour.IsServer)
+            {
+                base.NetworkManager.LogWarning($"Cannot complete operation as server when server is not active.");
+                return;
+            }
+
+            if (base.Dirty())
+                _sendAll = true;
+        }
+
+        /// <summary>
         /// Looks up obj in Collection and if found marks it's index as dirty.
         /// While using this operation previous value will be the same as next.
+        /// This operation can be very expensive, and may fail if your value cannot be compared.
         /// </summary>
-        /// <param name="obj"></param>
+        /// <param name="obj">Object to lookup.</param>
         public void Dirty(T obj)
         {
             int index = Collection.IndexOf(obj);
             if (index != -1)
-            {
                 Dirty(index);
-            }
             else
-            {
-                if (base.NetworkManager.CanLog(LoggingType.Error))
-                    Debug.LogError($"Could not find object within SyncList, dirty will not be set.");
-            }
+                base.NetworkManager.LogError($"Could not find object within SyncList, dirty will not be set.");
         }
         /// <summary>
         /// Marks an index as dirty.
@@ -648,8 +713,10 @@ namespace FishNet.Object.Synchronizing
         /// <param name="index"></param>
         public void Dirty(int index)
         {
-            bool asServer = true;
+            if (!base.CanNetworkSetValues(true))
+                return;
 
+            bool asServer = true;
             T value = Collection[index];
             if (asServer)
                 AddOperation(SyncListOperation.Set, index, value, value);
@@ -665,6 +732,9 @@ namespace FishNet.Object.Synchronizing
         }
         private void Set(int index, T value, bool asServer, bool force)
         {
+            if (!base.CanNetworkSetValues(true))
+                return;
+
             bool sameValue = (!force && !_comparer.Equals(Collection[index], value));
             if (!sameValue)
             {

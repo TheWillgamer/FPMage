@@ -19,7 +19,7 @@ public class PhysSim : MonoBehaviour
     private void Awake()
     {
         _tm = InstanceFinder.TimeManager;
-        _tm.OnPhysicsSimulation += TimeManager_OnPhysicsSimulation;
+        _tm.OnPostPhysicsSimulation += TimeManager_OnPhysicsSimulation;
         _physicsScene = gameObject.scene.GetPhysicsScene();
 
         //Let this script simulate physics.
@@ -34,7 +34,7 @@ public class PhysSim : MonoBehaviour
     private void OnDestroy()
     {
         if (_tm != null)
-            _tm.OnPhysicsSimulation -= TimeManager_OnPhysicsSimulation;
+            _tm.OnPostPhysicsSimulation -= TimeManager_OnPhysicsSimulation;
     }
 
     private void TimeManager_OnPhysicsSimulation(float delta)

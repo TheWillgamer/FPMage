@@ -1,5 +1,6 @@
 using FishNet.Managing.Logging;
 using LiteNetLib;
+using LiteNetLib.Layers;
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -53,6 +54,10 @@ namespace FishNet.Transporting.Tugboat.Client
         /// </summary>
         private int _timeout;
         /// <summary>
+        /// PacketLayer to use with LiteNetLib.
+        /// </summary>
+        private PacketLayerBase _packetLayer;
+        /// <summary>
         /// Locks the NetManager to stop it.
         /// </summary>
         private readonly object _stopLock = new object();
@@ -62,10 +67,11 @@ namespace FishNet.Transporting.Tugboat.Client
         /// Initializes this for use.
         /// </summary>
         /// <param name="t"></param>
-        internal void Initialize(Transport t, int unreliableMTU)
+        internal void Initialize(Transport t, int unreliableMTU, PacketLayerBase packetLayer)
         {
             base.Transport = t;
             _mtu = unreliableMTU;
+            _packetLayer = packetLayer;
         }
 
         /// <summary>
@@ -87,7 +93,7 @@ namespace FishNet.Transporting.Tugboat.Client
             listener.PeerConnectedEvent += Listener_PeerConnectedEvent;
             listener.PeerDisconnectedEvent += Listener_PeerDisconnectedEvent;
 
-            _client = new NetManager(listener);
+            _client = new NetManager(listener, _packetLayer);
             _client.MtuOverride = (_mtu + NetConstants.FragmentedHeaderTotalSize);
 
             UpdateTimeout(_timeout);
@@ -153,8 +159,8 @@ namespace FishNet.Transporting.Tugboat.Client
             if (base.GetConnectionState() == LocalConnectionState.Stopped || base.GetConnectionState() == LocalConnectionState.Stopping)
                 return false;
 
-            if (info != null && base.Transport.NetworkManager.CanLog(LoggingType.Common))
-                Debug.Log($"Local client disconnect reason: {info.Value.Reason}.");
+            if (info != null)
+                base.Transport.NetworkManager.Log($"Local client disconnect reason: {info.Value.Reason}.");
 
             base.SetConnectionState(LocalConnectionState.Stopping, false);
             StopSocketOnThread();
@@ -226,8 +232,7 @@ namespace FishNet.Transporting.Tugboat.Client
                     //If over the MTU.
                     if (outgoing.Channel == (byte)Channel.Unreliable && segment.Count > _mtu)
                     {
-                        if (base.Transport.NetworkManager.CanLog(LoggingType.Warning))
-                            Debug.LogWarning($"Client is sending of {segment.Count} length on the unreliable channel, while the MTU is only {_mtu}. The channel has been changed to reliable for this send.");
+                        base.Transport.NetworkManager.LogWarning($"Client is sending of {segment.Count} length on the unreliable channel, while the MTU is only {_mtu}. The channel has been changed to reliable for this send.");
                         dm = DeliveryMethod.ReliableOrdered;
                     }
 

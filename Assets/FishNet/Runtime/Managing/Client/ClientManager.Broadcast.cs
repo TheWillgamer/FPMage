@@ -2,11 +2,11 @@
 using FishNet.Broadcast.Helping;
 using FishNet.Managing.Logging;
 using FishNet.Managing.Utility;
-using FishNet.Object.Helping;
 using FishNet.Serializing;
 using FishNet.Serializing.Helping;
 using FishNet.Transporting;
 using FishNet.Utility.Extension;
+using GameKit.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -39,7 +39,7 @@ namespace FishNet.Managing.Client
         /// <param name="handler">Method to call.</param>
         public void RegisterBroadcast<T>(Action<T> handler) where T : struct, IBroadcast
         {
-            ushort key = typeof(T).FullName.GetStableHash16();
+            ushort key = typeof(T).FullName.GetStableHashU16();
             /* Create delegate and add for
              * handler method. */
             HashSet<ServerBroadcastDelegate> handlers;
@@ -160,18 +160,16 @@ namespace FishNet.Managing.Client
             //Check local connection state.
             if (!Started)
             {
-                if (NetworkManager.CanLog(LoggingType.Warning))
-                    Debug.LogWarning($"Cannot send broadcast to server because client is not active.");
+                NetworkManager.LogWarning($"Cannot send broadcast to server because client is not active.");
                 return;
             }
 
-            using (PooledWriter writer = WriterPool.GetWriter())
-            {
-                Broadcasts.WriteBroadcast<T>(writer, message, channel);
-                ArraySegment<byte> segment = writer.GetArraySegment();
+            PooledWriter writer = WriterPool.Retrieve();
+            Broadcasts.WriteBroadcast<T>(writer, message, channel);
+            ArraySegment<byte> segment = writer.GetArraySegment();
 
-                NetworkManager.TransportManager.SendToServer((byte)channel, segment);
-            }
+            NetworkManager.TransportManager.SendToServer((byte)channel, segment);
+            writer.Store();
         }
 
     }

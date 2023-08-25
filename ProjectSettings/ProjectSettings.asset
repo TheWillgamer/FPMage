@@ -616,7 +616,7 @@ PlayerSettings:
   webGLDecompressionFallback: 0
   webGLPowerPreference: 2
   scriptingDefineSymbols:
-    Standalone: FISHNET;FISHNET_PRO;STEAMWORKS_NET
+    Standalone: FISHNET;STEAMWORKS_NET;FISHNET_V3
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend: {}

@@ -200,16 +200,18 @@ public class Movement : NetworkBehaviour
     {
         transform.rotation = Quaternion.Euler(0.0f, cam.eulerAngles.y, 0.0f);
         mag = FindVelRelativeToLook();
+        CheckInput(out MoveData md);
+        Move(md);
         if (base.IsOwner)
         {
-            Reconciliation(default, false);
-            CheckInput(out MoveData md);
-            Move(md, false);
+            //Reconciliation(default, false);
+            //CheckInput(out MoveData md);
+            //Move(md);
             UpdateUI();
         }
         if (base.IsServer)
         {
-            Move(default, true);
+            //Move(default);
         }
     }
 
@@ -219,7 +221,7 @@ public class Movement : NetworkBehaviour
         if (base.IsServer)
         {
             ReconcileData rd = new ReconcileData(transform.position, transform.rotation, _rigidbody.velocity);
-            Reconciliation(rd, true);
+            Reconciliation(rd);
         }
     }
 
@@ -240,8 +242,8 @@ public class Movement : NetworkBehaviour
         jumping = false;
     }
 
-    [Replicate]
-    private void Move(MoveData md, bool asServer, Channel channel = Channel.Unreliable, bool replaying = false)
+    [ReplicateV2]
+    private void Move(MoveData md, ReplicateState state = ReplicateState.Invalid, Channel channel = Channel.Unreliable)
     {
         if (disableMV)
         {
@@ -442,8 +444,8 @@ public class Movement : NetworkBehaviour
         Invoke(nameof(CancelCoyoteTime), coyoteTime);
     }
 
-    [Reconcile]
-    private void Reconciliation(ReconcileData rd, bool asServer, Channel channel = Channel.Unreliable)
+    [ReconcileV2]
+    private void Reconciliation(ReconcileData rd, Channel channel = Channel.Unreliable)
     {
         transform.position = rd.Position;
         transform.rotation = rd.Rotation;

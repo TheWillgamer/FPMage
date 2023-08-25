@@ -30462,17 +30462,17 @@ MonoBehaviour:
   _rigidbody2d: {fileID: 0}
   _spectatorSmoothPosition: 1
   _spectatorSmoothRotation: 1
-  _spectatorSmoothingType: 1
+  _spectatorSmoothingType: 3
   _customSmoothingData:
-    InterpolationPercent: 1
+    InterpolationPercent: 2
     CollisionInterpolationPercent: 0.1
     InterpolationDecreaseStep: 1
-    InterpolationIncreaseStep: 3
+    InterpolationIncreaseStep: 5
   _preconfiguredSmoothingDataPreview:
-    InterpolationPercent: 1
-    CollisionInterpolationPercent: 0.1
+    InterpolationPercent: 1.5
+    CollisionInterpolationPercent: 0.2
     InterpolationDecreaseStep: 1
-    InterpolationIncreaseStep: 3
+    InterpolationIncreaseStep: 5
   _maintainedVelocity: 0
   _resendType: 0
   _resendInterval: 30

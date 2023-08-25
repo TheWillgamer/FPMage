@@ -30307,7 +30307,6 @@ GameObject:
   - component: {fileID: 6383162011746621490}
   - component: {fileID: 6383162011746621453}
   - component: {fileID: 2151619510686421276}
-  - component: {fileID: 1905083111300995837}
   - component: {fileID: 1120615853069163452}
   - component: {fileID: 6675352565897393522}
   - component: {fileID: 1392717416191338940}
@@ -30360,7 +30359,7 @@ MonoBehaviour:
   _networkBehaviours:
   - {fileID: 6383162011746621453}
   - {fileID: 2151619510686421276}
-  - {fileID: 1905083111300995837}
+  - {fileID: 0}
   - {fileID: 1120615853069163452}
   - {fileID: 1392717416191338940}
   - {fileID: 3298285600896076465}
@@ -30479,51 +30478,6 @@ MonoBehaviour:
   _resendType: 0
   _resendInterval: 30
   _networkTransform: {fileID: 0}
---- !u!114 &1905083111300995837
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6383162011746621452}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2836e36774ca1c4bbbee976e17b649c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _componentIndexCache: 2
-  _addedNetworkObject: {fileID: 4575299771133537037}
-  _networkObjectCache: {fileID: 4575299771133537037}
-  _componentConfiguration: 0
-  _synchronizeParent: 0
-  _packing:
-    Position: 1
-    Rotation: 1
-    Scale: 0
-  _interpolation: 2
-  _extrapolation: 2
-  _enableTeleport: 0
-  _teleportThreshold: 1
-  _scaleThreshold: 1
-  _clientAuthoritative: 0
-  _sendToOwner: 0
-  _enableNetworkLod: 1
-  _interval: 1
-  _synchronizePosition: 1
-  _positionSnapping:
-    X: 0
-    Y: 0
-    Z: 0
-  _synchronizeRotation: 1
-  _rotationSnapping:
-    X: 0
-    Y: 0
-    Z: 0
-  _synchronizeScale: 1
-  _scaleSnapping:
-    X: 0
-    Y: 0
-    Z: 0
 --- !u!114 &1120615853069163452
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30561,9 +30515,9 @@ Rigidbody:
   m_AngularDrag: 0.05
   m_UseGravity: 0
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 112
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &1392717416191338940
 MonoBehaviour:
   m_ObjectHideFlags: 0

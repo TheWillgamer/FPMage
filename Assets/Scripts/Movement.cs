@@ -417,7 +417,7 @@ public class Movement : NetworkBehaviour
                 //FLOOR
                 if (IsFloor(normal))
                 {
-                    _rigidbody.drag = dashing ? 0f : counterMovement;
+                    _rigidbody.drag = (dashing || !canGroundJump) ? 0f : counterMovement;
                     grounded = true;
                     canGroundJump = true;
                     normalVector = normal;

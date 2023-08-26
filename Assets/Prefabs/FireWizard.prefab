@@ -30453,9 +30453,9 @@ MonoBehaviour:
   _implementsPredictionMethods: 1
   _graphicalObject: {fileID: 8824084812492639400}
   _enableTeleport: 0
-  _teleportThreshold: 1
-  _ownerSmoothPosition: 1
-  _ownerSmoothRotation: 1
+  _teleportThreshold: 0
+  _ownerSmoothPosition: 0
+  _ownerSmoothRotation: 0
   _ownerInterpolation: 1
   _predictionType: 1
   _rigidbody: {fileID: 6675352565897393522}

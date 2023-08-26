@@ -16,6 +16,7 @@ public class Fireball : NetworkBehaviour, Projectile
     [SerializeField] private float aliveTime;
     private float _colliderRadius;
     private bool isExploding = false;
+    private bool activeGraphics = true;
 
     private float counter;
 
@@ -69,8 +70,8 @@ public class Fireball : NetworkBehaviour, Projectile
 
         //Move ellapsed time from when grenade was 'thrown' on thrower.
         float timePassed = (float)base.TimeManager.TimePassed(pt.Tick);
-        if (timePassed > 0.1f)
-            timePassed = 0.1f;
+        if (timePassed > 0.2f)
+            timePassed = 0.2f;
 
         Move(timePassed);
     }

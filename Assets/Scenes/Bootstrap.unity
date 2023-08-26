@@ -425,7 +425,6 @@ GameObject:
   - component: {fileID: 6570392866187309435}
   - component: {fileID: 6570392866187309438}
   - component: {fileID: 6570392866187309437}
-  - component: {fileID: 6570392866187309440}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: NetworkManager
@@ -480,8 +479,8 @@ MonoBehaviour:
   Transport: {fileID: 6570392866187309439}
   _intermediateLayer: {fileID: 0}
   _latencySimulator:
-    _enabled: 0
-    _simulateHost: 0
+    _enabled: 1
+    _simulateHost: 1
     _latency: 150
     _outOfOrder: 0
     _packetLoss: 0.10000000149011612
@@ -537,22 +536,3 @@ MonoBehaviour:
   _maximumClients: 9001
   _peerToPeer: 1
   _clientAddress: 
---- !u!114 &6570392866187309440
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4351310061922095197}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e08bb003fce297d4086cf8cba5aa459a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _queuedInputs: 1
-  _dropExcessiveReplicates: 1
-  _maximumServerReplicates: 15
-  _maximumConsumeCount: 4
-  _redundancyCount: 3
-  _allowPredictedSpawning: 1
-  _reservedObjectIds: 15

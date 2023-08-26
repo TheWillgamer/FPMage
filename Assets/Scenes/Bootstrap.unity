@@ -481,10 +481,10 @@ MonoBehaviour:
   _intermediateLayer: {fileID: 0}
   _latencySimulator:
     _enabled: 0
-    _simulateHost: 1
-    _latency: 0
+    _simulateHost: 0
+    _latency: 150
     _outOfOrder: 0
-    _packetLoss: 0
+    _packetLoss: 0.10000000149011612
 --- !u!114 &6570392866187309437
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -171,6 +171,7 @@ public class Movement : NetworkBehaviour
 
     private void Update()
     {
+        transform.rotation = Quaternion.Euler(0.0f, cam.eulerAngles.y, 0.0f);
         if (base.IsOwner)
         {
             if (Input.GetButtonDown("Jump"))
@@ -198,7 +199,6 @@ public class Movement : NetworkBehaviour
 
     private void TimeManager_OnTick()
     {
-        transform.rotation = Quaternion.Euler(0.0f, cam.eulerAngles.y, 0.0f);
         mag = FindVelRelativeToLook();
         if (base.IsOwner)
         {
@@ -209,6 +209,7 @@ public class Movement : NetworkBehaviour
         }
         if (base.IsServer)
         {
+            transform.rotation = Quaternion.Euler(0.0f, cam.eulerAngles.y, 0.0f);
             Move(default, true);
         }
     }

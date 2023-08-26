@@ -30307,10 +30307,10 @@ GameObject:
   - component: {fileID: 6383162011746621490}
   - component: {fileID: 6383162011746621453}
   - component: {fileID: 2151619510686421276}
-  - component: {fileID: 1120615853069163452}
   - component: {fileID: 6675352565897393522}
   - component: {fileID: 1392717416191338940}
   - component: {fileID: 2399677714019010807}
+  - component: {fileID: 1120615853069163452}
   - component: {fileID: 3298285600896076465}
   - component: {fileID: 2221468856058139811}
   - component: {fileID: 6827716296904414418}
@@ -30477,30 +30477,6 @@ MonoBehaviour:
   _resendType: 0
   _resendInterval: 30
   _networkTransform: {fileID: 0}
---- !u!114 &1120615853069163452
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6383162011746621452}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f4f5ff271cf6414399a4b22fdf5ac44, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _componentIndexCache: 2
-  _addedNetworkObject: {fileID: 4575299771133537037}
-  _networkObjectCache: {fileID: 4575299771133537037}
-  fb: {fileID: 3637627862300843640, guid: f866deb3471328d4ba9602b23bcf41ea, type: 3}
-  proj_spawn: {fileID: 5682205087739296379}
-  proj_force: 160
-  fb_cd: 1.6
-  cdRepresentation: {fileID: 5260410080079055999}
-  Fireball:
-  - {fileID: 89644526380825116}
-  - {fileID: 7983498668968793173}
-  - {fileID: 8401083306653286856}
 --- !u!54 &6675352565897393522
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -30638,6 +30614,30 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1120615853069163452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6383162011746621452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f4f5ff271cf6414399a4b22fdf5ac44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 2
+  _addedNetworkObject: {fileID: 4575299771133537037}
+  _networkObjectCache: {fileID: 4575299771133537037}
+  fb: {fileID: 3637627862300843640, guid: f866deb3471328d4ba9602b23bcf41ea, type: 3}
+  proj_spawn: {fileID: 5682205087739296379}
+  proj_force: 160
+  fb_cd: 1.6
+  cdRepresentation: {fileID: 5260410080079055999}
+  Fireball:
+  - {fileID: 89644526380825116}
+  - {fileID: 7983498668968793173}
+  - {fileID: 8401083306653286856}
 --- !u!114 &3298285600896076465
 MonoBehaviour:
   m_ObjectHideFlags: 0

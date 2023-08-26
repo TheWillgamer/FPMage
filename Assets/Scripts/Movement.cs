@@ -199,9 +199,9 @@ public class Movement : NetworkBehaviour
 
     private void TimeManager_OnTick()
     {
-        mag = FindVelRelativeToLook();
         if (base.IsOwner)
         {
+            mag = FindVelRelativeToLook();
             Reconciliation(default, false);
             CheckInput(out MoveData md);
             Move(md, false);
@@ -210,6 +210,7 @@ public class Movement : NetworkBehaviour
         if (base.IsServer)
         {
             transform.rotation = Quaternion.Euler(0.0f, cam.eulerAngles.y, 0.0f);
+            mag = FindVelRelativeToLook();
             Move(default, true);
         }
     }

@@ -70,8 +70,8 @@ public class Fireball : NetworkBehaviour, Projectile
 
         //Move ellapsed time from when grenade was 'thrown' on thrower.
         float timePassed = (float)base.TimeManager.TimePassed(pt.Tick);
-        if (timePassed > 0.2f)
-            timePassed = 0.2f;
+        if (timePassed > 0.3f)
+            timePassed = 0.3f;
 
         Move(timePassed);
     }

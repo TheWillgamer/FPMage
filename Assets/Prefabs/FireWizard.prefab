@@ -30464,10 +30464,10 @@ MonoBehaviour:
   _spectatorSmoothRotation: 1
   _spectatorSmoothingType: 3
   _customSmoothingData:
-    InterpolationPercent: 2
+    InterpolationPercent: 1.5
     CollisionInterpolationPercent: 0.1
     InterpolationDecreaseStep: 1
-    InterpolationIncreaseStep: 5
+    InterpolationIncreaseStep: 3
   _preconfiguredSmoothingDataPreview:
     InterpolationPercent: 1.5
     CollisionInterpolationPercent: 0.2
@@ -35841,7 +35841,7 @@ MonoBehaviour:
   _networkObjectCache: {fileID: 3886377583055081699}
   sensitivity: 50
   playerLoc: {fileID: 4790489275998527890}
-  smoothTime: 0.05
+  smoothTime: 0.03
   playerSpawned: 0
   activated: 0
 --- !u!114 &9073898482919136242

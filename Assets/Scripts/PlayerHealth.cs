@@ -18,6 +18,7 @@ public class PlayerHealth : NetworkBehaviour
     private Dash dh;
     private bool alive;
     private GameplayManager gm;
+    [SerializeField] private NetworkObject parent;
 
     // OnFire
     private int onFire;
@@ -236,6 +237,6 @@ public class PlayerHealth : NetworkBehaviour
     private void Death()
     {
         gm.SpawnWizard(base.Owner, wizardType);
-        base.Despawn();
+        parent.Despawn();
     }
 }

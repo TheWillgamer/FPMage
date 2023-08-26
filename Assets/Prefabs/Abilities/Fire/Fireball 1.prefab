@@ -19489,6 +19489,7 @@ MonoBehaviour:
   _networkBehaviours:
   - {fileID: 1344627816686243878}
   - {fileID: 2164252731766674324}
+  - {fileID: 0}
   <ParentNetworkObject>k__BackingField: {fileID: 0}
   <ChildNetworkObjects>k__BackingField: []
   SerializedTransformProperties:

@@ -47,14 +47,7 @@ public class a_fireball : NetworkBehaviour
 
         if (!mv.disableAB && Input.GetButtonDown("Fire1") && fb_charges > 0)
         {
-            Vector3 endPoint = proj_spawn.position + proj_spawn.forward * 100f;
-            RaycastHit hit;
-            if (Physics.Raycast(proj_spawn.position, proj_spawn.forward, out hit, 100f))
-            {
-                endPoint = hit.point;
-            }
-
-            shootFireball(endPoint);
+            shootFireball(proj_spawn.position, proj_spawn.rotation);
             fb_charges--;
             if (fb_charges == 2)
             {
@@ -77,17 +70,14 @@ public class a_fireball : NetworkBehaviour
     }
 
     [ServerRpc]
-    private void shootFireball(Vector3 endPoint)
+    private void shootFireball(Vector3 startLoc, Quaternion startRot)
     {
         playShootSound();
-        GameObject spawned = Instantiate(fb, proj_spawn.position, proj_spawn.rotation);
-        //Physics.IgnoreCollision(spawned.GetComponent<Collider>(), GetComponent<Collider>());
-
-        //UnitySceneManager.MoveGameObjectToScene(spawned.gameObject, gameObject.scene);
+        GameObject spawned = Instantiate(fb, startLoc, startRot);
         base.Spawn(spawned);
 
         Projectile proj = spawned.GetComponent<Projectile>();
-        proj.Initialize(base.TimeManager.GetPreciseTick(TickType.Tick), (endPoint - proj_spawn.position).normalized * proj_force, base.Owner.ClientId);
+        proj.Initialize(base.TimeManager.GetPreciseTick(TickType.Tick), startRot * Vector3.forward * proj_force, base.Owner.ClientId);
     }
 
     private void UpdateUI()

@@ -116,6 +116,7 @@ public class Movement : NetworkBehaviour
     private bool canGroundJump;
 
     private float threshold = 0.01f;
+    [SyncVar]
     private Vector2 mag;
     [SerializeField] GameObject jumpIcon;
     [SerializeField] GameObject jumpIcon2;
@@ -201,7 +202,6 @@ public class Movement : NetworkBehaviour
     {
         if (base.IsOwner)
         {
-            mag = FindVelRelativeToLook();
             Reconciliation(default, false);
             CheckInput(out MoveData md);
             Move(md, false);
@@ -210,7 +210,6 @@ public class Movement : NetworkBehaviour
         if (base.IsServer)
         {
             transform.rotation = Quaternion.Euler(0.0f, cam.eulerAngles.y, 0.0f);
-            mag = FindVelRelativeToLook();
             Move(default, true);
         }
     }
@@ -245,6 +244,8 @@ public class Movement : NetworkBehaviour
     [Replicate]
     private void Move(MoveData md, bool asServer, Channel channel = Channel.Unreliable, bool replaying = false)
     {
+        mag = FindVelRelativeToLook();
+
         if (disableMV)
         {
             md.Horizontal = 0;

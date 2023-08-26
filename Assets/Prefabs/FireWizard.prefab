@@ -30427,6 +30427,7 @@ MonoBehaviour:
   airMovementMultiplier: 0.3
   maxSlopeAngle: 35
   jumpCharge: 0
+  mag: {x: 0, y: 0}
   jumpIcon: {fileID: 5564680090461193183}
   jumpIcon2: {fileID: 0}
   dashModifier: 0
@@ -30454,8 +30455,8 @@ MonoBehaviour:
   _graphicalObject: {fileID: 8824084812492639400}
   _enableTeleport: 0
   _teleportThreshold: 0
-  _ownerSmoothPosition: 0
-  _ownerSmoothRotation: 0
+  _ownerSmoothPosition: 1
+  _ownerSmoothRotation: 1
   _ownerInterpolation: 1
   _predictionType: 1
   _rigidbody: {fileID: 6675352565897393522}
@@ -30487,12 +30488,12 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_UseGravity: 0
   m_IsKinematic: 0
-  m_Interpolate: 1
+  m_Interpolate: 0
   m_Constraints: 112
-  m_CollisionDetection: 1
+  m_CollisionDetection: 0
 --- !u!114 &1392717416191338940
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35841,7 +35842,7 @@ MonoBehaviour:
   _networkObjectCache: {fileID: 3886377583055081699}
   sensitivity: 50
   playerLoc: {fileID: 4790489275998527890}
-  smoothTime: 0.03
+  smoothTime: 0.04
   playerSpawned: 0
   activated: 0
 --- !u!114 &9073898482919136242

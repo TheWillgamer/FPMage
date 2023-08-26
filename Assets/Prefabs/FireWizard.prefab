@@ -30359,8 +30359,8 @@ MonoBehaviour:
   _networkBehaviours:
   - {fileID: 6383162011746621453}
   - {fileID: 2151619510686421276}
-  - {fileID: 1120615853069163452}
   - {fileID: 1392717416191338940}
+  - {fileID: 1120615853069163452}
   - {fileID: 3298285600896076465}
   - {fileID: 2221468856058139811}
   - {fileID: 6827716296904414418}
@@ -30505,7 +30505,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12934b279dfff45479a9a6212926df98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 3
+  _componentIndexCache: 2
   _addedNetworkObject: {fileID: 8227743508398521442}
   _networkObjectCache: {fileID: 4575299771133537037}
   wizardType: 0
@@ -30626,7 +30626,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f4f5ff271cf6414399a4b22fdf5ac44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 2
+  _componentIndexCache: 3
   _addedNetworkObject: {fileID: 4575299771133537037}
   _networkObjectCache: {fileID: 4575299771133537037}
   fb: {fileID: 3637627862300843640, guid: f866deb3471328d4ba9602b23bcf41ea, type: 3}
@@ -35841,6 +35841,7 @@ MonoBehaviour:
   _networkObjectCache: {fileID: 3886377583055081699}
   sensitivity: 50
   playerLoc: {fileID: 4790489275998527890}
+  smoothTime: 0.05
   playerSpawned: 0
   activated: 0
 --- !u!114 &9073898482919136242

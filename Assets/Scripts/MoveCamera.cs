@@ -9,6 +9,9 @@ public class MoveCamera : NetworkBehaviour
     private float sensMultiplier = 1f;
     [SerializeField]
     private Transform playerLoc;
+    [SerializeField]
+    private float smoothTime;
+    private Vector3 velocity = Vector3.zero;
     private float _movingTime = 0f;
     public bool playerSpawned;
     public bool activated;
@@ -59,10 +62,12 @@ public class MoveCamera : NetworkBehaviour
         float distance = Mathf.Max(0.1f, Vector3.Distance(transform.position, playerLoc.position));
         if (transform.position != playerLoc.position)
         {
-            _movingTime += Time.deltaTime;
-            float smoothingPercent = (_movingTime / 0.75f);
-            float smoothingRate = Mathf.Lerp(50f, 40f, smoothingPercent);
-            transform.position = Vector3.MoveTowards(transform.position, playerLoc.position, smoothingRate * distance * Time.deltaTime);
+            //_movingTime += Time.deltaTime;
+            //float smoothingPercent = (_movingTime / 0.75f);
+            //float smoothingRate = Mathf.Lerp(50f, 40f, smoothingPercent);
+            //transform.position = Vector3.MoveTowards(transform.position, playerLoc.position, smoothingRate * distance * Time.deltaTime);
+
+            transform.position = Vector3.SmoothDamp(transform.position, playerLoc.position, ref velocity, smoothTime);
         }
         else
         {

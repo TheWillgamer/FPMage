@@ -74,6 +74,7 @@ public class Fireball : NetworkBehaviour, Projectile
             timePassed = 0.3f;
 
         Move(timePassed);
+        ShowVisuals();
     }
 
     [Server(Logging = LoggingType.Off)]
@@ -131,6 +132,12 @@ public class Fireball : NetworkBehaviour, Projectile
             if (base.IsServerOnly)
                 base.Despawn();
         }
+    }
+
+    [ObserversRpc]
+    private void ShowVisuals()
+    {
+        transform.GetChild(0).gameObject.SetActive(true);
     }
 
     /// <summary>

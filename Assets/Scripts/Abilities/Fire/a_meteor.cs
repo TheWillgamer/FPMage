@@ -8,6 +8,7 @@ using System.Collections;
 public class a_meteor : NetworkBehaviour
 {
     [SerializeField] private GameObject mt;
+    [SerializeField] private GameObject mtc;
     [SerializeField] private Transform proj_spawn;
     [SerializeField] private float proj_force;
     [SerializeField] private float upAmt;
@@ -19,6 +20,7 @@ public class a_meteor : NetworkBehaviour
     AudioSource m_shootingSound;
 
     private Movement mv;
+    private GameObject clientObj;
 
     #region cooldowns
     //Meteor
@@ -67,7 +69,13 @@ public class a_meteor : NetworkBehaviour
         if (chargeStarted && Time.time > chargeReady)
         {
             mv.disableAB = false;
-            shootMeteor();
+            m_shootingSound.Play();
+
+            clientObj = Instantiate(mtc, proj_spawn.position, proj_spawn.rotation);
+            MoveProjectileClient proj = clientObj.GetComponent<MoveProjectileClient>();
+            proj.Initialize(proj_spawn.forward * proj_force + Vector3.up * upAmt);
+
+            shootMeteor(base.TimeManager.GetPreciseTick(base.TimeManager.LastPacketTick), proj_spawn.position, proj_spawn.rotation);
             chargeStarted = false;
             ownerMeteorGM.SetActive(false);
             mt_offcd = Time.time + mt_cd;
@@ -78,7 +86,10 @@ public class a_meteor : NetworkBehaviour
     [ObserversRpc]
     private void playShootSound()
     {
-        m_shootingSound.Play();
+        if (clientObj != null)
+            Destroy(clientObj);
+        if (!IsOwner)
+            m_shootingSound.Play();
     }
 
     [ServerRpc]
@@ -105,18 +116,16 @@ public class a_meteor : NetworkBehaviour
     }
 
     [ServerRpc]
-    private void shootMeteor()
+    private void shootMeteor(PreciseTick pt, Vector3 startLoc, Quaternion startRot)
     {
         endMeteorGM();
         playShootSound();
-        GameObject spawned = Instantiate(mt, proj_spawn.position, proj_spawn.rotation);
-        //Physics.IgnoreCollision(spawned.GetComponent<Collider>(), GetComponent<Collider>());
+        GameObject spawned = Instantiate(mt, startLoc, startRot);
 
-        //UnitySceneManager.MoveGameObjectToScene(spawned.gameObject, gameObject.scene);
         base.Spawn(spawned);
 
         Projectile proj = spawned.GetComponent<Projectile>();
-        proj.Initialize(base.TimeManager.GetPreciseTick(TickType.Tick), proj_spawn.forward * proj_force + Vector3.up * upAmt, base.Owner.ClientId);
+        proj.Initialize(pt, startRot * Vector3.forward * proj_force + Vector3.up * upAmt, base.Owner.ClientId);
     }
 
     private void UpdateUI()

@@ -3,6 +3,7 @@ using FishNet.Managing.Timing;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 //using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
 
 public class a_fireball : NetworkBehaviour
@@ -14,7 +15,7 @@ public class a_fireball : NetworkBehaviour
     AudioSource m_shootingSound;
 
     private Movement mv;
-    private GameObject clientObj;
+    Queue<GameObject> clientObjs = new Queue<GameObject>();
 
     #region cooldowns
     //Fireball
@@ -51,10 +52,8 @@ public class a_fireball : NetworkBehaviour
         {
             m_shootingSound.Play();
 
-            if (clientObj != null)
-                Destroy(clientObj);
-
-            clientObj = Instantiate(fbc, proj_spawn.position, proj_spawn.rotation);
+            GameObject clientObj = Instantiate(fbc, proj_spawn.position, proj_spawn.rotation);
+            clientObjs.Enqueue(clientObj);
             MoveProjectileClient proj = clientObj.GetComponent<MoveProjectileClient>();
             proj.Initialize(proj_spawn.forward * proj_force);
 
@@ -77,6 +76,7 @@ public class a_fireball : NetworkBehaviour
     [ObserversRpc]
     private void playShootSound()
     {
+        GameObject clientObj = clientObjs.Dequeue();
         if (clientObj != null)
             Destroy(clientObj);
         if (!IsOwner)

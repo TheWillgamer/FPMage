@@ -8,7 +8,7 @@ using System.Collections;
 public class a_meteor : NetworkBehaviour
 {
     [SerializeField] private GameObject mt;
-    [SerializeField] private GameObject mtc;
+//    [SerializeField] private GameObject mtc;
     [SerializeField] private Transform proj_spawn;
     [SerializeField] private float proj_force;
     [SerializeField] private float upAmt;
@@ -71,11 +71,11 @@ public class a_meteor : NetworkBehaviour
             mv.disableAB = false;
             m_shootingSound.Play();
 
-            clientObj = Instantiate(mtc, proj_spawn.position, proj_spawn.rotation);
-            MoveProjectileClient proj = clientObj.GetComponent<MoveProjectileClient>();
-            proj.Initialize(proj_spawn.forward * proj_force + Vector3.up * upAmt);
+            //clientObj = Instantiate(mtc, proj_spawn.position, proj_spawn.rotation);
+            //MoveProjectileClient proj = clientObj.GetComponent<MoveProjectileClient>();
+            //proj.Initialize(proj_spawn.forward * proj_force + Vector3.up * upAmt);
 
-            shootMeteor(base.TimeManager.GetPreciseTick(base.TimeManager.LastPacketTick), proj_spawn.position, proj_spawn.rotation);
+            shootMeteor(base.TimeManager.GetPreciseTick(TickType.Tick), proj_spawn.position, proj_spawn.rotation);
             chargeStarted = false;
             ownerMeteorGM.SetActive(false);
             mt_offcd = Time.time + mt_cd;
@@ -86,8 +86,6 @@ public class a_meteor : NetworkBehaviour
     [ObserversRpc]
     private void playShootSound()
     {
-        if (clientObj != null)
-            Destroy(clientObj);
         if (!IsOwner)
             m_shootingSound.Play();
     }

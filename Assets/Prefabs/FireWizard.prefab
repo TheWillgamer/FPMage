@@ -24407,7 +24407,7 @@ GameObject:
   - component: {fileID: 3740063447754738045}
   m_Layer: 0
   m_Name: FireDash
-  m_TagString: Absorber
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30657,7 +30657,6 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 4575299771133537037}
   _networkObjectCache: {fileID: 4575299771133537037}
   mt: {fileID: 4905874205509183725, guid: d764a95b2850e724b9e761ed2722c9f7, type: 3}
-  mtc: {fileID: 4905874205509183725, guid: 4de8cd4fe40b78d46ba110a49f94308f, type: 3}
   proj_spawn: {fileID: 5682205087739296379}
   proj_force: 60
   upAmt: 7

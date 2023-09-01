@@ -57,7 +57,7 @@ public class a_fireball : NetworkBehaviour
             //MoveProjectileClient proj = clientObj.GetComponent<MoveProjectileClient>();
             //proj.Initialize(proj_spawn.forward * proj_force);
 
-            shootFireball(base.TimeManager.GetPreciseTick(base.TimeManager.LastPacketTick), proj_spawn.position, proj_spawn.rotation);
+            shootFireball(base.TimeManager.GetPreciseTick(TickType.Tick), proj_spawn.position, proj_spawn.rotation);
             fb_charges--;
             if (fb_charges == 2)
             {

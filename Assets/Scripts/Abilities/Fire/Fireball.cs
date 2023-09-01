@@ -74,7 +74,7 @@ public class Fireball : NetworkBehaviour, Projectile
             timePassed = 0.3f;
 
         Move(timePassed);
-        ShowVisuals();
+        //ShowVisuals();
     }
 
     [Server(Logging = LoggingType.Off)]

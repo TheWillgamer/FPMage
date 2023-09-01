@@ -52,10 +52,10 @@ public class a_fireball : NetworkBehaviour
         {
             m_shootingSound.Play();
 
-            GameObject clientObj = Instantiate(fbc, proj_spawn.position, proj_spawn.rotation);
-            clientObjs.Enqueue(clientObj);
-            MoveProjectileClient proj = clientObj.GetComponent<MoveProjectileClient>();
-            proj.Initialize(proj_spawn.forward * proj_force);
+            //GameObject clientObj = Instantiate(fbc, proj_spawn.position, proj_spawn.rotation);
+            //clientObjs.Enqueue(clientObj);
+            //MoveProjectileClient proj = clientObj.GetComponent<MoveProjectileClient>();
+            //proj.Initialize(proj_spawn.forward * proj_force);
 
             shootFireball(base.TimeManager.GetPreciseTick(TickType.Tick), proj_spawn.position, proj_spawn.rotation);
             fb_charges--;

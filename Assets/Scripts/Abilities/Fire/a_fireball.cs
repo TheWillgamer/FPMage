@@ -76,12 +76,7 @@ public class a_fireball : NetworkBehaviour
     [ObserversRpc]
     private void playShootSound()
     {
-        if (IsOwner)
-        {
-            GameObject clientObj = clientObjs.Dequeue();
-            Destroy(clientObj);
-        }
-        else
+        if (!IsOwner)
             m_shootingSound.Play();
     }
 

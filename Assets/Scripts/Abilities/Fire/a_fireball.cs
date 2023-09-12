@@ -52,10 +52,10 @@ public class a_fireball : NetworkBehaviour
         {
             m_shootingSound.Play();
 
-            //GameObject clientObj = Instantiate(fbc, proj_spawn.position, proj_spawn.rotation);
-            //clientObjs.Enqueue(clientObj);
-            //MoveProjectileClient proj = clientObj.GetComponent<MoveProjectileClient>();
-            //proj.Initialize(proj_spawn.forward * proj_force);
+            GameObject clientObj = Instantiate(fbc, proj_spawn.position, proj_spawn.rotation);
+            clientObjs.Enqueue(clientObj);
+            MoveProjectileClient proj = clientObj.GetComponent<MoveProjectileClient>();
+            proj.Initialize(proj_spawn.forward * proj_force);
 
             shootFireball(base.TimeManager.GetPreciseTick(TickType.Tick), proj_spawn.position, proj_spawn.rotation);
             fb_charges--;
@@ -78,12 +78,15 @@ public class a_fireball : NetworkBehaviour
     {
         if (!IsOwner)
             m_shootingSound.Play();
+        else
+            Destroy(clientObjs.Dequeue());
     }
 
     [ServerRpc]
     private void shootFireball(PreciseTick pt, Vector3 startLoc, Quaternion startRot)
     {
         playShootSound();
+
         GameObject spawned = Instantiate(fb, startLoc, startRot);
         base.Spawn(spawned);
 

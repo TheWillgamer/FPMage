@@ -52,14 +52,7 @@ public class a_windSlash : NetworkBehaviour
 
         if (!mv.disableAB && !coolingDown && Input.GetButton("Fire1") && Time.time > ws_offcd)
         {
-            Vector3 endPoint = proj_spawn.position + proj_spawn.forward * 30f;
-            RaycastHit hit;
-            if (Physics.Raycast(proj_spawn.position, proj_spawn.forward, out hit, 30f))
-            {
-                endPoint = hit.point;
-            }
-
-            shootWind(endPoint);
+            shootWind(base.TimeManager.GetPreciseTick(TickType.Tick), proj_spawn.position, proj_spawn.rotation);
             ws_offcd = Time.time + ws_cd;
 
             ws_charge += ws_chargeRate;
@@ -90,20 +83,20 @@ public class a_windSlash : NetworkBehaviour
     }
 
     [ServerRpc]
-    private void shootWind(Vector3 endPoint)
+    private void shootWind(PreciseTick pt, Vector3 startLoc, Quaternion startRot)
     {
         playShootSound();
         GameObject spawned;
         if (wdir)
-            spawned = Instantiate(ws, proj_spawn.position, proj_spawn.rotation);
+            spawned = Instantiate(ws, startLoc, startRot);
         else
-            spawned = Instantiate(wsr, proj_spawn.position, proj_spawn.rotation);
+            spawned = Instantiate(wsr, startLoc, startRot);
         wdir = !wdir;
 
         base.Spawn(spawned);
 
         Projectile proj = spawned.GetComponent<Projectile>();
-        proj.Initialize(base.TimeManager.GetPreciseTick(TickType.Tick), (endPoint - proj_spawn.position).normalized * proj_force, base.Owner.ClientId);
+        proj.Initialize(pt, startRot * Vector3.forward * proj_force, base.Owner.ClientId);
     }
 
     private void UpdateUI()

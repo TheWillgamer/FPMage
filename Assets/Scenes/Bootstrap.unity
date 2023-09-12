@@ -479,7 +479,7 @@ MonoBehaviour:
   Transport: {fileID: 6570392866187309439}
   _intermediateLayer: {fileID: 0}
   _latencySimulator:
-    _enabled: 1
+    _enabled: 0
     _simulateHost: 1
     _latency: 150
     _outOfOrder: 0.10000000149011612

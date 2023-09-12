@@ -69,12 +69,11 @@ public class Fireball : NetworkBehaviour, Projectile
         owner = conn;
 
         //Move ellapsed time from when grenade was 'thrown' on thrower.
-        float timePassed = (float)base.TimeManager.TimePassed(pt.Tick);
-        if (timePassed > 0.15f)
-            timePassed = 0.15f;
+        float timePassed = (float)base.TimeManager.TimePassed(pt.Tick) * 2;
+        if (timePassed > 0.25f)
+            timePassed = 0.25f;
 
         Move(timePassed);
-        //ShowVisuals();
     }
 
     [Server(Logging = LoggingType.Off)]
@@ -84,9 +83,6 @@ public class Fireball : NetworkBehaviour, Projectile
         float travelDistance = (velocity.magnitude * deltaTime);
         //Set trace distance to be travel distance + collider radius.
         float traceDistance = travelDistance + _colliderRadius;
-
-        //Explode bullet if it goes through the wall
-        int layerMask = 1 << 6;
 
         RaycastHit hit;
         // Does the ray intersect any walls
@@ -104,6 +100,8 @@ public class Fireball : NetworkBehaviour, Projectile
             }
         }
 
+        //Explode bullet if it goes through the wall
+        int layerMask = 1 << 6;
         if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, traceDistance, layerMask) && !isExploding)
         {
             explode(hit.point);
@@ -132,12 +130,6 @@ public class Fireball : NetworkBehaviour, Projectile
             if (base.IsServerOnly)
                 base.Despawn();
         }
-    }
-
-    [ObserversRpc]
-    private void ShowVisuals()
-    {
-        transform.GetChild(0).gameObject.SetActive(true);
     }
 
     /// <summary>

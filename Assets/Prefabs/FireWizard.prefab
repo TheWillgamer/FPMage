@@ -14604,8 +14604,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6383162011746621454}
-  m_RootOrder: 2
+  m_Father: {fileID: 8824084812492639400}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!198 &1037726811
 ParticleSystem:
@@ -24425,8 +24425,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 366829532}
-  m_Father: {fileID: 6383162011746621454}
-  m_RootOrder: 3
+  m_Father: {fileID: 8824084812492639400}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &3740063447754738045
 SphereCollider:
@@ -24840,6 +24840,37 @@ Transform:
   m_Father: {fileID: 4756007524078906077}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2548524972498773484
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7364441095812126620}
+  m_Layer: 0
+  m_Name: meleeSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7364441095812126620
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2548524972498773484}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8227743508193196329}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2605466298708305022
 GameObject:
   m_ObjectHideFlags: 0
@@ -24871,6 +24902,9 @@ Transform:
   - {fileID: 7928923847964066659}
   - {fileID: 6676824765974960957}
   - {fileID: 8595448713454798935}
+  - {fileID: 1037726812}
+  - {fileID: 1391941017}
+  - {fileID: 4210739614450963287}
   m_Father: {fileID: 6383162011746621454}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -30287,7 +30321,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6133464915387238276}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.5}
+  m_LocalPosition: {x: 0, y: 0, z: -0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -30335,9 +30369,6 @@ Transform:
   m_Children:
   - {fileID: 8824084812492639400}
   - {fileID: 4790489275998527890}
-  - {fileID: 1037726812}
-  - {fileID: 1391941017}
-  - {fileID: 4210739614450963287}
   m_Father: {fileID: 8227743508398521441}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -30707,7 +30738,7 @@ MonoBehaviour:
   damage: 15
   knockback_amount: 30
   knockback_growth: 30
-  proj_spawn: {fileID: 5682205087739296379}
+  proj_spawn: {fileID: 7364441095812126620}
   Slash: {fileID: 8012989213054258335}
   ownerSlashGM: {fileID: 3662088374995093042}
   clientSlashGM: {fileID: 893663446226576307}
@@ -35788,6 +35819,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5682205087739296379}
+  - {fileID: 7364441095812126620}
   - {fileID: 3109683182408378643}
   - {fileID: 3662088374995093043}
   m_Father: {fileID: 8227743508398521441}
@@ -36068,8 +36100,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6383162011746621454}
-  m_RootOrder: 4
+  m_Father: {fileID: 8824084812492639400}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &4861521206209546824
 SphereCollider:
@@ -36132,7 +36164,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4126759048136266721, guid: 7de98f7cb8246e04383f33632c544031, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4126759048136266721, guid: 7de98f7cb8246e04383f33632c544031, type: 3}
       propertyPath: m_LocalPosition.x
@@ -36207,7 +36239,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4081632995673970902, guid: 6de3e16bc43ea10439272c3e5a7adf34, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4081632995673970902, guid: 6de3e16bc43ea10439272c3e5a7adf34, type: 3}
       propertyPath: m_LocalScale.x

@@ -23,5 +23,7 @@ public class MoveProjectileClient : MonoBehaviour
     {
         if (activated)
             transform.position += velocity * Time.deltaTime;
+        else
+            transform.position += velocity * Time.deltaTime / 2f;
     }
 }

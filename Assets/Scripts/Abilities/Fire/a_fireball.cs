@@ -15,6 +15,7 @@ public class a_fireball : NetworkBehaviour
     AudioSource m_shootingSound;
 
     private Movement mv;
+    private TimeManager tm;
     Queue<GameObject> clientObjs = new Queue<GameObject>();
 
     #region cooldowns
@@ -42,6 +43,7 @@ public class a_fireball : NetworkBehaviour
         fb_charges = 3;
         fb_offcd = Time.time;
         mv = GetComponent<Movement>();
+        tm = GameObject.FindWithTag("NetworkManager").GetComponent<TimeManager>();
     }
 
     private void Update()
@@ -55,7 +57,7 @@ public class a_fireball : NetworkBehaviour
             GameObject clientObj = Instantiate(fbc, proj_spawn.position, proj_spawn.rotation);
             clientObjs.Enqueue(clientObj);
             MoveProjectileClient proj = clientObj.GetComponent<MoveProjectileClient>();
-            proj.Initialize(proj_spawn.forward * proj_force);
+            proj.Initialize(proj_spawn.forward * proj_force, Mathf.Min(60f, (float)tm.RoundTripTime / 2f));
 
             shootFireball(base.TimeManager.GetPreciseTick(TickType.Tick), proj_spawn.position, proj_spawn.rotation);
             fb_charges--;

@@ -14,6 +14,6 @@ public class AveragePing : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(Mathf.Min(200f, tm.RoundTripTime / 2));
+        ping = Mathf.Min(60f, (float)tm.RoundTripTime / 2f);
     }
 }

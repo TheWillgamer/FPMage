@@ -80,8 +80,8 @@ public class a_fireball : NetworkBehaviour
     {
         if (!IsOwner)
             m_shootingSound.Play();
-        //else
-            //Destroy(clientObjs.Dequeue());
+        else
+            Destroy(clientObjs.Dequeue());
     }
 
     [ServerRpc]

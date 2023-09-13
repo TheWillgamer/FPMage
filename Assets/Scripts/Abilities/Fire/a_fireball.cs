@@ -57,7 +57,7 @@ public class a_fireball : NetworkBehaviour
             GameObject clientObj = Instantiate(fbc, proj_spawn.position, proj_spawn.rotation);
             clientObjs.Enqueue(clientObj);
             MoveProjectileClient proj = clientObj.GetComponent<MoveProjectileClient>();
-            proj.Initialize(proj_spawn.forward * proj_force, Mathf.Min(120f, (float)tm.RoundTripTime));
+            proj.Initialize(proj_spawn.forward * proj_force, Mathf.Min(60f, (float)tm.RoundTripTime / 2f));
 
             shootFireball(base.TimeManager.GetPreciseTick(TickType.Tick), proj_spawn.position, proj_spawn.rotation);
             fb_charges--;

@@ -13,7 +13,7 @@ public class MoveProjectileClient : MonoBehaviour
         Invoke("Activate", activationTime);
     }
 
-    public void Activate()
+    private void Activate()
     {
         activated = true;
         gameObject.transform.GetChild(0).gameObject.SetActive(true);

@@ -16,6 +16,7 @@ public class MoveProjectileClient : MonoBehaviour
     public void Activate()
     {
         activated = true;
+        gameObject.transform.GetChild(0).gameObject.SetActive(true);
     }
 
     // Update is called once per frame
@@ -23,7 +24,5 @@ public class MoveProjectileClient : MonoBehaviour
     {
         if (activated)
             transform.position += velocity * Time.deltaTime;
-        else
-            transform.position += velocity * Time.deltaTime / 2f;
     }
 }

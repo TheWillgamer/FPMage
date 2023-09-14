@@ -50,6 +50,7 @@ public class a_windSlash : NetworkBehaviour
         ws_charge = 0f;
         ws_offcd = Time.time;
         mv = GetComponent<Movement>();
+        tm = GameObject.FindWithTag("NetworkManager").GetComponent<TimeManager>();
     }
 
     private void Update()

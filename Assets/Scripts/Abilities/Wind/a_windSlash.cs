@@ -3,17 +3,23 @@ using FishNet.Managing.Timing;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 public class a_windSlash : NetworkBehaviour
 {
     [SerializeField] private GameObject ws;
     [SerializeField] private GameObject wsr;
+    [SerializeField] private GameObject wsc;
+    [SerializeField] private GameObject wsrc;
     [SerializeField] private Transform proj_spawn;
     [SerializeField] private float proj_force;
     AudioSource m_shootingSound;
     private bool wdir;          // Direction of wind slash effect
+    private bool wdirc;          // Direction of wind slash effect for client
 
     private Movement mv;
+    private TimeManager tm;
+    Queue<GameObject> clientObjs = new Queue<GameObject>();
 
     #region cooldowns
     //WindSlash
@@ -52,6 +58,18 @@ public class a_windSlash : NetworkBehaviour
 
         if (!mv.disableAB && !coolingDown && Input.GetButton("Fire1") && Time.time > ws_offcd)
         {
+            m_shootingSound.Play();
+
+            GameObject clientObj;
+            if (wdir)
+                clientObj = Instantiate(wsc, proj_spawn.position, proj_spawn.rotation);
+            else
+                clientObj = Instantiate(wsrc, proj_spawn.position, proj_spawn.rotation);
+            wdir = !wdir;
+            clientObjs.Enqueue(clientObj);
+            MoveProjectileClient proj = clientObj.GetComponent<MoveProjectileClient>();
+            proj.Initialize(proj_spawn.forward * proj_force, Mathf.Min(180f, (float)tm.RoundTripTime) / 1000f);
+
             shootWind(base.TimeManager.GetPreciseTick(TickType.Tick), proj_spawn.position, proj_spawn.rotation);
             ws_offcd = Time.time + ws_cd;
 
@@ -79,7 +97,10 @@ public class a_windSlash : NetworkBehaviour
     [ObserversRpc]
     private void playShootSound()
     {
-        m_shootingSound.Play();
+        if (!IsOwner)
+            m_shootingSound.Play();
+        else
+            Destroy(clientObjs.Dequeue());
     }
 
     [ServerRpc]

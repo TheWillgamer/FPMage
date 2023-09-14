@@ -82,6 +82,7 @@ public class a_fireball : NetworkBehaviour
             m_shootingSound.Play();
         else
             Destroy(clientObjs.Dequeue());
+        
     }
 
     [ServerRpc]

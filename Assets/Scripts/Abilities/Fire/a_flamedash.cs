@@ -12,6 +12,7 @@ public class a_flamedash : NetworkBehaviour, Dash
     [SerializeField] private float dashDelay;
     [SerializeField] private GameObject charge;
     [SerializeField] private GameObject dashparticles;
+    [SerializeField] private GameObject dashparticlesOwner;
     [SerializeField] private Transform cam;
     [SerializeField] private GameObject hitbox;
 
@@ -133,8 +134,16 @@ public class a_flamedash : NetworkBehaviour, Dash
     private void startDash()
     {
         charge.SetActive(false);
-        dashparticles.SetActive(true);
-        dashparticles.transform.rotation = Quaternion.LookRotation(cam.forward);
+        if (IsOwner)
+        {
+            dashparticlesOwner.SetActive(true);
+            dashparticlesOwner.transform.rotation = Quaternion.LookRotation(cam.forward);
+        }
+        else
+        {
+            dashparticles.SetActive(true);
+            dashparticles.transform.rotation = Quaternion.LookRotation(cam.forward);
+        }
     }
 
     [ObserversRpc]
@@ -144,6 +153,7 @@ public class a_flamedash : NetworkBehaviour, Dash
         charge.SetActive(false);
         if (IsOwner)
         {
+            dashparticlesOwner.SetActive(false);
             mv.EndDash();
         }
             

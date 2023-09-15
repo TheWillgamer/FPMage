@@ -42,17 +42,18 @@ public class a_flameslash : NetworkBehaviour
 
         if (!mv.disableAB && Input.GetButtonDown("Fire2") && Time.time > slash_offcd)
         {
-            DoDamage(base.Owner.ClientId);
+            ownerSlash.Play();
+            DoDamage(proj_spawn.position, proj_spawn.rotation, base.Owner.ClientId);
             slash_offcd = Time.time + slash_cd;
         }
         UpdateUI();
     }
 
     [ServerRpc]
-    private void DoDamage(int owner)
+    private void DoDamage(Vector3 pos, Quaternion rot, int owner)
     {
         showSlash();
-        Collider[] hitColliders = Physics.OverlapBox(proj_spawn.position + proj_spawn.forward, new Vector3(2f, 1f, 2f), proj_spawn.rotation);
+        Collider[] hitColliders = Physics.OverlapBox(pos, new Vector3(2f, 1f, 2f), rot);
         foreach (var hit in hitColliders)
         {
             if (hit.transform.tag == "Player" && hit.transform.parent.GetComponent<NetworkObject>().Owner.ClientId != owner)
@@ -72,11 +73,7 @@ public class a_flameslash : NetworkBehaviour
     [ObserversRpc]
     private void showSlash()
     {
-        if (base.IsOwner)
-        {
-            ownerSlash.Play();
-        }
-        else
+        if (!base.IsOwner)
         {
             clientSlashGM.transform.rotation = proj_spawn.rotation;
             clientSlash.Play();

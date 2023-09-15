@@ -30689,7 +30689,8 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 4575299771133537037}
   _networkObjectCache: {fileID: 4575299771133537037}
   mt: {fileID: 4905874205509183725, guid: d764a95b2850e724b9e761ed2722c9f7, type: 3}
-  proj_spawn: {fileID: 5682205087739296379}
+  mtc: {fileID: 4905874205509183725, guid: 4de8cd4fe40b78d46ba110a49f94308f, type: 3}
+  proj_spawn: {fileID: 8227743508193196329}
   proj_force: 60
   upAmt: 7
   chargeTime: 0.5
@@ -30756,6 +30757,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f8df2fa9285e16469ef736bb2701beb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ping: 0
 --- !u!1 &6820114073900090435
 GameObject:
   m_ObjectHideFlags: 0

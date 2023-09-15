@@ -6076,12 +6076,12 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &3380425082291294957
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6336,7 +6336,7 @@ MonoBehaviour:
   _networkObjectCache: {fileID: 4575299771133537037}
   we: {fileID: 2423090785593715163, guid: b3a00bb986e28014aab0c7063333dbbd, type: 3}
   wec: {fileID: 7335286866334050943, guid: d2e8771f9e087214c89447cdeb45f1a6, type: 3}
-  proj_spawn: {fileID: 5682205087739296379}
+  proj_spawn: {fileID: 8227743508193196329}
   proj_force: 50
   minTimeToExplode: 0.3
   we_cd: 7

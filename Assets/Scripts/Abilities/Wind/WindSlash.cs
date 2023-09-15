@@ -68,8 +68,8 @@ public class WindSlash : NetworkBehaviour, Projectile
 
         //Move ellapsed time from when grenade was 'thrown' on thrower.
         float timePassed = (float)base.TimeManager.TimePassed(pt.Tick);
-        if (timePassed > 0.1f)
-            timePassed = 0.1f;
+        if (timePassed > 0.2f)
+            timePassed = 0.2f;
 
         Move(timePassed);
     }

@@ -6266,7 +6266,7 @@ MonoBehaviour:
   wsc: {fileID: 3637627862300843640, guid: d48ddf41c10db294f81e3e47328ba799, type: 3}
   wsrc: {fileID: 3637627862300843640, guid: db7f4752b14372b47b5d6ead9fbe71b0, type: 3}
   proj_spawn: {fileID: 5682205087739296379}
-  proj_force: 200
+  proj_force: 240
   ws_chargeRate: 30
   ws_dechargeRate: 60
   ws_cd: 0.2

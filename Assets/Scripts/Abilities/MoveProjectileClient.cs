@@ -39,6 +39,28 @@ public class MoveProjectileClient : MonoBehaviour
         }
         else
         {
+            if (bouncing)
+            {
+                //Determine how far object should travel this frame.
+                float travelDistance = (velocity.magnitude * Time.deltaTime) + 0.5f;
+
+                //Reflect bullet if it hits a wall
+                int layerMask = 1 << 6;
+
+                RaycastHit hit;
+                // Does the ray intersect any walls
+
+                if (Physics.Raycast(transform.position, velocity, out hit, travelDistance, layerMask))
+                {
+                    // Find the line from the gun to the point that was clicked.
+                    Vector3 incomingVec = hit.point - transform.position;
+                    // Use the point's normal to calculate the reflection vector.
+                    Vector3 reflectVec = Vector3.Reflect(incomingVec, hit.normal);
+
+                    velocity = reflectVec.normalized * velocity.magnitude;
+                }
+            }
+
             transform.position += velocity * Time.deltaTime;
         }
         

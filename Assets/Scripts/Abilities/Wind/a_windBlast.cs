@@ -57,12 +57,12 @@ public class a_windBlast : NetworkBehaviour
     {
         mv.disableAB = false;
         mv.dashing = true;
-        DoDamageServer(base.Owner.ClientId);
+        DoDamageServer(transform.position, proj_spawn.rotation, base.Owner.ClientId);
 
     }
 
     [ServerRpc]
-    private void DoDamageServer(int owner)
+    private void DoDamageServer(Vector3 pos, Quaternion rot, int owner)
     {
         showBlast();
 
@@ -86,14 +86,14 @@ public class a_windBlast : NetworkBehaviour
 
 
         // Actually doing damage
-        RaycastHit[] hitColliders = Physics.SphereCastAll(transform.position, 2f, proj_spawn.rotation * Vector3.forward, 8f);
+        RaycastHit[] hitColliders = Physics.SphereCastAll(pos, 2f, rot * Vector3.forward, 8f);
         foreach (var hit in hitColliders)
         {
             
             if (hit.transform.tag == "Player" && hit.transform.parent.GetComponent<NetworkObject>().Owner.ClientId != owner)
             {
                 PlayerHealth ph = hit.transform.gameObject.GetComponent<PlayerHealth>();
-                ph.Knockback(proj_spawn.rotation * Vector3.forward, knockback_amount, knockback_growth);
+                ph.Knockback(rot * Vector3.forward, knockback_amount, knockback_growth);
                 ph.TakeDamage(damage);
             }
         }

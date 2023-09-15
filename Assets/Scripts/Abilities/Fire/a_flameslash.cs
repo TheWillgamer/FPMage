@@ -59,13 +59,13 @@ public class a_flameslash : NetworkBehaviour
             if (hit.transform.tag == "Player" && hit.transform.parent.GetComponent<NetworkObject>().Owner.ClientId != owner)
             {
                 PlayerHealth ph = hit.transform.gameObject.GetComponent<PlayerHealth>();
-                ph.Knockback(proj_spawn.rotation * Vector3.forward, knockback_amount, knockback_growth);
+                ph.Knockback(rot * Vector3.forward, knockback_amount, knockback_growth);
                 ph.TakeDamage(damage);
                 ph.startFire();
             }
             else if (hit.transform.tag == "Projectile")
             {
-                hit.GetComponent<Projectile>().Reflect(proj_spawn.rotation * Vector3.forward, owner);
+                hit.GetComponent<Projectile>().Reflect(rot * Vector3.forward, owner);
             }
         }
     }

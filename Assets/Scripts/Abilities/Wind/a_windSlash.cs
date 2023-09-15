@@ -62,11 +62,11 @@ public class a_windSlash : NetworkBehaviour
             m_shootingSound.Play();
 
             GameObject clientObj;
-            if (wdir)
+            if (wdirc)
                 clientObj = Instantiate(wsc, proj_spawn.position, proj_spawn.rotation);
             else
                 clientObj = Instantiate(wsrc, proj_spawn.position, proj_spawn.rotation);
-            wdir = !wdir;
+            wdirc = !wdirc;
             clientObjs.Enqueue(clientObj);
             MoveProjectileClient proj = clientObj.GetComponent<MoveProjectileClient>();
             proj.Initialize(proj_spawn.forward * proj_force, Mathf.Min(180f, (float)tm.RoundTripTime) / 1000f);

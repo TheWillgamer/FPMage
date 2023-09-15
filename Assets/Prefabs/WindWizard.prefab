@@ -6335,6 +6335,7 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 4575299771133537037}
   _networkObjectCache: {fileID: 4575299771133537037}
   we: {fileID: 2423090785593715163, guid: b3a00bb986e28014aab0c7063333dbbd, type: 3}
+  wec: {fileID: 7335286866334050943, guid: d2e8771f9e087214c89447cdeb45f1a6, type: 3}
   proj_spawn: {fileID: 5682205087739296379}
   proj_force: 50
   minTimeToExplode: 0.3

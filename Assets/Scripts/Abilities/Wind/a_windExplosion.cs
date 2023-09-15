@@ -8,6 +8,7 @@ using System.Net;
 public class a_windExplosion : NetworkBehaviour
 {
     [SerializeField] private GameObject we;
+    [SerializeField] private GameObject wec;
     [SerializeField] private Transform proj_spawn;
     [SerializeField] private float proj_force;
     [SerializeField] private float minTimeToExplode;
@@ -18,6 +19,8 @@ public class a_windExplosion : NetworkBehaviour
     private bool letGo;
 
     private Movement mv;
+    private TimeManager tm;
+    private GameObject clientObj;
 
     #region cooldowns
     //Meteor
@@ -42,6 +45,7 @@ public class a_windExplosion : NetworkBehaviour
         chargeStarted = false;
         letGo = false;
         explodable = false;
+        tm = GameObject.FindWithTag("NetworkManager").GetComponent<TimeManager>();
     }
 
     private void Update()
@@ -50,13 +54,13 @@ public class a_windExplosion : NetworkBehaviour
         {
             if (IsOwner && Time.time > we_offcd)
             {
-                Vector3 endPoint = proj_spawn.position + proj_spawn.forward * 100f;
-                RaycastHit hit;
-                if (Physics.Raycast(proj_spawn.position, proj_spawn.forward, out hit, 100f))
-                {
-                    endPoint = hit.point;
-                }
-                shootWind(endPoint);
+                m_shootingSound.Play();
+
+                clientObj = Instantiate(wec, proj_spawn.position, proj_spawn.rotation);
+                MoveProjectileClient proj = clientObj.GetComponent<MoveProjectileClient>();
+                proj.Initialize(proj_spawn.forward * proj_force, Mathf.Min(180f, (float)tm.RoundTripTime) / 1000f);
+
+                shootWind(base.TimeManager.GetPreciseTick(TickType.Tick), proj_spawn.position, proj_spawn.rotation);
                 mv.disableAB = true;
                 chargeStarted = true;
                 explodable = false;
@@ -88,21 +92,21 @@ public class a_windExplosion : NetworkBehaviour
     [ObserversRpc]
     private void playShootSound()
     {
-        m_shootingSound.Play();
+        if (!IsOwner)
+            m_shootingSound.Play();
+        else
+            Destroy(clientObj);
     }
 
     [ServerRpc]
-    private void shootWind(Vector3 endPoint)
+    private void shootWind(PreciseTick pt, Vector3 startLoc, Quaternion startRot)
     {
         playShootSound();
-        GameObject spawned = Instantiate(we, proj_spawn.position, transform.rotation);
-        //Physics.IgnoreCollision(spawned.GetComponent<Collider>(), GetComponent<Collider>());
-
-        //UnitySceneManager.MoveGameObjectToScene(spawned.gameObject, gameObject.scene);
+        GameObject spawned = Instantiate(we, startLoc, startRot);
         base.Spawn(spawned);
 
         proj = spawned.GetComponent<Projectile>();
-        proj.Initialize(base.TimeManager.GetPreciseTick(TickType.Tick), (endPoint - proj_spawn.position).normalized * proj_force, base.Owner.ClientId);
+        proj.Initialize(pt, startRot * Vector3.forward * proj_force, base.Owner.ClientId);
     }
 
     [ServerRpc]

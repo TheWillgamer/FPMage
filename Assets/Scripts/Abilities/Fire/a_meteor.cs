@@ -8,7 +8,7 @@ using System.Collections;
 public class a_meteor : NetworkBehaviour
 {
     [SerializeField] private GameObject mt;
-//    [SerializeField] private GameObject mtc;
+    [SerializeField] private GameObject mtc;
     [SerializeField] private Transform proj_spawn;
     [SerializeField] private float proj_force;
     [SerializeField] private float upAmt;
@@ -20,6 +20,7 @@ public class a_meteor : NetworkBehaviour
     AudioSource m_shootingSound;
 
     private Movement mv;
+    private TimeManager tm;
     private GameObject clientObj;
 
     #region cooldowns
@@ -50,6 +51,7 @@ public class a_meteor : NetworkBehaviour
         mt_offcd = Time.time;
         chargeStarted = false;
         mv = GetComponent<Movement>();
+        tm = GameObject.FindWithTag("NetworkManager").GetComponent<TimeManager>();
     }
 
     private void Update()
@@ -71,9 +73,9 @@ public class a_meteor : NetworkBehaviour
             mv.disableAB = false;
             m_shootingSound.Play();
 
-            //clientObj = Instantiate(mtc, proj_spawn.position, proj_spawn.rotation);
-            //MoveProjectileClient proj = clientObj.GetComponent<MoveProjectileClient>();
-            //proj.Initialize(proj_spawn.forward * proj_force + Vector3.up * upAmt);
+            clientObj = Instantiate(mtc, proj_spawn.position, proj_spawn.rotation);
+            MoveProjectileClient proj = clientObj.GetComponent<MoveProjectileClient>();
+            proj.Initialize(proj_spawn.forward * proj_force + Vector3.up * upAmt, Mathf.Min(180f, (float)tm.RoundTripTime) / 1000f);
 
             shootMeteor(base.TimeManager.GetPreciseTick(TickType.Tick), proj_spawn.position, proj_spawn.rotation);
             chargeStarted = false;
@@ -88,6 +90,8 @@ public class a_meteor : NetworkBehaviour
     {
         if (!IsOwner)
             m_shootingSound.Play();
+        else
+            Destroy(clientObj);
     }
 
     [ServerRpc]

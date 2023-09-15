@@ -11,6 +11,9 @@ public class Meteor : NetworkBehaviour, Projectile
     [SerializeField] private float knockback_growth = 20f;
 
     private Vector3 velocity = Vector3.zero;
+    private float y_velocity = 0f;
+    private float startTime;
+    private float startYPos;
     private int owner;
     [SerializeField] private GameObject explosion;
     [SerializeField] private float gravity;
@@ -64,16 +67,18 @@ public class Meteor : NetworkBehaviour, Projectile
     public virtual void Initialize(PreciseTick pt, Vector3 force, int conn)
     {
         velocity = force;
+        startYPos = transform.position.y;
+
         SphereCollider sc = GetComponent<SphereCollider>();
         _colliderRadius = sc.radius;
         owner = conn;
 
         //Move ellapsed time from when grenade was 'thrown' on thrower.
         float timePassed = (float)base.TimeManager.TimePassed(pt.Tick);
-        if (timePassed > 0.1f)
-            timePassed = 0.1f;
+        if (timePassed > 0.2f)
+            timePassed = 0.2f;
 
-        velocity -= Vector3.up * gravity * timePassed;
+        startTime = Time.time - timePassed;
 
         // explode meteor is something is directly in front
         float travelDistance = (velocity.magnitude * timePassed);
@@ -94,7 +99,6 @@ public class Meteor : NetworkBehaviour, Projectile
     [Server(Logging = LoggingType.Off)]
     private void Move(float deltaTime)
     {
-        transform.rotation = Quaternion.LookRotation(velocity);
         //Determine how far object should travel this frame.
         float travelDistance = (velocity.magnitude * deltaTime);
         //Set trace distance to be travel distance + collider radius.
@@ -112,7 +116,10 @@ public class Meteor : NetworkBehaviour, Projectile
             }
         }
 
-        transform.position += (velocity * deltaTime);
+        float elapsedTime = Time.time - startTime;
+        Vector3 lastPos = transform.position;
+        transform.position = new Vector3(transform.position.x + velocity.x * deltaTime, startYPos + velocity.y * elapsedTime - .5f * gravity * Mathf.Pow(elapsedTime, 2), transform.position.z + velocity.z * deltaTime);
+        transform.rotation = Quaternion.LookRotation(transform.position - lastPos);
     }
 
     [Server(Logging = LoggingType.Off)]

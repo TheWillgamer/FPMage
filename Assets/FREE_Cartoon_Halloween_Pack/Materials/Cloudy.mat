@@ -54,7 +54,7 @@ Material:
     - _Rotation: 158
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Tint: {r: 0.08018869, g: 0.68711245, b: 1, a: 0.5}
+    - _Tint: {r: 0.078431375, g: 0.6862745, b: 1, a: 0.5}
   m_BuildTextureStacks: []
 --- !u!1002 &2100001
 EditorExtensionImpl:

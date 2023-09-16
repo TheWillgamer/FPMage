@@ -6143,7 +6143,7 @@ MonoBehaviour:
   hp: 0
   hpPercentage: {fileID: 4198358656015635291}
   dmgScreen: {fileID: 1733089372414222686}
-  parent: {fileID: 0}
+  parent: {fileID: 8227743508398521442}
   fireDmg: 2
   fire_cd: 1.2
   baseFireGM: {fileID: 7244632409380557909}

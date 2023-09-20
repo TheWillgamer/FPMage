@@ -18,7 +18,8 @@ public class PlayerHealth : NetworkBehaviour
     private Dash dh;
     private bool alive;
     private GameplayManager gm;
-    [SerializeField] private NetworkObject parent;
+    [SerializeField] private Transform cam;
+    [SerializeField] private float respawnTime;
 
     // OnFire
     private int onFire;
@@ -217,26 +218,30 @@ public class PlayerHealth : NetworkBehaviour
     {
         if (base.IsServer && alive)
         {
-            SaveCam();
+            SaveCam(false);
+            Invoke("Death", respawnTime);
             alive = false;
         }
     }
 
     [ObserversRpc]
     // Doesnt destroy main camera with the rest of the objects
-    private void SaveCam()
+    private void SaveCam(bool respawning)
     {
         if (base.IsOwner)
         {
-            GameObject.FindWithTag("MainCamera").transform.parent = null;
-            Death();
+            Transform mct = GameObject.FindWithTag("MainCamera").transform;
+            mct.parent = respawning ? cam : null;
+            mct.localRotation = Quaternion.identity;
+            mct.localPosition = Vector3.zero;
         }
     }
 
-    [ServerRpc]
     private void Death()
     {
-        gm.SpawnWizard(base.Owner, wizardType);
-        parent.Despawn();
+        transform.position = new Vector3(0f, 60f, 0f);
+        rb.velocity = Vector3.zero;
+        alive = true;
+        SaveCam(true);
     }
 }

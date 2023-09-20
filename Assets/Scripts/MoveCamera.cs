@@ -16,6 +16,9 @@ public class MoveCamera : NetworkBehaviour
     public bool playerSpawned;
     public bool activated;
 
+    [SerializeField]
+    private Transform shadow;
+
     public override void OnStartClient()
     {
         base.OnStartClient();
@@ -55,6 +58,8 @@ public class MoveCamera : NetworkBehaviour
 
         //Perform the rotations
         transform.localRotation = Quaternion.Euler(xRotation, desiredX, 0);
+
+        shadow.rotation = Quaternion.Euler(0.0f, transform.eulerAngles.y, 0.0f);
 
         if (!playerSpawned)
             return;

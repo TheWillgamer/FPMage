@@ -33,7 +33,7 @@ public class PlayerHealth : NetworkBehaviour
 
     //Audio
     public AudioSource hit;
-    public AudioSource dead;
+    public AudioSource burning;
 
     void Awake()
     {
@@ -93,7 +93,7 @@ public class PlayerHealth : NetworkBehaviour
     public void startFire()
     {
         onFire = 3;
-        fire_offcd = fire_cd;
+        fire_offcd = fire_cd/2f;
         startFireGM();
     }
 
@@ -114,6 +114,7 @@ public class PlayerHealth : NetworkBehaviour
     [ObserversRpc]
     private void startFireGM()
     {
+        burning.Play();
         if (base.IsOwner)
             return;
         baseFireGM.SetActive(true);
@@ -123,9 +124,15 @@ public class PlayerHealth : NetworkBehaviour
     [ObserversRpc]
     private void endFireGM()
     {
+        Invoke("stopBurningSound", .5f);
         if (base.IsOwner)
             return;
         baseFireGM.SetActive(false);
+    }
+
+    private void stopBurningSound()
+    {
+        burning.Stop();
     }
 
     [ObserversRpc]

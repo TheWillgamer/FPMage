@@ -6,7 +6,7 @@ AvatarMask:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: UpperBody
+  m_Name: FireUpperBody
   m_Mask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
   m_Elements:
   - m_Path: 
@@ -35,19 +35,17 @@ AvatarMask:
     m_Weight: 0
   - m_Path: Armature/Spine
     m_Weight: 0
-  - m_Path: Armature/Spine/Hand.L
-    m_Weight: 1
-  - m_Path: Armature/Spine/Hand.L/Hand.L_end
-    m_Weight: 1
-  - m_Path: Armature/Spine/Hand.R
-    m_Weight: 1
-  - m_Path: Armature/Spine/Hand.R/Hand.R_end
-    m_Weight: 1
   - m_Path: Armature/Spine/Neck
     m_Weight: 1
   - m_Path: Armature/Spine/Neck/Head
     m_Weight: 1
-  - m_Path: Armature/Spine/Neck/Head/Head_end
+  - m_Path: Armature/Spine/Neck/Head/Hand.L
+    m_Weight: 1
+  - m_Path: Armature/Spine/Neck/Head/Hand.L/Hand.L_end
+    m_Weight: 1
+  - m_Path: Armature/Spine/Neck/Head/Hand.R
+    m_Weight: 1
+  - m_Path: Armature/Spine/Neck/Head/Hand.R/Hand.R_end
     m_Weight: 1
   - m_Path: Armature/Spine/Thigh.L
     m_Weight: 0

@@ -198,6 +198,10 @@ public class Movement : NetworkBehaviour
                 }
             }
         }
+
+        float magnide = _rigidbody.velocity.magnitude;          // speed at the object is moving
+        animator.SetBool("moving", magnide > .3f);
+        animator.SetFloat("speed", Mathf.Max(.6f, magnide / 8f));
     }
 
     private void TimeManager_OnTick()
@@ -293,10 +297,6 @@ public class Movement : NetworkBehaviour
         //Apply forces to move player
         _rigidbody.AddForce(transform.forward * md.Vertical * moveSpeed * multiplier);
         _rigidbody.AddForce(transform.right * md.Horizontal * moveSpeed * multiplier);
-
-        float magnide = _rigidbody.velocity.magnitude;          // speed at the object is moving
-        animator.SetBool("moving", magnide > .3f);
-        animator.SetFloat("speed", Mathf.Max(.6f, magnide / 8f));
 
         WallCheck();
     }

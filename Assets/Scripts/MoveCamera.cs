@@ -57,7 +57,7 @@ public class MoveCamera : NetworkBehaviour
         //Rotate, and also make sure we dont over- or under-rotate.
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -89f, 89f);
-        animator.SetFloat("aim", 1f - (xRotation + 89f) / 178f);
+        animServer(1f - (xRotation + 89f) / 178f);
 
         //Perform the rotations
         transform.localRotation = Quaternion.Euler(xRotation, desiredX, 0);
@@ -81,5 +81,17 @@ public class MoveCamera : NetworkBehaviour
         {
             _movingTime = 0f;
         }
+    }
+
+    [ServerRpc]
+    private void animServer(float amt)
+    {
+        animObservers(amt);
+    }
+
+    [ObserversRpc]
+    private void animObservers(float amt)
+    {
+        animator.SetFloat("aim", amt);
     }
 }

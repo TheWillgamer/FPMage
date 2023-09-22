@@ -197,11 +197,23 @@ public class Movement : NetworkBehaviour
                     paused = true;
                 }
             }
+
         }
 
-        float magnide = _rigidbody.velocity.magnitude;          // speed at the object is moving
-        animator.SetBool("moving", magnide > .3f);
-        animator.SetFloat("speed", Mathf.Max(.6f, magnide / 8f));
+        moveAnimServer(_rigidbody.velocity.magnitude);          // speed at the object is moving
+    }
+
+    [ServerRpc]
+    private void moveAnimServer(float amt)
+    {
+        moveAnimObservers(amt);
+    }
+
+    [ObserversRpc]
+    private void moveAnimObservers(float amt)
+    {
+        animator.SetBool("moving", amt > .3f);
+        animator.SetFloat("speed", Mathf.Max(.6f, amt / 8f));
     }
 
     private void TimeManager_OnTick()

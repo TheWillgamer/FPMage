@@ -13,7 +13,7 @@ public class MakeModelInvis : NetworkBehaviour
         if (base.IsOwner)
         {
             clientModel.SetActive(true);
-            //gameObject.SetActive(false);
+            gameObject.SetActive(false);
         }
     }
 }

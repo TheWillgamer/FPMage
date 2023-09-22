@@ -136,6 +136,8 @@ public class Movement : NetworkBehaviour
 
     private bool paused;
 
+    [SerializeField] private Animator animator;
+
     public override void OnStartClient()
     {
         base.OnStartClient();
@@ -292,6 +294,10 @@ public class Movement : NetworkBehaviour
         _rigidbody.AddForce(transform.forward * md.Vertical * moveSpeed * multiplier);
         _rigidbody.AddForce(transform.right * md.Horizontal * moveSpeed * multiplier);
 
+        float magnide = _rigidbody.velocity.magnitude;          // speed at the object is moving
+        animator.SetBool("moving", magnide > 1f);
+        animator.SetFloat("speed", Mathf.Max(.6f, magnide / 7f));
+
         WallCheck();
     }
 
@@ -405,6 +411,7 @@ public class Movement : NetworkBehaviour
     {
         _rigidbody.drag = 0;
         grounded = false;
+        animator.SetBool("inAir", true);
     }
 
     private bool cancellingGrounded;
@@ -422,6 +429,7 @@ public class Movement : NetworkBehaviour
                 {
                     _rigidbody.drag = (dashing || !canGroundJump) ? 0f : counterMovement;
                     grounded = true;
+                    animator.SetBool("inAir", false);
                     canGroundJump = true;
                     normalVector = normal;
                     jumpCharge = tripleJump ? 2 : 1;
@@ -443,6 +451,7 @@ public class Movement : NetworkBehaviour
     {
         _rigidbody.drag = 0;
         grounded = false;
+        animator.SetBool("inAir", true);
         Invoke(nameof(CancelCoyoteTime), coyoteTime);
     }
 

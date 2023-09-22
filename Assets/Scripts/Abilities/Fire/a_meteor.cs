@@ -22,6 +22,7 @@ public class a_meteor : NetworkBehaviour
     private Movement mv;
     private TimeManager tm;
     private GameObject clientObj;
+    [SerializeField] private Animator animator;
 
     #region cooldowns
     //Meteor
@@ -64,6 +65,7 @@ public class a_meteor : NetworkBehaviour
                 chargeStarted = true;
                 ownerMeteorGM.SetActive(true);
                 ownerMeteor.Play();
+                //animator.SetTrigger("Meteor");
                 startMeteorGMServer();
                 chargeReady = Time.time + chargeTime;
             }
@@ -107,6 +109,7 @@ public class a_meteor : NetworkBehaviour
             return;
         clientMeteorGM.SetActive(true);
         clientMeteor.Play();
+        animator.SetTrigger("Meteor");
     }
 
     [ObserversRpc]

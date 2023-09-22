@@ -17,6 +17,8 @@ public class MoveCamera : NetworkBehaviour
     public bool activated;
 
     [SerializeField]
+    private Animator animator;
+    [SerializeField]
     private Transform shadow;
 
     public override void OnStartClient()
@@ -55,6 +57,7 @@ public class MoveCamera : NetworkBehaviour
         //Rotate, and also make sure we dont over- or under-rotate.
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -89f, 89f);
+        animator.SetFloat("aim", 1f - (xRotation + 89f) / 178f);
 
         //Perform the rotations
         transform.localRotation = Quaternion.Euler(xRotation, desiredX, 0);

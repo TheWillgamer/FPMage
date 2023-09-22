@@ -20,7 +20,9 @@ public class a_flameslash : NetworkBehaviour
     [SerializeField] private GameObject clientSlashGM;
     private ParticleSystem clientSlash;
 
+
     private Movement mv;
+    [SerializeField] private Animator animator;
 
     #region cooldowns
     [SerializeField] private float slash_cd;
@@ -43,6 +45,7 @@ public class a_flameslash : NetworkBehaviour
         if (!mv.disableAB && Input.GetButtonDown("Fire2") && Time.time > slash_offcd)
         {
             ownerSlash.Play();
+            //animator.SetTrigger("Claw");
             DoDamage(proj_spawn.position, proj_spawn.rotation, base.Owner.ClientId);
             slash_offcd = Time.time + slash_cd;
         }
@@ -52,7 +55,7 @@ public class a_flameslash : NetworkBehaviour
     [ServerRpc]
     private void DoDamage(Vector3 pos, Quaternion rot, int owner)
     {
-        showSlash();
+        setUpSlash();
         Collider[] hitColliders = Physics.OverlapBox(pos, new Vector3(2f, 1f, 2f), rot);
         foreach (var hit in hitColliders)
         {
@@ -71,13 +74,19 @@ public class a_flameslash : NetworkBehaviour
     }
 
     [ObserversRpc]
-    private void showSlash()
+    private void setUpSlash()
     {
         if (!base.IsOwner)
         {
             clientSlashGM.transform.rotation = proj_spawn.rotation;
-            clientSlash.Play();
+            Invoke("showSlash", .1f);
+            animator.SetTrigger("Claw");
         }
+    }
+
+    private void showSlash()
+    {
+        clientSlash.Play();
     }
 
     private void UpdateUI()

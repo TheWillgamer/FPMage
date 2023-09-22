@@ -12,12 +12,12 @@ public class a_fireball : NetworkBehaviour
     [SerializeField] private GameObject fbc;
     [SerializeField] private Transform proj_spawn;
     [SerializeField] private float proj_force;
-    AudioSource m_shootingSound;
 
     private Movement mv;
     private TimeManager tm;
     Queue<GameObject> clientObjs = new Queue<GameObject>();
     [SerializeField] private Animator animator;
+    [SerializeField] private AudioSource fire;
 
     #region cooldowns
     //Fireball
@@ -40,7 +40,6 @@ public class a_fireball : NetworkBehaviour
 
     void Start()
     {
-        m_shootingSound = GetComponent<AudioSource>();
         fb_charges = 3;
         fb_offcd = Time.time;
         mv = GetComponent<Movement>();
@@ -53,7 +52,7 @@ public class a_fireball : NetworkBehaviour
 
         if (!mv.disableAB && Input.GetButtonDown("Fire1") && fb_charges > 0)
         {
-            m_shootingSound.Play();
+            fire.Play();
 
             GameObject clientObj = Instantiate(fbc, proj_spawn.position, proj_spawn.rotation);
             clientObjs.Enqueue(clientObj);
@@ -83,7 +82,7 @@ public class a_fireball : NetworkBehaviour
         if (!IsOwner)
         {
             animator.SetTrigger("Shoot");
-            m_shootingSound.Play();
+            fire.Play();
         }
         else
             Destroy(clientObjs.Dequeue());

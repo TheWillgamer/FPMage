@@ -17,12 +17,13 @@ public class a_meteor : NetworkBehaviour
     private ParticleSystem ownerMeteor;
     [SerializeField] private GameObject clientMeteorGM;
     private ParticleSystem clientMeteor;
-    AudioSource m_shootingSound;
 
     private Movement mv;
     private TimeManager tm;
     private GameObject clientObj;
     [SerializeField] private Animator animator;
+    [SerializeField] private AudioSource charge;
+    [SerializeField] private AudioSource fire;
 
     #region cooldowns
     //Meteor
@@ -46,7 +47,6 @@ public class a_meteor : NetworkBehaviour
 
     void Start()
     {
-        m_shootingSound = GetComponent<AudioSource>();
         ownerMeteor = ownerMeteorGM.GetComponent<ParticleSystem>();
         clientMeteor = clientMeteorGM.GetComponent<ParticleSystem>();
         mt_offcd = Time.time;
@@ -65,6 +65,7 @@ public class a_meteor : NetworkBehaviour
                 chargeStarted = true;
                 ownerMeteorGM.SetActive(true);
                 ownerMeteor.Play();
+                charge.Play();
                 //animator.SetTrigger("Meteor");
                 startMeteorGMServer();
                 chargeReady = Time.time + chargeTime;
@@ -73,7 +74,8 @@ public class a_meteor : NetworkBehaviour
         if (chargeStarted && Time.time > chargeReady)
         {
             mv.disableAB = false;
-            m_shootingSound.Play();
+            charge.Stop();
+            fire.Play();
 
             clientObj = Instantiate(mtc, proj_spawn.position, proj_spawn.rotation);
             MoveProjectileClient proj = clientObj.GetComponent<MoveProjectileClient>();
@@ -91,7 +93,10 @@ public class a_meteor : NetworkBehaviour
     private void playShootSound()
     {
         if (!IsOwner)
-            m_shootingSound.Play();
+        {
+            charge.Stop();
+            fire.Play();
+        }
         else
             Destroy(clientObj);
     }
@@ -109,6 +114,7 @@ public class a_meteor : NetworkBehaviour
             return;
         clientMeteorGM.SetActive(true);
         clientMeteor.Play();
+        charge.Play();
         animator.SetTrigger("Meteor");
     }
 

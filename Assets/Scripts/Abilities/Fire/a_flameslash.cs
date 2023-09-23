@@ -23,7 +23,8 @@ public class a_flameslash : NetworkBehaviour
 
     private Movement mv;
     [SerializeField] private Animator animator;
-    [SerializeField] private AudioSource fire;
+    [SerializeField] private AudioSource hitted;
+    [SerializeField] private AudioSource missed;
 
     #region cooldowns
     [SerializeField] private float slash_cd;
@@ -46,7 +47,7 @@ public class a_flameslash : NetworkBehaviour
         if (!mv.disableAB && Input.GetButtonDown("Fire2") && Time.time > slash_offcd)
         {
             ownerSlash.Play();
-            fire.Play();
+            missed.Play();
             //animator.SetTrigger("Claw");
             DoDamage(proj_spawn.position, proj_spawn.rotation, base.Owner.ClientId);
             slash_offcd = Time.time + slash_cd;
@@ -57,12 +58,14 @@ public class a_flameslash : NetworkBehaviour
     [ServerRpc]
     private void DoDamage(Vector3 pos, Quaternion rot, int owner)
     {
-        setUpSlash();
+        bool wasHit = false;
+        
         Collider[] hitColliders = Physics.OverlapBox(pos, new Vector3(2f, 1f, 2f), rot);
         foreach (var hit in hitColliders)
         {
             if (hit.transform.tag == "Player" && hit.transform.parent.GetComponent<NetworkObject>().Owner.ClientId != owner)
             {
+                wasHit = true;
                 PlayerHealth ph = hit.transform.gameObject.GetComponent<PlayerHealth>();
                 ph.Knockback(rot * Vector3.forward, knockback_amount, knockback_growth);
                 ph.TakeDamage(damage);
@@ -73,13 +76,18 @@ public class a_flameslash : NetworkBehaviour
                 hit.GetComponent<Projectile>().Reflect(rot * Vector3.forward, owner);
             }
         }
+
+        setUpSlash(wasHit);
     }
 
     [ObserversRpc]
-    private void setUpSlash()
+    private void setUpSlash(bool wasHit)
     {
-        if (!base.IsOwner)
+        if (wasHit)
+            hitted.Play();
+        else if (!base.IsOwner)
         {
+            missed.Play();
             clientSlashGM.transform.rotation = proj_spawn.rotation;
             Invoke("showSlash", .1f);
             animator.SetTrigger("Claw");
@@ -89,7 +97,6 @@ public class a_flameslash : NetworkBehaviour
     private void showSlash()
     {
         clientSlash.Play();
-        fire.Play();
     }
 
     private void UpdateUI()

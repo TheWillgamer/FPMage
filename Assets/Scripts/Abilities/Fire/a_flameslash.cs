@@ -23,6 +23,7 @@ public class a_flameslash : NetworkBehaviour
 
     private Movement mv;
     [SerializeField] private Animator animator;
+    [SerializeField] private AudioSource fire;
 
     #region cooldowns
     [SerializeField] private float slash_cd;
@@ -45,6 +46,7 @@ public class a_flameslash : NetworkBehaviour
         if (!mv.disableAB && Input.GetButtonDown("Fire2") && Time.time > slash_offcd)
         {
             ownerSlash.Play();
+            fire.Play();
             //animator.SetTrigger("Claw");
             DoDamage(proj_spawn.position, proj_spawn.rotation, base.Owner.ClientId);
             slash_offcd = Time.time + slash_cd;
@@ -87,6 +89,7 @@ public class a_flameslash : NetworkBehaviour
     private void showSlash()
     {
         clientSlash.Play();
+        fire.Play();
     }
 
     private void UpdateUI()

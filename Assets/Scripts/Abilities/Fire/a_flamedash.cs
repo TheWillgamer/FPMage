@@ -16,7 +16,7 @@ public class a_flamedash : NetworkBehaviour, Dash
     [SerializeField] private Transform cam;
     [SerializeField] private GameObject hitbox;
 
-    AudioSource m_shootingSound;
+    [SerializeField] private AudioSource fire;
     Movement mv;
     Rigidbody rb;
 
@@ -41,7 +41,6 @@ public class a_flamedash : NetworkBehaviour, Dash
 
     void Start()
     {
-        //m_shootingSound = GetComponent<AudioSource>();
         mv = GetComponent<Movement>();
         rb = GetComponent<Rigidbody>();
         dash_offcd = Time.time;
@@ -69,12 +68,6 @@ public class a_flamedash : NetworkBehaviour, Dash
             }
         }
         UpdateUI();
-    }
-
-    [ObserversRpc]
-    private void playDashSound()
-    {
-        //m_shootingSound.Play();
     }
 
     // Disables movement and slows down player to set up for a dash
@@ -128,6 +121,7 @@ public class a_flamedash : NetworkBehaviour, Dash
     private void startCharge()
     {
         charge.SetActive(true);
+        fire.Play();
     }
 
     [ObserversRpc]

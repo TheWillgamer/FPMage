@@ -13,13 +13,13 @@ public class a_windSlash : NetworkBehaviour
     [SerializeField] private GameObject wsrc;
     [SerializeField] private Transform proj_spawn;
     [SerializeField] private float proj_force;
-    AudioSource m_shootingSound;
     private bool wdir;          // Direction of wind slash effect
     private bool wdirc;          // Direction of wind slash effect for client
 
     private Movement mv;
     private TimeManager tm;
     Queue<GameObject> clientObjs = new Queue<GameObject>();
+    [SerializeField] private AudioSource fire;
 
     #region cooldowns
     //WindSlash
@@ -46,7 +46,6 @@ public class a_windSlash : NetworkBehaviour
 
     void Start()
     {
-        m_shootingSound = GetComponent<AudioSource>();
         ws_charge = 0f;
         ws_offcd = Time.time;
         mv = GetComponent<Movement>();
@@ -59,7 +58,7 @@ public class a_windSlash : NetworkBehaviour
 
         if (!mv.disableAB && !coolingDown && Input.GetButton("Fire1") && Time.time > ws_offcd)
         {
-            m_shootingSound.Play();
+            fire.Play();
 
             GameObject clientObj;
             if (wdirc)
@@ -99,7 +98,7 @@ public class a_windSlash : NetworkBehaviour
     private void playShootSound()
     {
         if (!IsOwner)
-            m_shootingSound.Play();
+            fire.Play();
         else
             Destroy(clientObjs.Dequeue());
     }

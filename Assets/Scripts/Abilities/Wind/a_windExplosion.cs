@@ -14,13 +14,13 @@ public class a_windExplosion : NetworkBehaviour
     [SerializeField] private float minTimeToExplode;
     private Projectile proj;
     private bool chargeStarted;
-    AudioSource m_shootingSound;
     private bool explodable;
     private bool letGo;
 
     private Movement mv;
     private TimeManager tm;
     private GameObject clientObj;
+    [SerializeField] private AudioSource fire;
 
     #region cooldowns
     //Meteor
@@ -39,7 +39,6 @@ public class a_windExplosion : NetworkBehaviour
 
     void Start()
     {
-        m_shootingSound = GetComponent<AudioSource>();
         we_offcd = Time.time;
         mv = GetComponent<Movement>();
         chargeStarted = false;
@@ -54,7 +53,7 @@ public class a_windExplosion : NetworkBehaviour
         {
             if (IsOwner && Time.time > we_offcd)
             {
-                m_shootingSound.Play();
+                fire.Play();
 
                 clientObj = Instantiate(wec, proj_spawn.position, proj_spawn.rotation);
                 MoveProjectileClient proj = clientObj.GetComponent<MoveProjectileClient>();
@@ -93,7 +92,7 @@ public class a_windExplosion : NetworkBehaviour
     private void playShootSound()
     {
         if (!IsOwner)
-            m_shootingSound.Play();
+            fire.Play();
         else
             Destroy(clientObj);
     }

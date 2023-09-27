@@ -79,6 +79,12 @@ public class PlayerHealth : NetworkBehaviour
             ReenableGravity();
             CancelInvoke("ReenableGravity");
         }
+        if (moving && invulnerable && (Input.GetButtonDown("Fire1") || Input.GetButtonDown("Fire2") || Input.GetButtonDown("Fire3") || Input.GetButtonDown("Fire4")))
+        {
+            invulnerable = false;
+            CancelInvul();
+            CancelInvoke("CancelInvul");
+        }
     }
 
     private void TimeManager_OnTick()
@@ -295,6 +301,7 @@ public class PlayerHealth : NetworkBehaviour
         Invoke("CancelInvul", invulnerableTime);
     }
 
+    [ServerRpc]
     private void CancelInvul()
     {
         invulnerable = false;

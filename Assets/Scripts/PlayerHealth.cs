@@ -24,6 +24,8 @@ public class PlayerHealth : NetworkBehaviour
     private float dropDownTime = 3f;
     private float invulnerableTime = 2f;
 
+    public bool invulnerable;
+
     // OnFire
     private int onFire;
     private int fireDmg = 2;
@@ -56,6 +58,7 @@ public class PlayerHealth : NetworkBehaviour
         fireExplosion = fireExplosionGM.GetComponent<ParticleSystem>();
         alive = true;
         moving = true;
+        invulnerable = false;
     }
 
     private void OnDestroy()
@@ -103,6 +106,9 @@ public class PlayerHealth : NetworkBehaviour
 
     public void startFire()
     {
+        if (invulnerable)
+            return;
+
         onFire = 3;
         fire_offcd = fire_cd/2f;
         startFireGM();
@@ -158,6 +164,9 @@ public class PlayerHealth : NetworkBehaviour
     // Reduces hp based on the parameter amount
     public void TakeDamage(int amt)
     {
+        if (invulnerable)
+            return;
+
         int oldHp = hp;
         hp += amt;
 
@@ -176,6 +185,9 @@ public class PlayerHealth : NetworkBehaviour
     // Knocks back the player in a given direction: kb_growth determines how much percentage determines the knockback amount
     public void Knockback(Vector3 direction, float base_kb, float kb_growth)
     {
+        if (invulnerable)
+            return;
+
         if (dh != null)
             dh.CancelDash();
 
@@ -269,6 +281,7 @@ public class PlayerHealth : NetworkBehaviour
         mv.gravity = false;
         rb.velocity = Vector3.zero;
         alive = true;
+        invulnerable = true;
         Invoke("ReenableGravity", dropDownTime);
         hp = 0;
         UpdateUI();
@@ -284,6 +297,6 @@ public class PlayerHealth : NetworkBehaviour
 
     private void CancelInvul()
     {
-
+        invulnerable = false;
     }
 }

@@ -17,6 +17,7 @@ public class PlayerHealth : NetworkBehaviour
     private Movement mv;
     private Dash dh;
     private bool alive;
+    private bool moving;
     private GameplayManager gm;
     [SerializeField] private Transform cam;
     [SerializeField] private float respawnTime;
@@ -52,6 +53,7 @@ public class PlayerHealth : NetworkBehaviour
         baseFire = baseFireGM.GetComponent<ParticleSystem>();
         fireExplosion = fireExplosionGM.GetComponent<ParticleSystem>();
         alive = true;
+        moving = true;
     }
 
     private void OnDestroy()
@@ -65,6 +67,12 @@ public class PlayerHealth : NetworkBehaviour
     protected virtual void Update()
     {
         PerformUpdate(false);
+
+        if (!moving && (Input.GetButtonDown("Jump") || Input.GetAxisRaw("Horizontal")!=0 || Input.GetAxisRaw("Vertical")!=0))
+        {
+            moving = true;
+            ReenableGravity();
+        }
     }
 
     private void TimeManager_OnTick()
@@ -226,7 +234,7 @@ public class PlayerHealth : NetworkBehaviour
         if (base.IsServer && alive)
         {
             SaveCam(false);
-            Invoke("Death", respawnTime);
+            Invoke("Respawn", respawnTime);
             alive = false;
         }
     }
@@ -241,14 +249,24 @@ public class PlayerHealth : NetworkBehaviour
             mct.parent = respawning ? cam : null;
             mct.localRotation = Quaternion.identity;
             mct.localPosition = Vector3.zero;
+
+            if (respawning)
+                moving = false;
         }
     }
 
-    private void Death()
+    private void Respawn()
     {
-        transform.position = new Vector3(0f, 60f, 0f);
+        transform.position = new Vector3(0f, 40f, 0f);
+        mv.gravity = false;
         rb.velocity = Vector3.zero;
         alive = true;
         SaveCam(true);
+    }
+
+    [ServerRpc]
+    private void ReenableGravity()
+    {
+        mv.gravity = true;
     }
 }

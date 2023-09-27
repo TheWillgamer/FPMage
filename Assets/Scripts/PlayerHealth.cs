@@ -20,12 +20,14 @@ public class PlayerHealth : NetworkBehaviour
     private bool moving;
     private GameplayManager gm;
     [SerializeField] private Transform cam;
-    [SerializeField] private float respawnTime;
+    private float respawnTime = 1f;
+    private float dropDownTime = 3f;
+    private float invulnerableTime = 2f;
 
     // OnFire
     private int onFire;
-    [SerializeField] private int fireDmg;
-    [SerializeField] private float fire_cd;
+    private int fireDmg = 2;
+    private float fire_cd = 1.15f;
     private float fire_offcd;
     [SerializeField] private GameObject baseFireGM;
     private ParticleSystem baseFire;
@@ -72,6 +74,7 @@ public class PlayerHealth : NetworkBehaviour
         {
             moving = true;
             ReenableGravity();
+            CancelInvoke("ReenableGravity");
         }
     }
 
@@ -236,6 +239,8 @@ public class PlayerHealth : NetworkBehaviour
             SaveCam(false);
             Invoke("Respawn", respawnTime);
             alive = false;
+            onFire = 0;
+            endFireGM();
         }
     }
 
@@ -251,7 +256,10 @@ public class PlayerHealth : NetworkBehaviour
             mct.localPosition = Vector3.zero;
 
             if (respawning)
+            {
                 moving = false;
+                UpdateUI();
+            }
         }
     }
 
@@ -261,6 +269,9 @@ public class PlayerHealth : NetworkBehaviour
         mv.gravity = false;
         rb.velocity = Vector3.zero;
         alive = true;
+        Invoke("ReenableGravity", dropDownTime);
+        hp = 0;
+        UpdateUI();
         SaveCam(true);
     }
 
@@ -268,5 +279,11 @@ public class PlayerHealth : NetworkBehaviour
     private void ReenableGravity()
     {
         mv.gravity = true;
+        Invoke("CancelInvul", invulnerableTime);
+    }
+
+    private void CancelInvul()
+    {
+
     }
 }

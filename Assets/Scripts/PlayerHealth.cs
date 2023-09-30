@@ -281,25 +281,28 @@ public class PlayerHealth : NetworkBehaviour
         if (base.IsOwner)
         {
             Transform mct = GameObject.FindWithTag("MainCamera").transform;
-            mct.parent = respawning ? cam : null;
-            mct.localRotation = Quaternion.identity;
-            mct.localPosition = Vector3.zero;
 
             if (respawning)
             {
+                mct.parent = cam;
+                mct.localRotation = Quaternion.identity;
+                mct.localPosition = Vector3.zero;
                 moving = false;
                 UpdateUI();
                 gm.playerHp.text = "0%";
             }
             else
+            {
+                mct.parent = null;
                 gm.playerHp.text = "";
+            }
         }
         else
         {
             if (respawning)
-                gm.playerHp.text = "0%";
-            else
                 gm.oppoHp.text = "0%";
+            else
+                gm.oppoHp.text = "";
         }
     }
 

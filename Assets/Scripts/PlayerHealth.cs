@@ -10,7 +10,8 @@ using TMPro;
 public class PlayerHealth : NetworkBehaviour
 {
     [SerializeField] private int wizardType;            // for respawn
-    [SyncVar] public int hp;  //keeps track of player health
+    private int hp;  //keeps track of player health
+    private int lives;  //keeps track of player lives
     public TMP_Text hpPercentage;
     public Image dmgScreen;
     private Rigidbody rb;
@@ -167,6 +168,12 @@ public class PlayerHealth : NetworkBehaviour
         fireExplosion.Play();
     }
 
+    // Reduces life count by 1
+    private void LoseLife()
+    {
+
+    }
+
     // Reduces hp based on the parameter amount
     public void TakeDamage(int amt)
     {
@@ -182,6 +189,7 @@ public class PlayerHealth : NetworkBehaviour
             if (base.IsOwner)
             {
                 UpdateUI();
+                gm.playerHp.text = hp.ToString() + "%";
                 if (amt > 3)
                     StartCoroutine(Fade());
             }
@@ -230,8 +238,12 @@ public class PlayerHealth : NetworkBehaviour
         if (base.IsOwner)
         {
             UpdateUI();
-            StartCoroutine(Fade());
+            gm.playerHp.text = hp.ToString() + "%";
+            if (value > 3)
+                StartCoroutine(Fade());
         }
+        else
+            gm.oppoHp.text = hp.ToString() + "%";
     }
 
     IEnumerator Fade()
@@ -277,7 +289,17 @@ public class PlayerHealth : NetworkBehaviour
             {
                 moving = false;
                 UpdateUI();
+                gm.playerHp.text = "0%";
             }
+            else
+                gm.playerHp.text = "";
+        }
+        else
+        {
+            if (respawning)
+                gm.playerHp.text = "0%";
+            else
+                gm.oppoHp.text = "0%";
         }
     }
 

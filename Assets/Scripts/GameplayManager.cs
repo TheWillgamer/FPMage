@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
+using TMPro;
 
 public class GameplayManager : MonoBehaviour
 {
@@ -13,7 +14,13 @@ public class GameplayManager : MonoBehaviour
 
     public Transform[] StartingSpawns = new Transform[0];       // where they spawn
     private int _nextSpawn;
+    private int playerCounter;
     [SerializeField] private NetworkObject[] playerPrefabs;     // what is spawned
+
+    public TMP_Text playerHp;
+    public TMP_Text oppoHp;
+    public Transform playerLives;
+    public Transform oppoLives;
 
     private NetworkManager _networkManager;
 
@@ -25,6 +32,7 @@ public class GameplayManager : MonoBehaviour
     private void InitializeOnce()
     {
         _networkManager = InstanceFinder.NetworkManager;
+        playerCounter = 0;
         if (_networkManager == null)
         {
             Debug.LogWarning($"PlayerSpawner on {gameObject.name} cannot work as NetworkManager wasn't found on this object or within parent objects.");

@@ -193,6 +193,10 @@ public class PlayerHealth : NetworkBehaviour
                 if (amt > 3)
                     StartCoroutine(Fade());
             }
+            else
+            {
+                gm.oppoHp.text = hp.ToString() + "%";
+            }
         }
     }
 

@@ -55,6 +55,7 @@ public class PlayerHealth : NetworkBehaviour
     void Start()
     {
         hp = 0;
+        lives = 4;
         baseFire = baseFireGM.GetComponent<ParticleSystem>();
         fireExplosion = fireExplosionGM.GetComponent<ParticleSystem>();
         alive = true;
@@ -169,9 +170,13 @@ public class PlayerHealth : NetworkBehaviour
     }
 
     // Reduces life count by 1
-    private void LoseLife()
+    [ObserversRpc]
+    private void LoseLife(int life)
     {
-
+        if (base.IsOwner)
+            gm.SetLives(true, life);
+        else
+            gm.SetLives(false, life);
     }
 
     // Reduces hp based on the parameter amount
@@ -270,6 +275,8 @@ public class PlayerHealth : NetworkBehaviour
     {
         if (base.IsServer && alive)
         {
+            lives--;
+            LoseLife(lives);
             SaveCam(false);
             Invoke("Respawn", respawnTime);
             alive = false;

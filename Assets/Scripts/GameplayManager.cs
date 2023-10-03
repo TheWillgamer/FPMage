@@ -19,8 +19,8 @@ public class GameplayManager : MonoBehaviour
 
     public TMP_Text playerHp;
     public TMP_Text oppoHp;
-    public Transform playerLives;
-    public Transform oppoLives;
+    public GameObject[] playerLives;
+    public GameObject[] oppoLives;
 
     private NetworkManager _networkManager;
 
@@ -51,6 +51,14 @@ public class GameplayManager : MonoBehaviour
         _networkManager.SceneManager.AddOwnerToDefaultScene(nob);
 
         OnSpawned?.Invoke(nob);
+    }
+
+    public void SetLives(bool owner, int lives)
+    {
+        if (owner)
+            playerLives[lives].SetActive(false);
+        else
+            oppoLives[lives].SetActive(false);
     }
 
     private void SetSpawn(Transform prefab, out Vector3 pos, out Quaternion rot)

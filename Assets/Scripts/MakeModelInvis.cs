@@ -12,8 +12,8 @@ public class MakeModelInvis : NetworkBehaviour
         base.OnStartClient();
         if (base.IsOwner)
         {
-            //clientModel.SetActive(true);
-            //gameObject.SetActive(false);
+            clientModel.SetActive(true);
+            gameObject.SetActive(false);
         }
     }
 }

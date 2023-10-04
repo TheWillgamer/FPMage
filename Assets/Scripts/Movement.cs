@@ -212,6 +212,10 @@ public class Movement : NetworkBehaviour
     [ObserversRpc]
     private void moveAnimObservers(float amt)
     {
+        Vector2 magNorm = mag / 20f;
+
+        animator.SetFloat("forward", magNorm.y);
+        animator.SetFloat("right", magNorm.x);
         animator.SetBool("moving", amt > .3f);
         animator.SetFloat("speed", Mathf.Max(.6f, amt / 8f));
     }

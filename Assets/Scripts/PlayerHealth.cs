@@ -325,12 +325,12 @@ public class PlayerHealth : NetworkBehaviour
     private void ReenableGravity()
     {
         mv.gravity = true;
-        //Invoke("CancelInvul", invulnerableTime);
+        Invoke("CancelInvul", invulnerableTime);
     }
 
     [ServerRpc]
     private void CancelInvul()
     {
-        invulnerable = false;
+        //invulnerable = false;
     }
 }

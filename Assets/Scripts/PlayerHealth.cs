@@ -83,7 +83,7 @@ public class PlayerHealth : NetworkBehaviour
         if (moving && invulnerable && (Input.GetButtonDown("Fire1") || Input.GetButtonDown("Fire2") || Input.GetButtonDown("Fire3") || Input.GetButtonDown("Fire4")))
         {
             invulnerable = false;
-            CancelInvul();
+            //CancelInvul();
             CancelInvoke("CancelInvul");
         }
     }

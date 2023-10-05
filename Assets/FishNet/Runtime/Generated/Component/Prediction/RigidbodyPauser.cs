@@ -327,8 +327,8 @@ namespace FishNet.Component.Prediction
                     }
                 }
                 //Move root object.
-                if (_rigidbodyDatas.Count > 0)
-                    SceneManager.MoveGameObjectToScene(_rigidbodyDatas[0].Rigidbody.gameObject, kinematicScene);
+                //if (_rigidbodyDatas.Count > 0)
+                //    SceneManager.MoveGameObjectToScene(_rigidbodyDatas[0].Rigidbody.gameObject, kinematicScene);
 
                 //Sets isKinematic status and returns if successful.
                 bool PauseRigidbody(int index)
@@ -340,7 +340,7 @@ namespace FishNet.Component.Prediction
 
                     rbData.Update(rb);
                     _rigidbodyDatas[index] = rbData;
-                    SceneManager.MoveGameObjectToScene(rb.transform.root.gameObject, kinematicScene);
+                    //SceneManager.MoveGameObjectToScene(rb.transform.root.gameObject, kinematicScene);
                     return true;
                 }
             }

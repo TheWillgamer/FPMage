@@ -74,6 +74,9 @@ public class PlayerHealth : NetworkBehaviour
     {
         PerformUpdate(false);
 
+        if (!base.IsOwner)
+            return;
+
         if (!moving && (Input.GetButtonDown("Jump") || Input.GetAxisRaw("Horizontal")!=0 || Input.GetAxisRaw("Vertical")!=0))
         {
             moving = true;
@@ -331,6 +334,6 @@ public class PlayerHealth : NetworkBehaviour
     [ServerRpc]
     private void CancelInvul()
     {
-        //invulnerable = false;
+        invulnerable = false;
     }
 }

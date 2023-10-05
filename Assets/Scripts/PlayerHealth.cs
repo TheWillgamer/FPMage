@@ -9,7 +9,6 @@ using TMPro;
 
 public class PlayerHealth : NetworkBehaviour
 {
-    [SerializeField] private int wizardType;            // for respawn
     private int hp;  //keeps track of player health
     private int lives;  //keeps track of player lives
     public TMP_Text hpPercentage;
@@ -193,7 +192,6 @@ public class PlayerHealth : NetworkBehaviour
             ObserversTakeDamage(amt, oldHp);
             if (base.IsOwner)
             {
-                UpdateUI();
                 gm.playerHp.text = hp.ToString() + "%";
                 if (amt > 3)
                     StartCoroutine(Fade());
@@ -246,7 +244,6 @@ public class PlayerHealth : NetworkBehaviour
         TakeDamage(value);
         if (base.IsOwner)
         {
-            UpdateUI();
             gm.playerHp.text = hp.ToString() + "%";
             if (value > 3)
                 StartCoroutine(Fade());
@@ -264,11 +261,6 @@ public class PlayerHealth : NetworkBehaviour
             dmgScreen.color = c;
             yield return null;
         }
-    }
-
-    private void UpdateUI()
-    {
-        hpPercentage.text = hp.ToString() + "%";
     }
 
     public void Die()
@@ -299,7 +291,7 @@ public class PlayerHealth : NetworkBehaviour
                 mct.localRotation = Quaternion.identity;
                 mct.localPosition = Vector3.zero;
                 moving = false;
-                UpdateUI();
+                invulnerable = true;
                 gm.playerHp.text = "0%";
             }
             else
@@ -326,7 +318,6 @@ public class PlayerHealth : NetworkBehaviour
         invulnerable = true;
         Invoke("ReenableGravity", dropDownTime);
         hp = 0;
-        UpdateUI();
         SaveCam(true);
     }
 

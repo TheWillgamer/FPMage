@@ -83,7 +83,7 @@ public class PlayerHealth : NetworkBehaviour
         if (moving && invulnerable && (Input.GetButtonDown("Fire1") || Input.GetButtonDown("Fire2") || Input.GetButtonDown("Fire3") || Input.GetButtonDown("Fire4")))
         {
             invulnerable = false;
-            //CancelInvul();
+            CancelInvul();
             CancelInvoke("CancelInvul");
         }
     }
@@ -292,6 +292,7 @@ public class PlayerHealth : NetworkBehaviour
                 mct.localPosition = Vector3.zero;
                 moving = false;
                 invulnerable = true;
+                Invoke("ReenableGravity", dropDownTime);
                 gm.playerHp.text = "0%";
             }
             else
@@ -316,7 +317,6 @@ public class PlayerHealth : NetworkBehaviour
         rb.velocity = Vector3.zero;
         alive = true;
         invulnerable = true;
-        Invoke("ReenableGravity", dropDownTime);
         hp = 0;
         SaveCam(true);
     }

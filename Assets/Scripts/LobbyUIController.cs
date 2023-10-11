@@ -24,6 +24,10 @@ public class LobbyUIController : MonoBehaviour
     public GameObject readyButton;
     public GameObject startButton;
 
+    //Lobby stuff
+    public GameObject template;
+    public Transform root;
+
     private FishySteamworks.FishySteamworks _fishySteamworks;
     private GameplayManager gm;
 
@@ -139,6 +143,26 @@ public class LobbyUIController : MonoBehaviour
         SceneManager.UnloadScene("MainMenu");
         yield break;
     }
+
+    /// <summary>
+    /// This is connected to the Lobby Found event of the LobbyManager located on the Managers GameObject
+    /// It is invoked whenever the Lobby Manager completes a search and has new lobbies idenitifed
+    /// </summary>
+    public void LobbyResults(LobbyData[] results)
+    {
+        //First we clean out the old records
+        foreach (Transform tran in root)
+            Destroy(tran.gameObject);
+
+        //Next we spawn new records for each lobby
+        foreach (var lobby in results)
+        {
+            var GO = Instantiate(template, root);
+            var le = GO.GetComponent<LobbyEntry>();
+            le.SetLobby(lobby, lobbyManager);
+        }
+    }
+
     /// <summary>
     /// Occurs when the server info has been set on this lobby
     /// </summary>

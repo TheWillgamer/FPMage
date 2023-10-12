@@ -159,7 +159,7 @@ public class LobbyUIController : MonoBehaviour
         {
             var GO = Instantiate(template, root);
             var le = GO.GetComponent<LobbyEntry>();
-            le.SetLobby(lobby, lobbyManager);
+            le.SetLobby(lobby);
         }
     }
 

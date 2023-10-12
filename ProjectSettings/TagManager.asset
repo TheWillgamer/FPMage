@@ -11,6 +11,7 @@ TagManager:
   - Reflector
   - Absorber
   - GameplayManager
+  - LobbyDetails
   layers:
   - Default
   - TransparentFX

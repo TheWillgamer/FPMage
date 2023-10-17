@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 using Steamworks;
 using System;
 using FishNet.Managing;
+using TMPro;
 
 public class LobbyUIController : MonoBehaviour
 {
@@ -31,6 +32,8 @@ public class LobbyUIController : MonoBehaviour
     private FishySteamworks.FishySteamworks _fishySteamworks;
     private GameplayManager gm;
 
+    public TMPro.TMP_InputField lobbyName;
+
     // cash of the members of the lobby other than my self
     private List<LobbyMemberData> partyMembersOtherThanMe = new List<LobbyMemberData>();
 
@@ -42,6 +45,12 @@ public class LobbyUIController : MonoBehaviour
     {
         _fishySteamworks = GameObject.FindGameObjectWithTag("NetworkManager").GetComponent<FishySteamworks.FishySteamworks>();
         gm = GameObject.FindGameObjectWithTag("NetworkManager").GetComponent<GameplayManager>();
+    }
+
+    public void CreateLobbyWithName()
+    {
+        lobbyManager.name = lobbyName.text;
+        lobbyManager.Create();
     }
 
     /// <summary>

@@ -131,6 +131,7 @@ public class a_windBlast : NetworkBehaviour
     [ObserversRpc]
     private void showBlast()
     {
+        blast.Play();
         if (base.IsOwner)
         {
             ownerBlast.Play();

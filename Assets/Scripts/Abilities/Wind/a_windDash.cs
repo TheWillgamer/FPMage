@@ -10,7 +10,7 @@ public class a_windDash : NetworkBehaviour, Dash
     [SerializeField] private float dashDistance;
     [SerializeField] private float endDashSpeed;
 
-    AudioSource m_shootingSound;
+    [SerializeField] private AudioSource dash;
     Movement mv;
     Rigidbody rb;
 
@@ -27,7 +27,6 @@ public class a_windDash : NetworkBehaviour, Dash
 
     void Start()
     {
-        //m_shootingSound = GetComponent<AudioSource>();
         mv = GetComponent<Movement>();
         rb = GetComponent<Rigidbody>();
         dash_offcd = Time.time;
@@ -46,6 +45,7 @@ public class a_windDash : NetworkBehaviour, Dash
                 dash_offcd = Time.time + dash_cd;
             }
 
+            dash.Play();
             float horizontal = Input.GetAxisRaw("Horizontal");
             float vertical = Input.GetAxisRaw("Vertical");
 
@@ -67,12 +67,6 @@ public class a_windDash : NetworkBehaviour, Dash
             dash_offcd = Time.time + dash_cd;
         }
         UpdateUI();
-    }
-
-    [ObserversRpc]
-    private void playDashSound()
-    {
-        //m_shootingSound.Play();
     }
 
     [ServerRpc]
@@ -116,6 +110,8 @@ public class a_windDash : NetworkBehaviour, Dash
     [ObserversRpc]
     private void startDash()
     {
+        if (!base.IsOwner)
+            dash.Play();
     }
 
     private void UpdateUI()

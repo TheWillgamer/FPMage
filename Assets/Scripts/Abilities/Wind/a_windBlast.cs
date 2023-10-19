@@ -26,6 +26,9 @@ public class a_windBlast : NetworkBehaviour
     private Movement mv;
     private Rigidbody rb;
 
+    [SerializeField] private Animator animator;
+    [SerializeField] private AudioSource blast;
+
     #region cooldowns
     [SerializeField] private float blast_cd;
     private float blast_offcd;
@@ -48,9 +51,21 @@ public class a_windBlast : NetworkBehaviour
         if (!mv.disableAB && Input.GetButtonDown("Fire4") && Time.time > blast_offcd)
         {
             Invoke("DoDamage", blastDelay);
+            ShowBlastAnimServer();
             mv.disableAB = true;
         }
         UpdateUI();
+    }
+
+    private void ShowBlastAnimServer()
+    {
+        ShowBlastAnim();
+    }
+
+    [ObserversRpc]
+    private void ShowBlastAnim()
+    {
+        animator.SetTrigger("windBlast");
     }
 
     private void DoDamage()

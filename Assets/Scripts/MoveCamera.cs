@@ -86,6 +86,7 @@ public class MoveCamera : NetworkBehaviour
     [ServerRpc]
     private void animServer(float amt)
     {
+        animator.SetFloat("aim", amt);
         animObservers(amt);
     }
 

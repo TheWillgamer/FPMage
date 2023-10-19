@@ -19,6 +19,9 @@ public class a_windSlash : NetworkBehaviour
     private Movement mv;
     private TimeManager tm;
     Queue<GameObject> clientObjs = new Queue<GameObject>();
+    [SerializeField] private Animator animator;
+    private AudioClip fireSound;
+    private bool shooting;
     [SerializeField] private AudioSource fire;
 
     #region cooldowns
@@ -46,6 +49,7 @@ public class a_windSlash : NetworkBehaviour
 
     void Start()
     {
+        shooting = false;
         ws_charge = 0f;
         ws_offcd = Time.time;
         mv = GetComponent<Movement>();
@@ -77,10 +81,17 @@ public class a_windSlash : NetworkBehaviour
 
             if (ws_charge > 100f)
             {
+                turnOffShootingAnimServer();
+
                 ws_charge = 100f;
                 WindSlash.color = new Color32(255, 210, 80, 180);
                 coolingDown = true;
             }
+        }
+        if (Input.GetButtonUp("Fire1"))
+        {
+            wdirc = false;
+            turnOffShootingAnimServer();
         }
 
         ws_charge -= ws_dechargeRate * Time.deltaTime;
@@ -97,10 +108,30 @@ public class a_windSlash : NetworkBehaviour
     [ObserversRpc]
     private void playShootSound()
     {
+        if (!shooting)
+        {
+            animator.SetBool("shooting", true);
+            animator.SetTrigger("startShooting");
+            shooting = true;
+        }
+        
         if (!IsOwner)
             fire.Play();
         else
             Destroy(clientObjs.Dequeue());
+    }
+
+    [ServerRpc]
+    private void turnOffShootingAnimServer()
+    {
+        turnOffShootingAnim();
+        wdir = false;
+    }
+    [ObserversRpc]
+    private void turnOffShootingAnim()
+    {
+        animator.SetBool("shooting", false);
+        shooting = false;
     }
 
     [ServerRpc]

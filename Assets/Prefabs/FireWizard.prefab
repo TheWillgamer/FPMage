@@ -24752,7 +24752,7 @@ GameObject:
   - component: {fileID: 7008315473214646685}
   - component: {fileID: 8012989213054258335}
   m_Layer: 5
-  m_Name: Wind (1)
+  m_Name: Slash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24775,7 +24775,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -200, y: 120}
+  m_AnchoredPosition: {x: 120, y: 120}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7008315473214646685
@@ -24806,7 +24806,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: fe9afb9eab10d2042a54ea8110d0d031, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9867fb95416cd764a95e3338b72e57f7, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -41362,7 +41362,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2453685789366709306
 RectTransform:
   m_ObjectHideFlags: 0
@@ -47022,14 +47022,10 @@ MonoBehaviour:
   _componentIndexCache: 2
   _addedNetworkObject: {fileID: 8227743508398521442}
   _networkObjectCache: {fileID: 4575299771133537037}
-  wizardType: 0
-  hp: 0
   hpPercentage: {fileID: 4198358656015635291}
   dmgScreen: {fileID: 1733089372414222686}
   cam: {fileID: 8227743508193196329}
-  respawnTime: 3
-  fireDmg: 2
-  fire_cd: 1.2
+  invulnerable: 0
   baseFireGM: {fileID: 7244632409380557909}
   fireExplosionGM: {fileID: 5843454893644496384}
   hit: {fileID: 0}
@@ -47391,7 +47387,7 @@ GameObject:
   - component: {fileID: 6942726515586548655}
   - component: {fileID: 9005786515020923336}
   m_Layer: 5
-  m_Name: Lightning
+  m_Name: Meteor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47414,7 +47410,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 80, y: 120}
+  m_AnchoredPosition: {x: 0, y: 120}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6942726515586548655
@@ -47445,7 +47441,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 49c68fc5912e73b41913bd9cc70dc0d7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 86fe8f02cb623204ca6d4e7ababbcdb0, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -52668,7 +52664,7 @@ GameObject:
   - component: {fileID: 3870713596659719312}
   - component: {fileID: 8961857325175973703}
   m_Layer: 5
-  m_Name: Wind
+  m_Name: Dash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -52691,7 +52687,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -80, y: 120}
+  m_AnchoredPosition: {x: -120, y: 120}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3870713596659719312
@@ -52722,7 +52718,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 0531fd073a90eab479b0960b2cd03021, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 713263b3359c4414b9fba3641bcfd929, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1

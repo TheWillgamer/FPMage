@@ -20,6 +20,8 @@ public class a_windExplosion : NetworkBehaviour
     private Movement mv;
     private TimeManager tm;
     private GameObject clientObj;
+
+    [SerializeField] private Animator animator;
     [SerializeField] private AudioSource fire;
 
     #region cooldowns
@@ -91,10 +93,18 @@ public class a_windExplosion : NetworkBehaviour
     [ObserversRpc]
     private void playShootSound()
     {
+        animator.SetBool("windBall", true);
+        animator.SetTrigger("windBallStart");
         if (!IsOwner)
             fire.Play();
         else
             Destroy(clientObj);
+    }
+
+    [ObserversRpc]
+    private void stopAnimation()
+    {
+        animator.SetBool("windBall", false);
     }
 
     [ServerRpc]
@@ -116,6 +126,7 @@ public class a_windExplosion : NetworkBehaviour
             WindExplosion we = (WindExplosion)proj;
             we.explode();
         }
+        stopAnimation();
     }
 
     private void UpdateUI()

@@ -49,7 +49,7 @@ public class LobbyUIController : MonoBehaviour
 
     public void CreateLobbyWithName()
     {
-        lobbyManager.name = lobbyName.text;
+        lobbyManager.createArguments.name = lobbyName.text;
         lobbyManager.Create();
     }
 

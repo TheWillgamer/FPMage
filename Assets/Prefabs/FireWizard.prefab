@@ -25237,10 +25237,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d08585d40c601744295f0234a7b58379, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 255
+  _componentIndexCache: 8
   _addedNetworkObject: {fileID: 4575299771133537037}
-  _networkObjectCache: {fileID: 0}
-  clientModel: {fileID: 0}
+  _networkObjectCache: {fileID: 4575299771133537037}
 --- !u!1 &1356698819575621499
 GameObject:
   m_ObjectHideFlags: 0
@@ -46894,6 +46893,7 @@ MonoBehaviour:
   - {fileID: 2221468856058139811}
   - {fileID: 6827716296904414418}
   - {fileID: 6796460871904064761}
+  - {fileID: 3256990452165204658}
   <ParentNetworkObject>k__BackingField: {fileID: 8227743508398521442}
   <ChildNetworkObjects>k__BackingField: []
   SerializedTransformProperties:
@@ -47047,6 +47047,7 @@ MonoBehaviour:
   fireExplosionGM: {fileID: 5843454893644496384}
   hit: {fileID: 0}
   burning: {fileID: 765589295492659455}
+  rend: {fileID: 8562724813662127400}
 --- !u!114 &1120615853069163452
 MonoBehaviour:
   m_ObjectHideFlags: 0

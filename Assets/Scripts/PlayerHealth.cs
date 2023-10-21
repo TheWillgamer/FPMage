@@ -6,6 +6,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections.Generic;
 
 public class PlayerHealth : NetworkBehaviour
 {
@@ -40,6 +41,10 @@ public class PlayerHealth : NetworkBehaviour
     public AudioSource hit;
     public AudioSource burning;
 
+    // Damage Blinking White
+    [SerializeField] private SkinnedMeshRenderer rend;
+    List<Color> originalColors = new List<Color>();
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -48,6 +53,11 @@ public class PlayerHealth : NetworkBehaviour
         gm = GameObject.FindWithTag("GameplayManager").GetComponent<GameplayManager>();
         onFire = 0;
         InstanceFinder.TimeManager.OnTick += TimeManager_OnTick;
+
+        foreach (Material mat in rend.materials)
+        {
+            originalColors.Add(mat.color);
+        }
     }
 
     // Start is called before the first frame update
@@ -195,6 +205,7 @@ public class PlayerHealth : NetworkBehaviour
             ObserversTakeDamage(amt, oldHp);
             if (base.IsOwner)
             {
+                StartCoroutine(HitBlink());
                 gm.playerHp.text = hp.ToString() + "%";
                 if (amt > 3)
                     StartCoroutine(Fade());
@@ -202,6 +213,7 @@ public class PlayerHealth : NetworkBehaviour
             else
             {
                 gm.oppoHp.text = hp.ToString() + "%";
+                StartCoroutine(HitBlink());
             }
         }
     }
@@ -243,7 +255,7 @@ public class PlayerHealth : NetworkBehaviour
          * in case client somehow magically got out of sync
          * this will fix it before trying to remove health. */
         hp = priorHealth;
-
+        
         TakeDamage(value);
         if (base.IsOwner)
         {
@@ -252,7 +264,10 @@ public class PlayerHealth : NetworkBehaviour
                 StartCoroutine(Fade());
         }
         else
+        {
             gm.oppoHp.text = hp.ToString() + "%";
+            StartCoroutine(HitBlink());
+        }
     }
 
     IEnumerator Fade()
@@ -264,6 +279,22 @@ public class PlayerHealth : NetworkBehaviour
             dmgScreen.color = c;
             yield return null;
         }
+    }
+
+    IEnumerator HitBlink()
+    {
+        int i;
+        for (float alpha = 1f; alpha >= 0; alpha -= 0.008f)
+        {
+            i = 0;
+            foreach (Material mat in rend.materials)
+            {
+                mat.color = Color.white * alpha + originalColors[i] * (1f - alpha);
+                i++;
+            }
+            yield return null;
+        }
+        
     }
 
     public void Die()

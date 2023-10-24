@@ -5,6 +5,7 @@ using FishNet.Object.Synchronizing;
 using FishNet.Transporting;
 using UnityEngine;
 using System;
+using System.Linq.Expressions;
 
 /*
 * 
@@ -85,6 +86,11 @@ public class Movement : NetworkBehaviour
     private float airMovementMultiplier = 0.5f;
     [SerializeField]
     private float maxSlopeAngle = 35f;
+
+    [SerializeField]
+    private AudioSource jumpSound;
+    [SerializeField]
+    private AudioSource lastJumpSound;
     #endregion
 
     #region Private.
@@ -345,6 +351,9 @@ public class Movement : NetworkBehaviour
 
         if (canGroundJump)
         {
+            if (base.IsServer)
+                PlayJumpSound(false);
+
             _rigidbody.velocity = new Vector3(_rigidbody.velocity.x, 0f, _rigidbody.velocity.z);
             _rigidbody.AddForce(Vector3.up * jumpForce * wallJumpUpModifier, ForceMode.Impulse);
             if (Vector3.Angle(Vector3.up, normalVector) > 35)
@@ -358,6 +367,7 @@ public class Movement : NetworkBehaviour
             if (base.IsServer)
             {
                 jumpCharge--;
+                PlayJumpSound(jumpCharge == 0);
             }
         }
 
@@ -370,6 +380,16 @@ public class Movement : NetworkBehaviour
 
         Invoke(nameof(ResetJump), jumpCooldown);
 
+    }
+
+    [ObserversRpc]
+    // type: 0 for ground, 1 for 1st air, 2 for second air
+    private void PlayJumpSound(bool lastJump)
+    {
+        if (lastJump)
+            lastJumpSound.Play();
+        else
+            jumpSound.Play();
     }
 
     //reduces velocity by a factor of the parameter

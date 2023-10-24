@@ -284,12 +284,14 @@ public class PlayerHealth : NetworkBehaviour
     IEnumerator HitBlink()
     {
         int i;
-        for (float alpha = 1f; alpha >= 0; alpha -= 0.008f)
+        float multiplier;
+        for (float alpha = 0f; alpha <= 1f; alpha += 0.007f)
         {
             i = 0;
+            multiplier = alpha * alpha * alpha;
             foreach (Material mat in rend.materials)
             {
-                mat.color = Color.white * alpha + originalColors[i] * (1f - alpha);
+                mat.color = Color.white * (1f - multiplier) + originalColors[i] * multiplier;
                 i++;
             }
             yield return null;

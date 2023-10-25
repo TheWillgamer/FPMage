@@ -285,7 +285,7 @@ public class PlayerHealth : NetworkBehaviour
     {
         int i;
         float multiplier;
-        for (float alpha = 0f; alpha <= 1f; alpha += 0.007f)
+        for (float alpha = 0f; alpha <= 1f; alpha += 0.008f)
         {
             i = 0;
             multiplier = alpha * alpha * alpha;

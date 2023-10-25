@@ -202,6 +202,8 @@ MonoBehaviour:
   - {fileID: 5170590468523935313}
   - {fileID: 5170590467710179073}
   - {fileID: 5170590468847734629}
+  playerName: {fileID: 5887620098851043222}
+  oppoName: {fileID: 1406448752923105867}
 --- !u!65 &5170590466997786251
 BoxCollider:
   m_ObjectHideFlags: 0

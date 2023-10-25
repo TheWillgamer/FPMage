@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using Steamworks;
 
 public class CharacterSelector : NetworkBehaviour
 {
@@ -21,10 +22,16 @@ public class CharacterSelector : NetworkBehaviour
     public override void OnStartClient()
     {
         base.OnStartClient();
-        if (IsOwner)
-            ui.SetActive(true);
 
         gm = GameObject.FindWithTag("GameplayManager").GetComponent<GameplayManager>();
+
+        if (IsOwner)
+        {
+            ui.SetActive(true);
+            gm.playerName.text = SteamFriends.GetPersonaName();
+        }
+        else
+            gm.oppoName.text = SteamFriends.GetPersonaName();
     }
 
     public void ChooseWizard(int type)

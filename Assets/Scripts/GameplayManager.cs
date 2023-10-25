@@ -21,6 +21,8 @@ public class GameplayManager : MonoBehaviour
     public TMP_Text oppoHp;
     public GameObject[] playerLives;
     public GameObject[] oppoLives;
+    public TMP_Text playerName;
+    public TMP_Text oppoName;
 
     private NetworkManager _networkManager;
 

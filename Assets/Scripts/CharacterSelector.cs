@@ -44,8 +44,20 @@ public class CharacterSelector : NetworkBehaviour
     public void LockIn()
     {
         SpawnWizardOnServer(base.Owner, chosenWizard);
-        gm.SetName(IsOwner, SteamFriends.GetPersonaName());
+        SetNameServer(SteamFriends.GetPersonaName());
         ui.SetActive(false);
+    }
+
+    [ServerRpc]
+    private void SetNameServer(string name)
+    {
+        SetNameObser(name);
+    }
+
+    [ObserversRpc]
+    private void SetNameObser(string name)
+    {
+        gm.SetName(IsOwner, name);
     }
 
     [ServerRpc]

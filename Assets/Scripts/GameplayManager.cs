@@ -78,6 +78,14 @@ public class GameplayManager : MonoBehaviour
             oppoLives[lives].SetActive(false);
     }
 
+    public void SetName(bool owner, string name)
+    {
+        if (owner)
+            playerName.text = name;
+        else
+            oppoName.text = name;
+    }
+
     private void SetSpawn(Transform prefab, out Vector3 pos, out Quaternion rot)
     {
         //No spawns specified.

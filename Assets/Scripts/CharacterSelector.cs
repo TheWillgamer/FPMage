@@ -28,7 +28,6 @@ public class CharacterSelector : NetworkBehaviour
         if (IsOwner)
         {
             ui.SetActive(true);
-            gm.playerName.text = SteamFriends.GetPersonaName();
         }
     }
 
@@ -45,6 +44,7 @@ public class CharacterSelector : NetworkBehaviour
     public void LockIn()
     {
         SpawnWizardOnServer(base.Owner, chosenWizard);
+        gm.SetName(IsOwner, SteamFriends.GetPersonaName());
         ui.SetActive(false);
     }
 

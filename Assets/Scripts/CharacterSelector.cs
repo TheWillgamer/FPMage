@@ -30,21 +30,6 @@ public class CharacterSelector : NetworkBehaviour
             ui.SetActive(true);
             gm.playerName.text = SteamFriends.GetPersonaName();
         }
-        else
-            SendUserNameServer(SteamFriends.GetPersonaName());
-    }
-
-    [ServerRpc]
-    private void SendUserNameServer(string name)
-    {
-        SendUserName(name);
-    }
-
-    [ObserversRpc]
-    private void SendUserName(string name)
-    {
-        if (!IsOwner)
-            gm.oppoName.text = name;
     }
 
     public void ChooseWizard(int type)

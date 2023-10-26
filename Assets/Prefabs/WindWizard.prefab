@@ -12880,8 +12880,8 @@ MonoBehaviour:
   dashDuration: 0
   gravity: 0
   dashing: 0
-  disableMV: 0
-  disableAB: 0
+  disableMV: 1
+  disableAB: 1
   animator: {fileID: 6308241198168413324}
 --- !u!54 &6675352565897393522
 Rigidbody:

@@ -47095,8 +47095,8 @@ MonoBehaviour:
   dashDuration: 0
   gravity: 0
   dashing: 0
-  disableMV: 0
-  disableAB: 0
+  disableMV: 1
+  disableAB: 1
   animator: {fileID: 5957392600329058165}
 --- !u!114 &2151619510686421276
 MonoBehaviour:

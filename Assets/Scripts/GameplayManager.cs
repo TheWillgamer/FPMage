@@ -16,6 +16,7 @@ public class GameplayManager : MonoBehaviour
     private int _nextSpawn;
     private int playerCounter;
     [SerializeField] private NetworkObject[] playerPrefabs;     // what is spawned
+    private Movement[] pm = new Movement[4];                    // playerMovement
 
     public TMP_Text playerHp;
     public TMP_Text oppoHp;
@@ -42,6 +43,15 @@ public class GameplayManager : MonoBehaviour
         }
     }
 
+    // Starts the game
+    private void StartGame()
+    {
+        for (int i = 0; i < playerCounter; i++)
+        {
+            pm[i].EnableMovement();
+        }
+    }
+
     public void SpawnWizard(NetworkConnection conn, int type)
     {
         Vector3 position;
@@ -49,10 +59,15 @@ public class GameplayManager : MonoBehaviour
         SetSpawn(playerPrefabs[0].transform, out position, out rotation);
 
         NetworkObject nob = Instantiate(playerPrefabs[type], position, rotation);
+        pm[playerCounter] = nob.transform.GetChild(0).GetComponent<Movement>();
         _networkManager.ServerManager.Spawn(nob, conn);
         _networkManager.SceneManager.AddOwnerToDefaultScene(nob);
 
         OnSpawned?.Invoke(nob);
+
+        playerCounter++;
+        if (playerCounter == 2)
+            Invoke("StartGame", 2f);
     }
 
     public void SetLives(bool owner, int lives)

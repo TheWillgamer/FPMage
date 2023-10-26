@@ -158,8 +158,6 @@ public class Movement : NetworkBehaviour
         _rigidbody = GetComponent<Rigidbody>();
         InstanceFinder.TimeManager.OnTick += TimeManager_OnTick;
         InstanceFinder.TimeManager.OnPostTick += TimeManager_OnPostTick;
-        disableMV = false;
-        disableAB = false;
         gravity = true;
         dashing = false;
         //disableCM = true;
@@ -242,6 +240,19 @@ public class Movement : NetworkBehaviour
         }
     }
 
+    public void EnableMovement()
+    {
+        disableAB = false;
+        disableMV = false;
+        EnableMovementClients();
+    }
+
+    [ObserversRpc]
+    private void EnableMovementClients()
+    {
+        disableAB = false;
+        disableMV = false;
+    }
 
     private void TimeManager_OnPostTick()
     {

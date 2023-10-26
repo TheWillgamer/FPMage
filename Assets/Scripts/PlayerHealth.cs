@@ -87,7 +87,7 @@ public class PlayerHealth : NetworkBehaviour
         if (!base.IsOwner)
             return;
 
-        if (!moving && (Input.GetButtonDown("Jump") || Input.GetAxisRaw("Horizontal")!=0 || Input.GetAxisRaw("Vertical")!=0))
+        if (!moving && (Input.GetButtonDown("Jump") || Input.GetAxisRaw("Horizontal")!=0 || Input.GetAxisRaw("Vertical")!=0) || (Input.GetButtonDown("Fire1") || Input.GetButtonDown("Fire2") || Input.GetButtonDown("Fire3") || Input.GetButtonDown("Fire4")))
         {
             moving = true;
             ReenableGravity();

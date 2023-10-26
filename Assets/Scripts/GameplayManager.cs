@@ -66,7 +66,7 @@ public class GameplayManager : MonoBehaviour
         OnSpawned?.Invoke(nob);
 
         playerCounter++;
-        if (playerCounter == 2)
+        if (playerCounter >= 1)
             Invoke("StartGame", 2f);
     }
 

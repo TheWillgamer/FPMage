@@ -378,7 +378,7 @@ public class Movement : NetworkBehaviour
             if (base.IsServer)
             {
                 jumpCharge--;
-                PlayJumpSound(jumpCharge == 0);
+                PlayJumpSound(true);
             }
         }
 

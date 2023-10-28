@@ -48,7 +48,7 @@ public class GameplayManager : MonoBehaviour
     {
         for (int i = 0; i < playerCounter; i++)
         {
-            pm[i].EnableMovement();
+            pm[i].CountdownStart();
         }
     }
 
@@ -66,8 +66,8 @@ public class GameplayManager : MonoBehaviour
         OnSpawned?.Invoke(nob);
 
         playerCounter++;
-        if (playerCounter >= 1)
-            Invoke("StartGame", 2f);
+        if (playerCounter >= 2)
+            Invoke("StartGame", .1f);
     }
 
     public void SetLives(bool owner, int lives)

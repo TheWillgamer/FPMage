@@ -4,6 +4,7 @@ using FishNet.Object.Prediction;
 using FishNet.Object.Synchronizing;
 using FishNet.Transporting;
 using UnityEngine;
+using UnityEngine.UI;
 using System;
 using System.Linq.Expressions;
 
@@ -140,6 +141,14 @@ public class Movement : NetworkBehaviour
     public bool disableAB;      //Disable abilities
     private float _colliderRadius;
 
+    /// <summary>
+    /// Countdown UI
+    /// </summary>
+    public Image countdown;
+    public GameObject waitingForPlayers;
+    private int countdownCounter;
+    
+
     private bool paused;
 
     [SerializeField] private Animator animator;
@@ -240,7 +249,52 @@ public class Movement : NetworkBehaviour
         }
     }
 
-    public void EnableMovement()
+    public void CountdownStart()
+    {
+        CountdownStartClients();
+        Invoke("EnableMovement", 3f);
+    }
+
+    [ObserversRpc]
+    public void CountdownStartClients()
+    {
+        waitingForPlayers.SetActive(false);
+        countdown.gameObject.SetActive(true);
+        countdownCounter = 3;
+        Countdown();
+    }
+
+    private void Countdown()
+    {
+        switch (countdownCounter)
+        {
+            case 0:
+                countdown.color = Color.green;
+                countdownCounter--;
+                Invoke("Countdown", .5f);
+                break;
+            case 1:
+                countdown.color = Color.yellow;
+                countdownCounter--;
+                Invoke("Countdown", 1f);
+                break;
+            case 2:
+                countdown.color = Color.red;
+                countdownCounter--;
+                Invoke("Countdown", 1f);
+                break;
+            case 3:
+                countdown.color = Color.gray;
+                countdownCounter--;
+                Invoke("Countdown", 1f);
+                break;
+            default:
+                countdown.gameObject.SetActive(false);
+                break;
+        }
+    }
+
+    private void EnableMovement()
     {
         disableAB = false;
         disableMV = false;

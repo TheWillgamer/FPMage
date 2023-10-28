@@ -16,6 +16,7 @@ public class a_flamedash : NetworkBehaviour, Dash
     [SerializeField] private Transform cam;
     [SerializeField] private GameObject hitbox;
 
+    [SerializeField] private AudioSource charg;
     [SerializeField] private AudioSource fire;
     Movement mv;
     Rigidbody rb;
@@ -121,13 +122,15 @@ public class a_flamedash : NetworkBehaviour, Dash
     private void startCharge()
     {
         charge.SetActive(true);
-        fire.Play();
+        charg.Play();
     }
 
     [ObserversRpc]
     private void startDash()
     {
         charge.SetActive(false);
+        charg.Stop();
+        fire.Play();
         if (IsOwner)
         {
             dashparticlesOwner.SetActive(true);
@@ -182,6 +185,7 @@ public class a_flamedash : NetworkBehaviour, Dash
     [ObserversRpc]
     private void CancelDashClient()
     {
+        charg.Stop();
         CancelInvoke();
         if (!IsOwner) return;
 

@@ -6,6 +6,7 @@ using FishNet.Transporting;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using System.Collections;
 using System.Linq.Expressions;
 
 /*
@@ -247,6 +248,25 @@ public class Movement : NetworkBehaviour
             transform.rotation = Quaternion.Euler(0.0f, cam.eulerAngles.y, 0.0f);
             Move(default, true);
         }
+    }
+
+    public void GameEnd()
+    {
+        GameEndClients();
+    }
+
+    [ObserversRpc]
+    private void GameEndClients()
+    {
+        Camera c = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
+        StartCoroutine(FreezeCam(c));
+    }
+
+    IEnumerator FreezeCam(Camera c)
+    {
+        c.clearFlags = CameraClearFlags.Nothing;
+        yield return null;
+        c.cullingMask = 0;
     }
 
     public void CountdownStart()

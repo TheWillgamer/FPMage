@@ -194,14 +194,8 @@ public class PlayerHealth : NetworkBehaviour
         {
             Camera c = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
             StartCoroutine(FreezeCam(c));
-            SendEndGameToServer(base.IsOwner);
+            gm.EndGame(base.IsOwner);
         }
-    }
-
-    [ServerRpc]
-    private void SendEndGameToServer(bool owner)
-    {
-        gm.EndGame(owner);
     }
 
     IEnumerator FreezeCam(Camera c)

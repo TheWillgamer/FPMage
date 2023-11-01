@@ -52,6 +52,12 @@ public class GameplayManager : MonoBehaviour
         }
     }
 
+    // Ends the game
+    private void EndGame(bool owner)
+    {
+        
+    }
+
     public void SpawnWizard(NetworkConnection conn, int type)
     {
         Vector3 position;
@@ -66,7 +72,7 @@ public class GameplayManager : MonoBehaviour
         OnSpawned?.Invoke(nob);
 
         playerCounter++;
-        if (playerCounter >= 2)
+        if (playerCounter >= 1)
             Invoke("StartGame", .1f);
     }
 
@@ -76,6 +82,16 @@ public class GameplayManager : MonoBehaviour
             playerLives[lives].SetActive(false);
         else
             oppoLives[lives].SetActive(false);
+
+        if (lives <= 4)
+        {
+            for (int i = 0; i < playerCounter; i++)
+            {
+                pm[i].GameEnd();
+            }
+            //EndGame(owner);
+        }
+            
     }
 
     public void SetName(bool owner, string name)

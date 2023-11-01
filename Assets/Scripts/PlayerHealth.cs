@@ -189,6 +189,26 @@ public class PlayerHealth : NetworkBehaviour
             gm.SetLives(true, life);
         else
             gm.SetLives(false, life);
+
+        if (life <= 0)
+        {
+            Camera c = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
+            StartCoroutine(FreezeCam(c));
+            SendEndGameToServer(base.IsOwner);
+        }
+    }
+
+    [ServerRpc]
+    private void SendEndGameToServer(bool owner)
+    {
+        gm.EndGame(owner);
+    }
+
+    IEnumerator FreezeCam(Camera c)
+    {
+        c.clearFlags = CameraClearFlags.Nothing;
+        yield return null;
+        c.cullingMask = 0;
     }
 
     // Reduces hp based on the parameter amount

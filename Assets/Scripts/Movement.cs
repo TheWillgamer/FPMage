@@ -250,25 +250,6 @@ public class Movement : NetworkBehaviour
         }
     }
 
-    public void GameEnd()
-    {
-        GameEndClients();
-    }
-
-    [ObserversRpc]
-    private void GameEndClients()
-    {
-        Camera c = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
-        StartCoroutine(FreezeCam(c));
-    }
-
-    IEnumerator FreezeCam(Camera c)
-    {
-        c.clearFlags = CameraClearFlags.Nothing;
-        yield return null;
-        c.cullingMask = 0;
-    }
-
     public void CountdownStart()
     {
         CountdownStartClients();

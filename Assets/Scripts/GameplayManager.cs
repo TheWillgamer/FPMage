@@ -5,18 +5,22 @@ using FishNet;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Serialization;
 using TMPro;
+using System.Collections;
 
 public class GameplayManager : MonoBehaviour
 {
     public event Action<NetworkObject> OnSpawned;
 
     public Transform[] StartingSpawns = new Transform[0];       // where they spawn
+    public Transform finalCamLoc;
     private int _nextSpawn;
     private int playerCounter;
     [SerializeField] private NetworkObject[] playerPrefabs;     // what is spawned
     private Movement[] pm = new Movement[4];                    // playerMovement
+    private bool gameEnded;                                     // to prevent 2 winners
 
     public TMP_Text playerHp;
     public TMP_Text oppoHp;
@@ -24,6 +28,9 @@ public class GameplayManager : MonoBehaviour
     public GameObject[] oppoLives;
     public TMP_Text playerName;
     public TMP_Text oppoName;
+
+    public GameObject gameSet;
+    public Image blackScreen;
 
     private NetworkManager _networkManager;
 
@@ -36,6 +43,7 @@ public class GameplayManager : MonoBehaviour
     {
         _networkManager = InstanceFinder.NetworkManager;
         playerCounter = 0;
+        gameEnded = false;
         if (_networkManager == null)
         {
             Debug.LogWarning($"PlayerSpawner on {gameObject.name} cannot work as NetworkManager wasn't found on this object or within parent objects.");
@@ -53,9 +61,58 @@ public class GameplayManager : MonoBehaviour
     }
 
     // Ends the game
-    private void EndGame(bool owner)
+    public void EndGame(bool owner)
     {
-        
+        if (gameEnded)
+            return;
+
+        gameEnded = true;
+        gameSet.SetActive(true);
+        StartCoroutine(FadeOut());
+    }
+
+    IEnumerator FadeOut()
+    {
+        Color c = blackScreen.color;
+        yield return new WaitForSeconds(3);
+
+        for (float alpha = 0f; alpha < 1f; alpha += 0.01f)
+        {
+            c.a = alpha;
+            blackScreen.color = c;
+            yield return null;
+        }
+        SwitchToFinalCam();
+    }
+
+    // End Game Sequence to show the winners
+    private void SwitchToFinalCam()
+    {
+        gameSet.SetActive(false);
+
+        Transform cam = GameObject.FindWithTag("MainCamera").transform;
+        cam.parent = null;
+        cam.position = finalCamLoc.position;
+        cam.rotation = finalCamLoc.rotation;
+
+        Camera c = cam.GetComponent<Camera>();
+        c.clearFlags = CameraClearFlags.Skybox;
+        c.cullingMask = -1;
+
+        StartCoroutine(FadeIn());
+    }
+
+    IEnumerator FadeIn()
+    {
+        Color c = blackScreen.color;
+        yield return new WaitForSeconds(2);
+
+        for (float alpha = 1f; alpha > 0f; alpha -= 0.01f)
+        {
+            c.a = alpha;
+            blackScreen.color = c;
+            yield return null;
+        }
     }
 
     public void SpawnWizard(NetworkConnection conn, int type)
@@ -82,16 +139,6 @@ public class GameplayManager : MonoBehaviour
             playerLives[lives].SetActive(false);
         else
             oppoLives[lives].SetActive(false);
-
-        if (lives <= 4)
-        {
-            for (int i = 0; i < playerCounter; i++)
-            {
-                pm[i].GameEnd();
-            }
-            //EndGame(owner);
-        }
-            
     }
 
     public void SetName(bool owner, string name)

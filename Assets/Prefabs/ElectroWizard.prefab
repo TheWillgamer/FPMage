@@ -503,7 +503,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3270651270598436295}
   - component: {fileID: 3586054554490273431}
-  - component: {fileID: 2073112078717918651}
   m_Layer: 0
   m_Name: Sounds
   m_TagString: Untagged
@@ -545,41 +544,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _componentIndexCache: 0
-  _addedNetworkObject: {fileID: 2073112078717918651}
-  _networkObjectCache: {fileID: 2073112078717918651}
---- !u!114 &2073112078717918651
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1055756173163474469}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26b716c41e9b56b4baafaf13a523ba2e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <IsNested>k__BackingField: 1
-  <ComponentIndex>k__BackingField: 2
-  <PredictedSpawn>k__BackingField: {fileID: 0}
-  _networkBehaviours:
-  - {fileID: 3586054554490273431}
-  <ParentNetworkObject>k__BackingField: {fileID: 4575299771133537037}
-  <ChildNetworkObjects>k__BackingField: []
-  SerializedTransformProperties:
-    Position: {x: 0, y: 0, z: 0}
-    Rotation: {x: -0, y: -0, z: -0, w: 1}
-    LocalScale: {x: 1, y: 1, z: 1}
-  _isNetworked: 1
-  _isGlobal: 0
-  _initializeOrder: 0
-  _defaultDespawnType: 0
-  NetworkObserver: {fileID: 0}
-  <PrefabId>k__BackingField: 0
-  <SpawnableCollectionId>k__BackingField: 0
-  _scenePathHash: 0
-  <SceneId>k__BackingField: 0
-  <AssetPathHash>k__BackingField: 12715629659875916191
+  _addedNetworkObject: {fileID: 4575299771133537037}
+  _networkObjectCache: {fileID: 0}
 --- !u!1 &1557042776312376421
 GameObject:
   m_ObjectHideFlags: 0
@@ -7510,7 +7476,7 @@ MonoBehaviour:
   - {fileID: 4889421444174345963}
   <ParentNetworkObject>k__BackingField: {fileID: 8227743508398521442}
   <ChildNetworkObjects>k__BackingField:
-  - {fileID: 2073112078717918651}
+  - {fileID: 0}
   SerializedTransformProperties:
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: -0, y: -0, z: -0, w: 1}

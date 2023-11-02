@@ -7555,12 +7555,12 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 4575299771133537037}
   _networkObjectCache: {fileID: 4575299771133537037}
   cam: {fileID: 8227743508193196329}
-  jumpForce: 18
+  jumpForce: 15
   secondJumpForce: 12
   tripleJump: 0
   canFloat: 1
   floatFallRate: 15
-  floatFallStopper: -10
+  floatFallStopper: -12
   wallJumpUpModifier: 1.9
   wallJumpModifier: 1.5
   coyoteTime: 0.15

@@ -11,7 +11,8 @@ public class a_lightningbolt : NetworkBehaviour
     [SerializeField] private GameObject lbc;
     [SerializeField] private Transform proj_spawn;
     [SerializeField] private float proj_force;
-    AudioSource m_shootingSound;
+    [SerializeField] private AudioSource charge;
+    [SerializeField] private AudioSource fire;
 
     private Movement mv;
     private TimeManager tm;
@@ -39,7 +40,6 @@ public class a_lightningbolt : NetworkBehaviour
 
     void Start()
     {
-        m_shootingSound = GetComponent<AudioSource>();
         chargeStarted = false;
         mv = GetComponent<Movement>();
         tm = GameObject.FindWithTag("NetworkManager").GetComponent<TimeManager>();
@@ -68,7 +68,7 @@ public class a_lightningbolt : NetworkBehaviour
         {
             if (lb_charge >= 100f)
             {
-                m_shootingSound.Play();
+                fire.Play();
 
                 GameObject clientObj = Instantiate(lbc, proj_spawn.position, proj_spawn.rotation);
                 clientObjs.Enqueue(clientObj);
@@ -89,7 +89,7 @@ public class a_lightningbolt : NetworkBehaviour
     private void playShootSound()
     {
         if (!IsOwner)
-            m_shootingSound.Play();
+            fire.Play();
         else
             Destroy(clientObjs.Dequeue());
     }

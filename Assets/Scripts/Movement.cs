@@ -352,7 +352,7 @@ public class Movement : NetworkBehaviour
         //Extra gravity
         if (gravity)
         {
-            if (_rigidbody.velocity.y > 0 || jumpCharge > 0 || !md.Floating)
+            if (_rigidbody.velocity.y > 0 || !md.Floating)
                 _rigidbody.AddForce(Vector3.down * 40);
             else if (_rigidbody.velocity.y > floatFallStopper)      // doesnt exceed a certain velocity while floating
                 _rigidbody.AddForce(Vector3.down * floatFallRate);

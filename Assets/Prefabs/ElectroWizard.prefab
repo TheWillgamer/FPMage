@@ -543,9 +543,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d08585d40c601744295f0234a7b58379, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 0
+  _componentIndexCache: 8
   _addedNetworkObject: {fileID: 4575299771133537037}
-  _networkObjectCache: {fileID: 0}
+  _networkObjectCache: {fileID: 4575299771133537037}
 --- !u!1 &1557042776312376421
 GameObject:
   m_ObjectHideFlags: 0
@@ -7474,9 +7474,9 @@ MonoBehaviour:
   - {fileID: 8732987765180491363}
   - {fileID: 1528568680935207562}
   - {fileID: 4889421444174345963}
+  - {fileID: 3586054554490273431}
   <ParentNetworkObject>k__BackingField: {fileID: 8227743508398521442}
-  <ChildNetworkObjects>k__BackingField:
-  - {fileID: 0}
+  <ChildNetworkObjects>k__BackingField: []
   SerializedTransformProperties:
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: -0, y: -0, z: -0, w: 1}
@@ -7549,6 +7549,11 @@ MonoBehaviour:
   disableMV: 1
   disableAB: 1
   countdown: {fileID: 7246413845487729179}
+  countdownIcons:
+  - {fileID: 21300000, guid: ef3b7d7ae7a1e264ca86867b068d1be6, type: 3}
+  - {fileID: 21300000, guid: 571b6947a647cff4383121cd951b9864, type: 3}
+  - {fileID: 21300000, guid: 6b98ec707e18d9046b7f30ef3535e310, type: 3}
+  - {fileID: 21300000, guid: 99d682231f1985c408bf146bc2004478, type: 3}
   waitingForPlayers: {fileID: 1607167137211165660}
   animator: {fileID: 5417174284041810863}
 --- !u!54 &6675352565897393522
@@ -13258,7 +13263,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <IsNested>k__BackingField: 1
-  <ComponentIndex>k__BackingField: 3
+  <ComponentIndex>k__BackingField: 2
   <PredictedSpawn>k__BackingField: {fileID: 0}
   _networkBehaviours:
   - {fileID: 8227743508193196328}

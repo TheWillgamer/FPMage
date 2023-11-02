@@ -146,6 +146,7 @@ public class Movement : NetworkBehaviour
     /// Countdown UI
     /// </summary>
     public Image countdown;
+    [SerializeField] private Sprite[] countdownIcons;
     public GameObject waitingForPlayers;
     private int countdownCounter;
     
@@ -270,27 +271,17 @@ public class Movement : NetworkBehaviour
         switch (countdownCounter)
         {
             case 0:
-                countdown.color = Color.green;
+                countdown.sprite = countdownIcons[0];
                 countdownCounter--;
                 Invoke("Countdown", .5f);
                 break;
-            case 1:
-                countdown.color = Color.yellow;
-                countdownCounter--;
-                Invoke("Countdown", 1f);
-                break;
-            case 2:
-                countdown.color = Color.red;
-                countdownCounter--;
-                Invoke("Countdown", 1f);
-                break;
-            case 3:
-                countdown.color = Color.gray;
-                countdownCounter--;
-                Invoke("Countdown", 1f);
+            case -1:
+                countdown.gameObject.SetActive(false);
                 break;
             default:
-                countdown.gameObject.SetActive(false);
+                countdown.sprite = countdownIcons[countdownCounter];
+                countdownCounter--;
+                Invoke("Countdown", 1f);
                 break;
         }
     }

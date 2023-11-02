@@ -22,7 +22,7 @@ public class a_lightningstrike : NetworkBehaviour
     //private ParticleSystem ownerMeteor;
     //[SerializeField] private GameObject clientMeteorGM;
     //private ParticleSystem clientMeteor;
-    AudioSource m_shootingSound;
+    [SerializeField] private AudioSource fire;
 
     private Movement mv;
 
@@ -48,7 +48,6 @@ public class a_lightningstrike : NetworkBehaviour
 
     void Start()
     {
-        m_shootingSound = GetComponent<AudioSource>();
         //ownerMeteor = ownerMeteorGM.GetComponent<ParticleSystem>();
         //clientMeteor = clientMeteorGM.GetComponent<ParticleSystem>();
         ls_offcd = Time.time;
@@ -97,7 +96,7 @@ public class a_lightningstrike : NetworkBehaviour
     [ObserversRpc]
     private void playShootSound()
     {
-        m_shootingSound.Play();
+        fire.Play();
     }
 
     //[ServerRpc]

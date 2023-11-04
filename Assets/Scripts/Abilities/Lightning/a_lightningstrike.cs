@@ -18,10 +18,11 @@ public class a_lightningstrike : NetworkBehaviour
     [SerializeField] GameObject SpellStart;
     [SerializeField] GameObject SpellEnd;
 
-    //[SerializeField] private GameObject ownerMeteorGM;
-    //private ParticleSystem ownerMeteor;
-    //[SerializeField] private GameObject clientMeteorGM;
-    //private ParticleSystem clientMeteor;
+    [SerializeField] private GameObject ownerChargeGM;
+    private ParticleSystem ownerCharge;
+    [SerializeField] private GameObject clientChargeGM;
+    private ParticleSystem clientCharge;
+    [SerializeField] private AudioSource charge;
     [SerializeField] private AudioSource fire;
 
     private Movement mv;
@@ -38,13 +39,6 @@ public class a_lightningstrike : NetworkBehaviour
     //[SerializeField] GameObject cdRepresentation;
     [SerializeField] Image LightningStrike;
     #endregion
-
-    public override void OnStartClient()
-    {
-        base.OnStartClient();
-        //if (IsOwner)
-        //cdRepresentation.SetActive(true);
-    }
 
     void Start()
     {
@@ -65,7 +59,9 @@ public class a_lightningstrike : NetworkBehaviour
                 chargeStarted = true;
                 //ownerMeteorGM.SetActive(true);
                 //ownerMeteor.Play();
-                //startMeteorGMServer();
+                startChargeGMServer();
+                charge.Play();
+
                 chargeReady = Time.time + chargeTime;
             }
         }
@@ -96,23 +92,25 @@ public class a_lightningstrike : NetworkBehaviour
     [ObserversRpc]
     private void playShootSound()
     {
+        charge.Stop();
         fire.Play();
     }
 
-    //[ServerRpc]
-    //private void startMeteorGMServer()
-    //{
-    //    startMeteorGM();
-    //}
+    [ServerRpc]
+    private void startChargeGMServer()
+    {
+        startChargeGM();
+    }
 
-    //[ObserversRpc]
-    //private void startMeteorGM()
-    //{
-    //    if (base.IsOwner)
-    //        return;
-    //    clientMeteorGM.SetActive(true);
-    //    clientMeteor.Play();
-    //}
+    [ObserversRpc]
+    private void startChargeGM()
+    {
+        if (base.IsOwner)
+            return;
+        //clientChargeGM.SetActive(true);
+        //clientCharge.Play();
+        charge.Play();
+    }
 
     //[ObserversRpc]
     //private void endMeteorGM()

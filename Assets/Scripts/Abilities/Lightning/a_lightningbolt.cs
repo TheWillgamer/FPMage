@@ -54,6 +54,9 @@ public class a_lightningbolt : NetworkBehaviour
             chargeStarted = true;
             lb_charge = 0f;
             mv.disableAB = true;
+
+            startChargeSoundServer();
+            charge.Play();
         }
 
         if (chargeStarted)
@@ -66,6 +69,8 @@ public class a_lightningbolt : NetworkBehaviour
 
         if (Input.GetButtonUp("Fire1"))
         {
+            charge.Stop();
+            stopChargeSoundServer();
             if (lb_charge >= 100f)
             {
                 fire.Play();
@@ -83,6 +88,30 @@ public class a_lightningbolt : NetworkBehaviour
             LightningBolt.color = new Color32(255, 255, 255, 180);
         }
         UpdateUI();
+    }
+
+    [ServerRpc]
+    private void startChargeSoundServer()
+    {
+        startChargeSound();
+    }
+    [ObserversRpc]
+    private void startChargeSound()
+    {
+        if (!IsOwner)
+            charge.Play();
+    }
+
+    [ServerRpc]
+    private void stopChargeSoundServer()
+    {
+        stopChargeSound();
+    }
+    [ObserversRpc]
+    private void stopChargeSound()
+    {
+        if (!IsOwner)
+            charge.Stop();
     }
 
     [ObserversRpc]

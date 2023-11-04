@@ -14,6 +14,8 @@ public class a_lightningblink : NetworkBehaviour
     private Movement mv;
     private Rigidbody rb;
 
+    [SerializeField] private AudioSource fire;
+
     #region cooldowns
     [SerializeField] private float blink_cd;
     private float blink_offcd;
@@ -42,6 +44,7 @@ public class a_lightningblink : NetworkBehaviour
     [ServerRpc]
     private void Teleport()
     {
+        playSound();
         // only detects walls
         int layerMask = 1 << 6;
 
@@ -54,6 +57,12 @@ public class a_lightningblink : NetworkBehaviour
         
         rb.velocity = (endPoint - transform.position).normalized * endVelocityMultiplier;
         transform.position = endPoint;
+    }
+
+    [ObserversRpc]
+    private void playSound()
+    {
+        fire.Play();
     }
 
     private void UpdateUI()

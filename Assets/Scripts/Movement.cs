@@ -93,6 +93,9 @@ public class Movement : NetworkBehaviour
     private AudioSource jumpSound;
     [SerializeField]
     private AudioSource lastJumpSound;
+    [SerializeField]
+    private AudioSource hoverSound;
+    private bool hoverSoundPlaying = false;
     #endregion
 
     #region Private.
@@ -326,6 +329,17 @@ public class Movement : NetworkBehaviour
         jumping = false;
     }
 
+    [ObserversRpc]
+    private void PlayHoverSound()
+    {
+        hoverSound.Play();
+    }
+    [ObserversRpc]
+    private void StopHoverSound()
+    {
+        hoverSound.Stop();
+    }
+
     [Replicate]
     private void Move(MoveData md, bool asServer, Channel channel = Channel.Unreliable, bool replaying = false)
     {
@@ -344,11 +358,43 @@ public class Movement : NetworkBehaviour
         if (gravity)
         {
             if (_rigidbody.velocity.y > 0 || !md.Floating)
+            {
                 _rigidbody.AddForce(Vector3.down * 40);
+                if (hoverSoundPlaying)
+                {
+                    StopHoverSound();
+                    hoverSoundPlaying = false;
+                }
+            }
             else if (_rigidbody.velocity.y > floatFallStopper)      // doesnt exceed a certain velocity while floating
+            {
                 _rigidbody.AddForce(Vector3.down * floatFallRate);
+                if (!hoverSoundPlaying && !grounded)
+                {
+                    PlayHoverSound();
+                    hoverSoundPlaying = true;
+                }
+            }
             else
+            {
                 _rigidbody.velocity = new Vector3(_rigidbody.velocity.x, floatFallStopper, _rigidbody.velocity.z);
+                if (!hoverSoundPlaying && !grounded)
+                {
+                    PlayHoverSound();
+                    hoverSoundPlaying = true;
+                }
+            }
+        }
+        else if (hoverSoundPlaying)
+        {
+            StopHoverSound();
+            hoverSoundPlaying = false;
+        }
+
+        if (grounded && hoverSoundPlaying)
+        {
+            StopHoverSound();
+            hoverSoundPlaying = false;
         }
 
         //Find actual velocity relative to where player is looking

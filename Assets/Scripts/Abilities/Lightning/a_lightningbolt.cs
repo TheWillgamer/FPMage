@@ -11,6 +11,8 @@ public class a_lightningbolt : NetworkBehaviour
     [SerializeField] private GameObject lbc;
     [SerializeField] private Transform proj_spawn;
     [SerializeField] private float proj_force;
+    [SerializeField] private AudioSource start;
+    [SerializeField] private float startLength;
     [SerializeField] private AudioSource charge;
     [SerializeField] private AudioSource fire;
 
@@ -56,7 +58,8 @@ public class a_lightningbolt : NetworkBehaviour
             mv.disableAB = true;
 
             startChargeSoundServer();
-            charge.Play();
+            start.Play();
+            charge.PlayDelayed(startLength);
         }
 
         if (chargeStarted)
@@ -69,6 +72,7 @@ public class a_lightningbolt : NetworkBehaviour
 
         if (Input.GetButtonUp("Fire1"))
         {
+            start.Stop();
             charge.Stop();
             stopChargeSoundServer();
             if (lb_charge >= 100f)
@@ -99,7 +103,10 @@ public class a_lightningbolt : NetworkBehaviour
     private void startChargeSound()
     {
         if (!IsOwner)
-            charge.Play();
+        {
+            start.Play();
+            charge.PlayDelayed(startLength);
+        }
     }
 
     [ServerRpc]

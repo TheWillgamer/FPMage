@@ -502,7 +502,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3270651270598436295}
-  - component: {fileID: 3586054554490273431}
   m_Layer: 0
   m_Name: Sounds
   m_TagString: Untagged
@@ -535,21 +534,6 @@ Transform:
   m_Father: {fileID: 4032517676306489288}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3586054554490273431
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1055756173163474469}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d08585d40c601744295f0234a7b58379, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _componentIndexCache: 8
-  _addedNetworkObject: {fileID: 4575299771133537037}
-  _networkObjectCache: {fileID: 4575299771133537037}
 --- !u!1 &1557042776312376421
 GameObject:
   m_ObjectHideFlags: 0
@@ -7942,6 +7926,7 @@ GameObject:
   - component: {fileID: 3021336220681720456}
   - component: {fileID: 8732987765180491363}
   - component: {fileID: 1528568680935207562}
+  - component: {fileID: 959327482715120893}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -7990,7 +7975,7 @@ MonoBehaviour:
   - {fileID: 8732987765180491363}
   - {fileID: 1528568680935207562}
   - {fileID: 4889421444174345963}
-  - {fileID: 3586054554490273431}
+  - {fileID: 0}
   <ParentNetworkObject>k__BackingField: {fileID: 8227743508398521442}
   <ChildNetworkObjects>k__BackingField: []
   SerializedTransformProperties:
@@ -8256,6 +8241,22 @@ MonoBehaviour:
   fire: {fileID: 3870589099496393808}
   ls_cd: 8
   LightningStrike: {fileID: 9005786515020923336}
+--- !u!114 &959327482715120893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6383162011746621452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d08585d40c601744295f0234a7b58379, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 255
+  _addedNetworkObject: {fileID: 4575299771133537037}
+  _networkObjectCache: {fileID: 0}
+  parent: {fileID: 3270651270598436295}
 --- !u!1 &6484931605762876903
 GameObject:
   m_ObjectHideFlags: 0

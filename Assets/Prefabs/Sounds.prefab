@@ -57,6 +57,7 @@ MonoBehaviour:
   _componentIndexCache: 0
   _addedNetworkObject: {fileID: 0}
   _networkObjectCache: {fileID: 0}
+  parent: {fileID: 0}
 --- !u!1 &581086339649638436
 GameObject:
   m_ObjectHideFlags: 0

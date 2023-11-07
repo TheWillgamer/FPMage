@@ -13259,6 +13259,7 @@ MonoBehaviour:
   endDashSpeed: 22
   dash: {fileID: 5835385942334923719}
   dashVisual: {fileID: 1442538091901209730, guid: ca19d76328a684340a4ff65c907b6125, type: 3}
+  camLoc: {fileID: 8227743508193196329}
   dash_cd: 7
   Wind: {fileID: 8961857325175973703}
 --- !u!114 &1548865369264753726

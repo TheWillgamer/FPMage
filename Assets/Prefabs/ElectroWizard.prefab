@@ -844,7 +844,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7afbc4041b7dd1419f35bf69e575c26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 7
+  _componentIndexCache: 8
   _addedNetworkObject: {fileID: 4575299771133537037}
   _networkObjectCache: {fileID: 4575299771133537037}
   clientModel: {fileID: 3269763552347933333}
@@ -7974,8 +7974,8 @@ MonoBehaviour:
   - {fileID: 3021336220681720456}
   - {fileID: 8732987765180491363}
   - {fileID: 1528568680935207562}
+  - {fileID: 959327482715120893}
   - {fileID: 4889421444174345963}
-  - {fileID: 0}
   <ParentNetworkObject>k__BackingField: {fileID: 8227743508398521442}
   <ChildNetworkObjects>k__BackingField: []
   SerializedTransformProperties:
@@ -8161,6 +8161,7 @@ MonoBehaviour:
   proj_force: 280
   start: {fileID: 8041291639081521663}
   startLength: 0.948
+  animator: {fileID: 5417174284041810863}
   charge: {fileID: 1201062222292581816}
   fire: {fileID: 7736536844071339418}
   lb_chargeRate: 120
@@ -8184,6 +8185,7 @@ MonoBehaviour:
   damage: 20
   knockback_amount: 40
   knockback_growth: 25
+  animator: {fileID: 5417174284041810863}
   explosion: {fileID: 4344309038310678734, guid: c75b6e68b67ffe64d99b35359b402342, type: 3}
   cam: {fileID: 8227743508193196329}
   radius: 6
@@ -8237,6 +8239,7 @@ MonoBehaviour:
   SpellEnd: {fileID: 7492923311113678924}
   ownerChargeGM: {fileID: 0}
   clientChargeGM: {fileID: 0}
+  animator: {fileID: 5417174284041810863}
   charge: {fileID: 2346778304779313421}
   fire: {fileID: 3870589099496393808}
   ls_cd: 8
@@ -8253,9 +8256,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d08585d40c601744295f0234a7b58379, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 255
+  _componentIndexCache: 7
   _addedNetworkObject: {fileID: 4575299771133537037}
-  _networkObjectCache: {fileID: 0}
+  _networkObjectCache: {fileID: 4575299771133537037}
   parent: {fileID: 3270651270598436295}
 --- !u!1 &6484931605762876903
 GameObject:

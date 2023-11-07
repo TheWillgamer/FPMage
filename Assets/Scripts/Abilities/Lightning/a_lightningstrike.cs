@@ -93,7 +93,6 @@ public class a_lightningstrike : NetworkBehaviour
     [ObserversRpc]
     private void playShootSound()
     {
-        animator.SetTrigger("hitscan");
         charge.Stop();
         fire.Play();
     }
@@ -111,6 +110,7 @@ public class a_lightningstrike : NetworkBehaviour
             return;
         //clientChargeGM.SetActive(true);
         //clientCharge.Play();
+        animator.SetTrigger("hitscan");
         charge.Play();
     }
 

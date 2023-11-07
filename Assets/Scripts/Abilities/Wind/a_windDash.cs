@@ -101,13 +101,18 @@ public class a_windDash : NetworkBehaviour, Dash
     [ObserversRpc]
     private void endDash(Vector3 endVel)
     {
-        clientObj.transform.parent = null;
+        Invoke("endDashTrail", .08f);
         if (base.IsOwner)
         {
             mv.EndDash();
             if (endVel != Vector3.zero)
                 rb.velocity = endVel;
         }
+    }
+
+    private void endDashTrail()
+    {
+        clientObj.transform.parent = null;
     }
 
     // For any dash effects

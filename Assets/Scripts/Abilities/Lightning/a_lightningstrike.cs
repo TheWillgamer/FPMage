@@ -22,6 +22,7 @@ public class a_lightningstrike : NetworkBehaviour
     private ParticleSystem ownerCharge;
     [SerializeField] private GameObject clientChargeGM;
     private ParticleSystem clientCharge;
+    [SerializeField] private Animator animator;
     [SerializeField] private AudioSource charge;
     [SerializeField] private AudioSource fire;
 
@@ -92,6 +93,7 @@ public class a_lightningstrike : NetworkBehaviour
     [ObserversRpc]
     private void playShootSound()
     {
+        animator.SetTrigger("hitscan");
         charge.Stop();
         fire.Play();
     }

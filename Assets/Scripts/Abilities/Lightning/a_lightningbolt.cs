@@ -13,6 +13,8 @@ public class a_lightningbolt : NetworkBehaviour
     [SerializeField] private float proj_force;
     [SerializeField] private AudioSource start;
     [SerializeField] private float startLength;
+
+    [SerializeField] private Animator animator;
     [SerializeField] private AudioSource charge;
     [SerializeField] private AudioSource fire;
 
@@ -105,6 +107,7 @@ public class a_lightningbolt : NetworkBehaviour
         if (!IsOwner)
         {
             start.Play();
+            animator.SetTrigger("chargeStarted");
             charge.PlayDelayed(startLength);
         }
     }
@@ -118,14 +121,20 @@ public class a_lightningbolt : NetworkBehaviour
     private void stopChargeSound()
     {
         if (!IsOwner)
+        {
             charge.Stop();
+            animator.SetTrigger("chargeEnded");
+        }
     }
 
     [ObserversRpc]
     private void playShootSound()
     {
         if (!IsOwner)
+        {
             fire.Play();
+            animator.SetTrigger("chargeFired");
+        }
         else
             Destroy(clientObjs.Dequeue());
     }

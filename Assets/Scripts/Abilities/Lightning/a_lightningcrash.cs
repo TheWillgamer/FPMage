@@ -10,6 +10,8 @@ public class a_lightningcrash : NetworkBehaviour
     [SerializeField] private float knockback_amount = 1f;
     [SerializeField] private float knockback_growth = 20f;
 
+    [SerializeField] private Animator animator;
+
     [SerializeField] private GameObject explosion;
     //[SerializeField] private GameObject indicator;
     [SerializeField] private Transform cam;
@@ -126,6 +128,7 @@ public class a_lightningcrash : NetworkBehaviour
     private void showCrash(Vector3 pos)
     {
         GameObject spawned = Instantiate(explosion, pos, transform.rotation);
+        animator.SetTrigger("crash");
     }
 
     private void UpdateUI()

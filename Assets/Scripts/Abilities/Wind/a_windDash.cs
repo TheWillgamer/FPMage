@@ -14,6 +14,9 @@ public class a_windDash : NetworkBehaviour, Dash
     Movement mv;
     Rigidbody rb;
 
+    private GameObject clientObj;
+    [SerializeField] private GameObject dashVisual;
+
     #region cooldowns
     [SerializeField] private float dash_cd;
     private float dash_offcd;
@@ -98,6 +101,7 @@ public class a_windDash : NetworkBehaviour, Dash
     [ObserversRpc]
     private void endDash(Vector3 endVel)
     {
+        clientObj.transform.parent = null;
         if (base.IsOwner)
         {
             mv.EndDash();
@@ -110,6 +114,8 @@ public class a_windDash : NetworkBehaviour, Dash
     [ObserversRpc]
     private void startDash()
     {
+        clientObj = Instantiate(dashVisual, transform.position, transform.rotation);
+        clientObj.transform.parent = transform;
         if (!base.IsOwner)
             dash.Play();
     }

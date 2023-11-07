@@ -207,7 +207,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7afbc4041b7dd1419f35bf69e575c26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 7
+  _componentIndexCache: 8
   _addedNetworkObject: {fileID: 4575299771133537037}
   _networkObjectCache: {fileID: 4575299771133537037}
   clientModel: {fileID: 6403321450111155229}
@@ -13021,8 +13021,8 @@ MonoBehaviour:
   - {fileID: 983782298934292464}
   - {fileID: 1417503818524670645}
   - {fileID: 1548865369264753726}
+  - {fileID: 8173276050754407600}
   - {fileID: 1843847187379487074}
-  - {fileID: 0}
   <ParentNetworkObject>k__BackingField: {fileID: 8227743508398521442}
   <ChildNetworkObjects>k__BackingField: []
   SerializedTransformProperties:
@@ -13258,6 +13258,7 @@ MonoBehaviour:
   dashDistance: 12
   endDashSpeed: 22
   dash: {fileID: 5835385942334923719}
+  dashVisual: {fileID: 1442538091901209730, guid: ca19d76328a684340a4ff65c907b6125, type: 3}
   dash_cd: 7
   Wind: {fileID: 8961857325175973703}
 --- !u!114 &1548865369264753726
@@ -13301,9 +13302,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d08585d40c601744295f0234a7b58379, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 255
+  _componentIndexCache: 7
   _addedNetworkObject: {fileID: 4575299771133537037}
-  _networkObjectCache: {fileID: 0}
+  _networkObjectCache: {fileID: 4575299771133537037}
   parent: {fileID: 1281824769557864766}
 --- !u!1 &6403287394471250680
 GameObject:

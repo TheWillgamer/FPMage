@@ -13,10 +13,8 @@ public class a_meteor : NetworkBehaviour
     [SerializeField] private float proj_force;
     [SerializeField] private float upAmt;
     [SerializeField] private float chargeTime;
-    [SerializeField] private GameObject ownerMeteorGM;
-    private ParticleSystem ownerMeteor;
-    [SerializeField] private GameObject clientMeteorGM;
-    private ParticleSystem clientMeteor;
+    [SerializeField] private ParticleSystem ownerMeteor;
+    [SerializeField] private ParticleSystem clientMeteor;
 
     private Movement mv;
     private TimeManager tm;
@@ -47,8 +45,6 @@ public class a_meteor : NetworkBehaviour
 
     void Start()
     {
-        ownerMeteor = ownerMeteorGM.GetComponent<ParticleSystem>();
-        clientMeteor = clientMeteorGM.GetComponent<ParticleSystem>();
         mt_offcd = Time.time;
         chargeStarted = false;
         mv = GetComponent<Movement>();
@@ -63,7 +59,6 @@ public class a_meteor : NetworkBehaviour
             {
                 mv.disableAB = true;
                 chargeStarted = true;
-                ownerMeteorGM.SetActive(true);
                 ownerMeteor.Play();
                 charge.Play();
                 //animator.SetTrigger("Meteor");
@@ -83,7 +78,7 @@ public class a_meteor : NetworkBehaviour
 
             shootMeteor(base.TimeManager.GetPreciseTick(TickType.Tick), proj_spawn.position, proj_spawn.rotation);
             chargeStarted = false;
-            ownerMeteorGM.SetActive(false);
+            ownerMeteor.Stop();
             mt_offcd = Time.time + mt_cd;
         }
         UpdateUI();
@@ -112,7 +107,6 @@ public class a_meteor : NetworkBehaviour
     {
         if (base.IsOwner)
             return;
-        clientMeteorGM.SetActive(true);
         clientMeteor.Play();
         charge.Play();
         animator.SetTrigger("Meteor");
@@ -123,7 +117,7 @@ public class a_meteor : NetworkBehaviour
     {
         if (base.IsOwner)
             return;
-        clientMeteorGM.SetActive(false);
+        clientMeteor.Stop();
     }
 
     [ServerRpc]

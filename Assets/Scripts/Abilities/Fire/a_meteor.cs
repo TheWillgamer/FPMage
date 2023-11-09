@@ -78,7 +78,7 @@ public class a_meteor : NetworkBehaviour
 
             shootMeteor(base.TimeManager.GetPreciseTick(TickType.Tick), proj_spawn.position, proj_spawn.rotation);
             chargeStarted = false;
-            ownerMeteor.Stop();
+            ownerMeteor.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
             mt_offcd = Time.time + mt_cd;
         }
         UpdateUI();
@@ -117,7 +117,7 @@ public class a_meteor : NetworkBehaviour
     {
         if (base.IsOwner)
             return;
-        clientMeteor.Stop();
+        clientMeteor.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
     }
 
     [ServerRpc]

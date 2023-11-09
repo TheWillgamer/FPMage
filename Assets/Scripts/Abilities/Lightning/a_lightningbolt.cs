@@ -18,6 +18,11 @@ public class a_lightningbolt : NetworkBehaviour
     [SerializeField] private AudioSource charge;
     [SerializeField] private AudioSource fire;
 
+    [SerializeField] private ParticleSystem ownerCharge;
+    [SerializeField] private ParticleSystem clientCharge;
+    [SerializeField] private ParticleSystem ownerFullCharge;
+    [SerializeField] private ParticleSystem clientFullCharge;
+
     private Movement mv;
     private TimeManager tm;
     Queue<GameObject> clientObjs = new Queue<GameObject>();
@@ -62,6 +67,9 @@ public class a_lightningbolt : NetworkBehaviour
             startChargeSoundServer();
             start.Play();
             charge.PlayDelayed(startLength);
+
+            ownerCharge.Play();
+            ownerFullCharge.Play();
         }
 
         if (chargeStarted)
@@ -77,6 +85,10 @@ public class a_lightningbolt : NetworkBehaviour
             start.Stop();
             charge.Stop();
             stopChargeSoundServer();
+
+            ownerCharge.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            ownerFullCharge.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+
             if (lb_charge >= 100f)
             {
                 fire.Play();
@@ -109,6 +121,9 @@ public class a_lightningbolt : NetworkBehaviour
             start.Play();
             animator.SetTrigger("chargeStarted");
             charge.PlayDelayed(startLength);
+
+            clientCharge.Play();
+            clientFullCharge.Play();
         }
     }
 
@@ -122,8 +137,12 @@ public class a_lightningbolt : NetworkBehaviour
     {
         if (!IsOwner)
         {
+            start.Stop();
             charge.Stop();
             animator.SetTrigger("chargeEnded");
+
+            clientCharge.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            clientFullCharge.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
         }
     }
 

@@ -93,9 +93,13 @@ public class Movement : NetworkBehaviour
     private AudioSource jumpSound;
     [SerializeField]
     private AudioSource lastJumpSound;
+    [SerializeField] private GameObject jumpPuffGM;
+    private ParticleSystem jumpPuff;
     [SerializeField]
     private AudioSource hoverSound;
     private bool hoverSoundPlaying = false;
+    [SerializeField] private ParticleSystem hoverClient;
+    [SerializeField] private ParticleSystem hoverOwner;
     #endregion
 
     #region Private.
@@ -179,6 +183,7 @@ public class Movement : NetworkBehaviour
 
         CapsuleCollider cc = GetComponent<CapsuleCollider>();
         _colliderRadius = cc.radius;
+        jumpPuff = jumpPuffGM.GetComponent<ParticleSystem>();
     }
 
     private void OnDestroy()
@@ -333,11 +338,15 @@ public class Movement : NetworkBehaviour
     private void PlayHoverSound()
     {
         hoverSound.Play();
+        if (!base.IsOwner)
+            hoverClient.Play();
     }
     [ObserversRpc]
     private void StopHoverSound()
     {
         hoverSound.Stop();
+        if (!base.IsOwner)
+            hoverClient.Stop();
     }
 
     [Replicate]
@@ -490,7 +499,12 @@ public class Movement : NetworkBehaviour
     private void PlayJumpSound(bool lastJump)
     {
         if (lastJump)
+        {
+            jumpPuff.Stop();
+            jumpPuffGM.transform.position = transform.position - Vector3.up * 1.2f;
+            jumpPuff.Play();
             lastJumpSound.Play();
+        }
         else
             jumpSound.Play();
     }

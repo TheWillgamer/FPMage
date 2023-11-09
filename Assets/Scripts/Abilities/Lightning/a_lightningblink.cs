@@ -15,6 +15,7 @@ public class a_lightningblink : NetworkBehaviour
     private Rigidbody rb;
 
     [SerializeField] private AudioSource fire;
+    [SerializeField] private GameObject lightningBlink;
 
     #region cooldowns
     [SerializeField] private float blink_cd;
@@ -44,7 +45,7 @@ public class a_lightningblink : NetworkBehaviour
     [ServerRpc]
     private void Teleport()
     {
-        playSound();
+        playSound(transform.position);
         // only detects walls
         int layerMask = 1 << 6;
 
@@ -60,9 +61,10 @@ public class a_lightningblink : NetworkBehaviour
     }
 
     [ObserversRpc]
-    private void playSound()
+    private void playSound(Vector3 pos)
     {
         fire.Play();
+        GameObject spawned = Instantiate(lightningBlink, pos, transform.rotation);
     }
 
     private void UpdateUI()

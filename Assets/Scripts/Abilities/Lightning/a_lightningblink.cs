@@ -20,6 +20,7 @@ public class a_lightningblink : NetworkBehaviour
     #region cooldowns
     [SerializeField] private float blink_cd;
     private float blink_offcd;
+    private GameObject spawned;     // effect that is spawned
     #endregion
 
     // Start is called before the first frame update
@@ -45,7 +46,6 @@ public class a_lightningblink : NetworkBehaviour
     [ServerRpc]
     private void Teleport()
     {
-        playSound(transform.position);
         // only detects walls
         int layerMask = 1 << 6;
 
@@ -54,17 +54,26 @@ public class a_lightningblink : NetworkBehaviour
         if (Physics.Raycast(transform.position, Vector3.up, out hit, maxDistance, layerMask))
         {
             endPoint = hit.point + hit.normal;
+            playSound(transform.position, .4f * (hit.point.y - transform.position.y - 1f) / maxDistance);
         }
-        
+        else
+            playSound(transform.position);
+
         rb.velocity = (endPoint - transform.position).normalized * endVelocityMultiplier;
         transform.position = endPoint;
     }
 
     [ObserversRpc]
-    private void playSound(Vector3 pos)
+    private void playSound(Vector3 pos, float length = 1f)
     {
         fire.Play();
-        GameObject spawned = Instantiate(lightningBlink, pos, transform.rotation);
+        spawned = Instantiate(lightningBlink, pos, transform.rotation);
+        Invoke("DestroyEffect", length);
+    }
+
+    private void DestroyEffect()
+    {
+        Destroy(spawned);
     }
 
     private void UpdateUI()

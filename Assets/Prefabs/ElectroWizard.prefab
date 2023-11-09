@@ -8186,6 +8186,7 @@ MonoBehaviour:
   endVelocityMultiplier: 12
   Blink: {fileID: 8961857325175973703}
   fire: {fileID: 8573840383461514607}
+  lightningBlink: {fileID: 6147575447637572518, guid: 14a0a612b5acf864da6fd2274dce2046, type: 3}
   blink_cd: 10
 --- !u!114 &1528568680935207562
 MonoBehaviour:

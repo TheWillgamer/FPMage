@@ -40,6 +40,9 @@ public class PlayerHealth : NetworkBehaviour
     //Audio
     public AudioSource hit;
     public AudioSource burning;
+    public AudioSource burningBurst1;
+    public AudioSource burningBurst2;
+    private bool burstplayed;           // Switch burst sounds
 
     // Damage Blinking White
     [SerializeField] private SkinnedMeshRenderer rend;
@@ -152,6 +155,7 @@ public class PlayerHealth : NetworkBehaviour
     private void startFireGM()
     {
         burning.Play();
+        burstplayed = false;
         if (base.IsOwner)
             return;
         baseFireGM.SetActive(true);
@@ -161,20 +165,21 @@ public class PlayerHealth : NetworkBehaviour
     [ObserversRpc]
     private void endFireGM()
     {
-        Invoke("stopBurningSound", .5f);
+        burning.Stop();
         if (base.IsOwner)
             return;
         baseFireGM.SetActive(false);
     }
 
-    private void stopBurningSound()
-    {
-        burning.Stop();
-    }
-
     [ObserversRpc]
     private void fireBurstGM()
     {
+        if (burstplayed)
+            burningBurst2.Play();
+        else
+            burningBurst1.Play();
+        burstplayed = !burstplayed;
+
         if (base.IsOwner)
             return;
         fireExplosionGM.transform.position = transform.position;

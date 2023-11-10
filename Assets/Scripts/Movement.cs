@@ -100,6 +100,10 @@ public class Movement : NetworkBehaviour
     private bool hoverSoundPlaying = false;
     [SerializeField] private ParticleSystem hoverClient;
     [SerializeField] private ParticleSystem hoverOwner;
+
+    // footsteps
+    [SerializeField] private Transform lHeel;
+    [SerializeField] private Transform rHeel;
     #endregion
 
     #region Private.
@@ -220,8 +224,9 @@ public class Movement : NetworkBehaviour
                     paused = true;
                 }
             }
-
         }
+
+        Debug.Log(rHeel.localPosition.y);
 
         moveAnimServer(_rigidbody.velocity.magnitude);          // speed at the object is moving
     }

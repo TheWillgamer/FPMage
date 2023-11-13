@@ -186,10 +186,16 @@ MonoBehaviour:
   StartingSpawns:
   - {fileID: 0}
   - {fileID: 0}
+  finalCamLoc: {fileID: 0}
+  winningPlayerLoc: {fileID: 0}
   playerPrefabs:
   - {fileID: 8227743508398521442, guid: 34ace2f7b3a47fc42b680ecf9882bf4b, type: 3}
   - {fileID: 8227743508398521442, guid: 8d41c8bc6b22655448354c4dd5d5303c, type: 3}
   - {fileID: 8227743508398521442, guid: 08d405f30d3c2714eb612698df8fdf2e, type: 3}
+  characterModels:
+  - {fileID: 7088461695317736472, guid: 1cc18ff8a2b47ef4d816e8e2e05fbefb, type: 3}
+  - {fileID: 3678022717195980787, guid: ea11ddd277fc35b4582d097e1fb7ee61, type: 3}
+  - {fileID: 932701871383051686, guid: e40d23ba1c0a0204c841560a6a681116, type: 3}
   playerHp: {fileID: 5170590468408038548}
   oppoHp: {fileID: 5170590467233627195}
   playerLives:

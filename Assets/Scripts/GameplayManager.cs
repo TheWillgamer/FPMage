@@ -16,9 +16,11 @@ public class GameplayManager : MonoBehaviour
 
     public Transform[] StartingSpawns = new Transform[0];       // where they spawn
     public Transform finalCamLoc;
+    public Transform winningPlayerLoc;
     private int _nextSpawn;
     private int playerCounter;
     [SerializeField] private NetworkObject[] playerPrefabs;     // what is spawned
+    [SerializeField] private GameObject[] characterModels;      // for the end game screen
     private Movement[] pm = new Movement[4];                    // playerMovement
     private bool gameEnded;                                     // to prevent 2 winners
 
@@ -69,12 +71,13 @@ public class GameplayManager : MonoBehaviour
         gameEnded = true;
         gameSet.SetActive(true);
         StartCoroutine(FadeOut());
+        Instantiate(characterModels[0], winningPlayerLoc.position, winningPlayerLoc.rotation);
     }
 
     IEnumerator FadeOut()
     {
         Color c = blackScreen.color;
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(2);
 
         for (float alpha = 0f; alpha < 1f; alpha += 0.01f)
         {

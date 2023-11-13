@@ -14,10 +14,12 @@ public class CharacterSelector : NetworkBehaviour
     private GameplayManager gm;
     [SerializeField] private GameObject ui;
     [SerializeField] private Button lockInButton;
-    [SerializeField] private Image characterPortrait;
-    [SerializeField] private Color[] characterColors;
+    [SerializeField] private GameObject[] characterModels;
     [SerializeField] private GameObject[] characterInfos;
-    private int chosenWizard;
+    private int chosenWizard = -1;
+
+    private GameObject wizardDemo;      // Shows the wizard that was chozen
+    [SerializeField] private Transform demoLoc;     // where the wizardDemo is created
 
     public override void OnStartClient()
     {
@@ -33,10 +35,18 @@ public class CharacterSelector : NetworkBehaviour
 
     public void ChooseWizard(int type)
     {
-        characterInfos[chosenWizard].SetActive(false);
+        if (chosenWizard == type)
+            return;
 
+        if (wizardDemo != null)
+        {
+            Destroy(wizardDemo);
+            characterInfos[chosenWizard].SetActive(false);
+        }
+            
+        wizardDemo = Instantiate(characterModels[type], demoLoc.position, demoLoc.rotation);
         chosenWizard = type;
-        characterPortrait.color = characterColors[type];
+
         characterInfos[type].SetActive(true);
         lockInButton.interactable = true;
     }

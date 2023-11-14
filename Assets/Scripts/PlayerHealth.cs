@@ -36,6 +36,7 @@ public class PlayerHealth : NetworkBehaviour
     private ParticleSystem baseFire;
     [SerializeField] private GameObject fireExplosionGM;
     private ParticleSystem fireExplosion;
+    [SerializeField] private ParticleSystem shield;
 
     //Audio
     public AudioSource hit;
@@ -90,7 +91,7 @@ public class PlayerHealth : NetworkBehaviour
         if (!base.IsOwner)
             return;
 
-        if (!moving && (Input.GetButtonDown("Jump") || Input.GetAxisRaw("Horizontal")!=0 || Input.GetAxisRaw("Vertical")!=0) || (Input.GetButtonDown("Fire1") || Input.GetButtonDown("Fire2") || Input.GetButtonDown("Fire3") || Input.GetButtonDown("Fire4")))
+        if (!moving && (Input.GetButtonDown("Jump") || Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0) || (Input.GetButtonDown("Fire1") || Input.GetButtonDown("Fire2") || Input.GetButtonDown("Fire3") || Input.GetButtonDown("Fire4")))
         {
             moving = true;
             ReenableGravity();
@@ -133,7 +134,7 @@ public class PlayerHealth : NetworkBehaviour
             return;
 
         onFire = 3;
-        fire_offcd = fire_cd/2f;
+        fire_offcd = fire_cd / 2f;
         startFireGM();
     }
 
@@ -274,7 +275,7 @@ public class PlayerHealth : NetworkBehaviour
          * in case client somehow magically got out of sync
          * this will fix it before trying to remove health. */
         hp = priorHealth;
-        
+
         TakeDamage(value);
         if (base.IsOwner)
         {
@@ -315,7 +316,7 @@ public class PlayerHealth : NetworkBehaviour
             }
             yield return null;
         }
-        
+
     }
 
     public void Die()
@@ -374,6 +375,7 @@ public class PlayerHealth : NetworkBehaviour
         invulnerable = true;
         hp = 0;
         SaveCam(true);
+        ChangeShieldState(false);
     }
 
     [ServerRpc]
@@ -397,5 +399,18 @@ public class PlayerHealth : NetworkBehaviour
     private void CancelInvul()
     {
         invulnerable = false;
+        ChangeShieldState(true);
+    }
+
+    [ObserversRpc]
+    private void ChangeShieldState(bool stop)
+    {
+        if (base.IsOwner)
+            return;
+
+        if (stop)
+            shield.Stop();
+        else
+            shield.Play();
     }
 }

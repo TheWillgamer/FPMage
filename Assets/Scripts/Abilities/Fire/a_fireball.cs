@@ -6,7 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 //using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
 
-public class a_fireball : NetworkBehaviour
+public class a_fireball : NetworkBehaviour, Ability
 {
     [SerializeField] private GameObject fb;
     [SerializeField] private GameObject fbc;
@@ -109,5 +109,11 @@ public class a_fireball : NetworkBehaviour
         {
             Fireball[i].gameObject.SetActive(fb_charges > i);
         }
+    }
+
+    public void Reset()
+    {
+        fb_charges = 3;
+        fb_offcd = Time.time;
     }
 }

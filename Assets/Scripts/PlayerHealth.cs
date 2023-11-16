@@ -344,6 +344,13 @@ public class PlayerHealth : NetworkBehaviour
                 invulnerable = true;
                 Invoke("ReenableGravity", dropDownTime);
                 gm.playerHp.text = "0%";
+
+                // Reset Abilities
+                Ability[] abilites = GetComponents<Ability>();
+                for (int i = 0; i < abilites.Length; i++)
+                {
+                    abilites[i].Reset();
+                }
             }
             else
             {

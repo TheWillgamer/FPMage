@@ -3,9 +3,9 @@ using FishNet.Managing.Timing;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-//using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
+using TMPro;
 
-public class a_flamedash : NetworkBehaviour, Dash
+public class a_flamedash : NetworkBehaviour, Dash, Ability
 {
     [SerializeField] private float dashForce;
     [SerializeField] private float dashDur;
@@ -26,11 +26,14 @@ public class a_flamedash : NetworkBehaviour, Dash
     private float dash_offcd;
     private bool dashStarted;       // only resets cd when true
     private Coroutine slower;       // makes player slow down
+    private bool dashPressed;
     #endregion
 
     #region UI
     //[SerializeField] GameObject cdRepresentation;
-    [SerializeField] Image Wind;
+    [SerializeField] Image background;
+    [SerializeField] Image meter;
+    [SerializeField] TMP_Text countdown;
     #endregion
 
     public override void OnStartClient()
@@ -55,6 +58,7 @@ public class a_flamedash : NetworkBehaviour, Dash
         if (!mv.disableAB && Input.GetButtonDown("Fire3") && Time.time > dash_offcd)
         {
             setDashing();
+            dashPressed = true;
             Invoke("startDashingServer", dashDelay);
 
             if (!IsServer)
@@ -87,7 +91,7 @@ public class a_flamedash : NetworkBehaviour, Dash
     private void startDashing()
     {
         dashStarted = true;
-        //mv.m_dashing = true;
+        dashPressed = false;
         dash_offcd = Time.time + dash_cd;
     }
 
@@ -97,6 +101,7 @@ public class a_flamedash : NetworkBehaviour, Dash
         if (dashStarted)
             return;
         startDash();
+        dashPressed = false;
         hitbox.transform.rotation = Quaternion.LookRotation(cam.forward);
         hitbox.SetActive(true);
         dashStarted = true;
@@ -164,7 +169,24 @@ public class a_flamedash : NetworkBehaviour, Dash
 
     private void UpdateUI()
     {
-        Wind.fillAmount = 1 - (dash_offcd - Time.time) / dash_cd;
+        float remainingCD = dash_offcd - Time.time;
+
+        if (dashPressed)
+        {
+            background.color = new Color32(255, 190, 0, 255);
+        }
+        else if (remainingCD > 0)
+        {
+            background.color = new Color32(100, 100, 100, 255);
+            meter.fillAmount = 1 - (dash_offcd - Time.time) / dash_cd;
+            countdown.text = ((int)(remainingCD) + 1).ToString();
+        }
+        else
+        {
+            background.color = new Color32(255, 255, 255, 255);
+            meter.fillAmount = 0;
+            countdown.text = "";
+        }
     }
 
     public virtual void CancelDash()
@@ -175,6 +197,7 @@ public class a_flamedash : NetworkBehaviour, Dash
             dash_offcd = Time.time + dash_cd;
 
         dashStarted = true;
+        dashPressed = false;
         CancelInvoke();
         CancelDashClient();
         endDash();
@@ -193,7 +216,13 @@ public class a_flamedash : NetworkBehaviour, Dash
             dash_offcd = Time.time + dash_cd;
 
         dashStarted = true;
+        dashPressed = false;
         if (slower != null)
             StopCoroutine(slower);
+    }
+
+    public void Reset()
+    {
+        dash_offcd = Time.time;
     }
 }

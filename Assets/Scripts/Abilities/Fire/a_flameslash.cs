@@ -3,16 +3,16 @@ using FishNet.Managing.Timing;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using TMPro;
 //using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
 
-public class a_flameslash : NetworkBehaviour
+public class a_flameslash : NetworkBehaviour, Ability
 {
     [SerializeField] private int damage = 15;
     [SerializeField] private float knockback_amount = 1f;
     [SerializeField] private float knockback_growth = 20f;
 
     [SerializeField] private Transform proj_spawn;
-    [SerializeField] Image Slash;
 
     // shows the slash on screen
     [SerializeField] private GameObject ownerSlashGM;
@@ -29,6 +29,14 @@ public class a_flameslash : NetworkBehaviour
     #region cooldowns
     [SerializeField] private float slash_cd;
     private float slash_offcd;
+    private bool slashStarted;
+    #endregion
+
+    #region UI
+    //[SerializeField] GameObject cdRepresentation;
+    [SerializeField] Image background;
+    [SerializeField] Image meter;
+    [SerializeField] TMP_Text countdown;
     #endregion
 
     // Start is called before the first frame update
@@ -38,6 +46,7 @@ public class a_flameslash : NetworkBehaviour
         ownerSlash = ownerSlashGM.GetComponent<ParticleSystem>();
         clientSlash = clientSlashGM.GetComponent<ParticleSystem>();
         mv = GetComponent<Movement>();
+        slashStarted = false;
     }
 
     private void Update()
@@ -48,11 +57,19 @@ public class a_flameslash : NetworkBehaviour
         {
             ownerSlash.Play();
             missed.Play();
+            slashStarted = true;
+            Invoke("slashEnded", 0.25f);
+
             //animator.SetTrigger("Claw");
             DoDamage(proj_spawn.position, proj_spawn.rotation, base.Owner.ClientId);
             slash_offcd = Time.time + slash_cd;
         }
         UpdateUI();
+    }
+
+    private void slashEnded()
+    {
+        slashStarted = false;
     }
 
     [ServerRpc]
@@ -101,6 +118,28 @@ public class a_flameslash : NetworkBehaviour
 
     private void UpdateUI()
     {
-        Slash.fillAmount = 1 - (slash_offcd - Time.time) / slash_cd;
+        float remainingCD = slash_offcd - Time.time;
+
+        if (slashStarted)
+        {
+            background.color = new Color32(255, 190, 0, 255);
+        }
+        else if (remainingCD > 0)
+        {
+            background.color = new Color32(100, 100, 100, 255);
+            meter.fillAmount = 1 - remainingCD / slash_cd;
+            countdown.text = ((int)(remainingCD) + 1).ToString();
+        }
+        else
+        {
+            background.color = new Color32(255, 255, 255, 255);
+            meter.fillAmount = 0;
+            countdown.text = "";
+        }
+    }
+
+    public void Reset()
+    {
+        slash_offcd = Time.time;
     }
 }

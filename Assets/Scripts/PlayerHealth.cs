@@ -12,7 +12,6 @@ public class PlayerHealth : NetworkBehaviour
 {
     private int hp;  //keeps track of player health
     private int lives;  //keeps track of player lives
-    public TMP_Text hpPercentage;
     public Image dmgScreen;
     private Rigidbody rb;
     private Movement mv;
@@ -317,6 +316,9 @@ public class PlayerHealth : NetworkBehaviour
     {
         if (base.IsServer && alive)
         {
+            if (dh != null)
+                dh.CancelDash();
+
             lives--;
             LoseLife(lives);
             SaveCam(false);
@@ -335,6 +337,13 @@ public class PlayerHealth : NetworkBehaviour
         {
             Transform mct = GameObject.FindWithTag("MainCamera").transform;
 
+            // Reset Abilities
+            Ability[] abilites = GetComponents<Ability>();
+            for (int i = 0; i < abilites.Length; i++)
+            {
+                abilites[i].Reset();
+            }
+
             if (respawning)
             {
                 mct.parent = cam;
@@ -344,13 +353,6 @@ public class PlayerHealth : NetworkBehaviour
                 invulnerable = true;
                 Invoke("ReenableGravity", dropDownTime);
                 gm.playerHp.text = "0%";
-
-                // Reset Abilities
-                Ability[] abilites = GetComponents<Ability>();
-                for (int i = 0; i < abilites.Length; i++)
-                {
-                    abilites[i].Reset();
-                }
             }
             else
             {

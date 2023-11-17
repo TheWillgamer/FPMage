@@ -3,9 +3,10 @@ using FishNet.Managing.Timing;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using TMPro;
 //using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
 
-public class a_meteor : NetworkBehaviour
+public class a_meteor : NetworkBehaviour, Ability
 {
     [SerializeField] private GameObject mt;
     [SerializeField] private GameObject mtc;
@@ -33,7 +34,9 @@ public class a_meteor : NetworkBehaviour
 
     #region UI
     //[SerializeField] GameObject cdRepresentation;
-    [SerializeField] Image Meteor;
+    [SerializeField] Image background;
+    [SerializeField] Image meter;
+    [SerializeField] TMP_Text countdown;
     #endregion
 
     public override void OnStartClient()
@@ -133,8 +136,35 @@ public class a_meteor : NetworkBehaviour
         proj.Initialize(pt, startRot * Vector3.forward * proj_force + Vector3.up * upAmt, base.Owner.ClientId);
     }
 
+    public void Reset()
+    {
+        charge.Stop();
+        clientMeteor.Stop();
+        ownerMeteor.Stop();
+
+        mt_offcd = Time.time;
+        chargeStarted = false;
+    }
+
     private void UpdateUI()
     {
-        Meteor.fillAmount = 1 - (mt_offcd - Time.time) / mt_cd;
+        float remainingCD = mt_offcd - Time.time;
+
+        if (chargeStarted)
+        {
+            background.color = new Color32(255, 190, 0, 255);
+        }
+        else if (remainingCD > 0)
+        {
+            background.color = new Color32(100, 100, 100, 255);
+            meter.fillAmount = 1 - remainingCD / mt_cd;
+            countdown.text = ((int)(remainingCD) + 1).ToString();
+        }
+        else
+        {
+            background.color = new Color32(255, 255, 255, 255);
+            meter.fillAmount = 0;
+            countdown.text = "";
+        }
     }
 }

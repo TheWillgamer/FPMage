@@ -412,7 +412,7 @@ public class PlayerHealth : NetworkBehaviour
             return;
 
         if (stop)
-            shield.Stop();
+            shield.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
         else
             shield.Play();
     }

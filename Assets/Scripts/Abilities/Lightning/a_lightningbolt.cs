@@ -80,7 +80,7 @@ public class a_lightningbolt : NetworkBehaviour
         if (lb_charge >= 100f)
             LightningBolt.color = new Color32(255, 210, 80, 180);
 
-        if (Input.GetButtonUp("Fire1"))
+        if (lb_charge > 0 && Input.GetButtonUp("Fire1"))
         {
             start.Stop();
             charge.Stop();

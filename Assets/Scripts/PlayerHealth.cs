@@ -48,6 +48,9 @@ public class PlayerHealth : NetworkBehaviour
     [SerializeField] private SkinnedMeshRenderer rend;
     List<Color> originalColors = new List<Color>();
 
+    // Death Splash
+    [SerializeField] private GameObject deathSplash;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -326,7 +329,15 @@ public class PlayerHealth : NetworkBehaviour
             alive = false;
             onFire = 0;
             endFireGM();
+
+            DeathSplash();
         }
+    }
+
+    [ObserversRpc]
+    public void DeathSplash()
+    {
+        Instantiate(deathSplash, transform.position, transform.rotation);
     }
 
     [ObserversRpc]

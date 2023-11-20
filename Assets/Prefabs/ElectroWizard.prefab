@@ -18234,7 +18234,7 @@ MonoBehaviour:
   burningBurst1: {fileID: 2683349483813600614}
   burningBurst2: {fileID: 6231071637127545212}
   rend: {fileID: 8378653207265572708}
-  deathSplash: {fileID: 6089064099522414221, guid: f25c591758af7db4991027f89805d01e, type: 3}
+  deathSplash: {fileID: 3783662912110197577, guid: 9ada9199cc41c7f4085ffa56cb95fd28, type: 3}
 --- !u!114 &9007780875859648540
 MonoBehaviour:
   m_ObjectHideFlags: 0

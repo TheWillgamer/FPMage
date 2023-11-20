@@ -16,10 +16,10 @@ public class LobbyUIController : MonoBehaviour
     public GameObject menuScreen;
     public GameObject sessionPanel;
     public GameObject[] border;
-    public Image character;
     public GameObject mapSelector;
     public Image map;
     [SerializeField] private string[] maps;
+    [SerializeField] private Sprite[] mapsSprites;
     public SetUserAvatar[] memberSlotAvatars;
     public SetUserName[] memberSlotNames;
     public GameObject readyButton;
@@ -39,7 +39,6 @@ public class LobbyUIController : MonoBehaviour
 
 
     [SerializeField] private int mapCount;      // number of maps in the game
-    [SerializeField] private int charCount;     // number of characters in the game
 
     public void Start()
     {
@@ -59,7 +58,6 @@ public class LobbyUIController : MonoBehaviour
     public void OnJoinedALobby()
     {
         var member = lobbyManager.Lobby.Me;
-        member["char"] = "0";
 
         UpdateUI();
 
@@ -93,32 +91,12 @@ public class LobbyUIController : MonoBehaviour
         lobbyManager.IsPlayerReady = !lobbyManager.IsPlayerReady;
     }
     /// <summary>
-    /// Occurs when the player clicks the button to change characters
-    /// </summary>
-    public void ChangeCharacter(bool right)
-    {
-        var member = lobbyManager.Lobby.Me;
-        int currentChar = Convert.ToInt32(member["char"]);
-        currentChar = right ? currentChar + 1 : currentChar - 1;
-        if (currentChar >= charCount)
-            currentChar = 0;
-        else if (currentChar < 0)
-            currentChar = charCount - 1;
-        member["char"] = currentChar.ToString();
-    }
-    /// <summary>
     /// Occurs when the player clicks the button to change maps
     /// </summary>
-    public void ChangeMap(bool right)
+    public void ChangeMap(int chosen)
     {
         var lobby = lobbyManager.Lobby;
-        int currentMap = Convert.ToInt32(lobby["map"]);
-        currentMap = right ? currentMap + 1 : currentMap - 1;
-        if (currentMap >= mapCount)
-            currentMap = 0;
-        else if (currentMap < 0)
-            currentMap = mapCount - 1;
-        lobby["map"] = currentMap.ToString();
+        lobby["map"] = chosen.ToString();
     }
     /// <summary>
     /// This occurs when the owner clicks "Start Session"
@@ -225,39 +203,21 @@ public class LobbyUIController : MonoBehaviour
         switch (lobby["map"])
         {
             case "0":
-                map.color = Color.magenta;
+                map.sprite = mapsSprites[0];
                 break;
             case "1":
-                map.color = Color.gray;
+                map.sprite = mapsSprites[1];
                 break;
             case "2":
-                map.color = Color.yellow;
+                map.sprite = mapsSprites[2];
                 break;
             case "3":
-                map.color = Color.cyan;
+                map.sprite = mapsSprites[3];
                 break;
             default:
                 print("ERROR! map not found");
                 break;
         }
-
-        switch (lobby.Me["char"])
-        {
-            case "0":
-                character.color = Color.red;
-                break;
-            case "1":
-                character.color = Color.green;
-                break;
-            case "2":
-                character.color = Color.blue;
-                break;
-            default:
-                print("ERROR! character not found");
-                break;
-        }
-
-        // Adds graphic for your chosen character
 
         if (lobby.IsOwner)
         {

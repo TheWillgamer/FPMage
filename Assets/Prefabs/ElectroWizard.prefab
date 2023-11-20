@@ -18130,8 +18130,6 @@ MonoBehaviour:
   hoverSound: {fileID: 7297538212645022212}
   hoverClient: {fileID: 8199401703192450688}
   hoverOwner: {fileID: 8199401703192450688}
-  lHeel: {fileID: 0}
-  rHeel: {fileID: 0}
   jumpCharge: 0
   mag: {x: 0, y: 0}
   jumpIcon: {fileID: 5564680090461193183}
@@ -18286,6 +18284,7 @@ MonoBehaviour:
   knockback_growth: 25
   animator: {fileID: 5417174284041810863}
   explosion: {fileID: 4344309038310678734, guid: c75b6e68b67ffe64d99b35359b402342, type: 3}
+  indicator: {fileID: 3190924547350208540, guid: e454595a3391b21488935d080201f4b0, type: 3}
   cam: {fileID: 8227743508193196329}
   radius: 6
   height: 20

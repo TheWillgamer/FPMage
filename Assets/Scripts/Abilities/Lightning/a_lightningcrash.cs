@@ -13,7 +13,8 @@ public class a_lightningcrash : NetworkBehaviour
     [SerializeField] private Animator animator;
 
     [SerializeField] private GameObject explosion;
-    //[SerializeField] private GameObject indicator;
+    [SerializeField] private GameObject indicator;
+    private Transform indicatorPos;
     [SerializeField] private Transform cam;
     [SerializeField] private float radius;
     [SerializeField] private float height;
@@ -43,12 +44,24 @@ public class a_lightningcrash : NetworkBehaviour
     {
         if (!IsOwner) return;
 
+        // Indicator
+
+        // only detects walls
+        int layerMask = 1 << 6;
+        RaycastHit hit;
+        if (!mv.disableAB && Input.GetButton("Fire2") && charges > 0 && Physics.Raycast(cam.position, cam.forward, out hit, 1000f, layerMask))
+        {
+            if (indicatorPos == null)
+                indicatorPos = Instantiate(indicator, hit.point, transform.rotation).transform;
+            else
+                indicatorPos.position = hit.point;
+        }
+        else if (indicatorPos != null)
+            Destroy(indicatorPos.gameObject);
+
+        // Actual
         if (!mv.disableAB && Input.GetButtonUp("Fire2") && charges > 0)
         {
-            // only detects walls
-            int layerMask = 1 << 6;
-
-            RaycastHit hit;
             if (Physics.Raycast(cam.position, cam.forward, out hit, 1000f, layerMask))
             {
                 charges--;

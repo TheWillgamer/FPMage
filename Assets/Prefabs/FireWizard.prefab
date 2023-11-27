@@ -47761,8 +47761,6 @@ MonoBehaviour:
   hoverSound: {fileID: 0}
   hoverClient: {fileID: 0}
   hoverOwner: {fileID: 0}
-  lHeel: {fileID: 3802278177934664180}
-  rHeel: {fileID: 9032995943344799021}
   jumpCharge: 0
   mag: {x: 0, y: 0}
   jumpIcon: {fileID: 5564680090461193183}

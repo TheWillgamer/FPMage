@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Net;
+using TMPro;
 
 public class a_windExplosion : NetworkBehaviour
 {
@@ -31,7 +32,9 @@ public class a_windExplosion : NetworkBehaviour
     #endregion
 
     #region UI
-    [SerializeField] Image Explosion;
+    [SerializeField] Image background;
+    [SerializeField] Image meter;
+    [SerializeField] TMP_Text countdown;
     #endregion
 
     public override void OnStartClient()
@@ -131,6 +134,23 @@ public class a_windExplosion : NetworkBehaviour
 
     private void UpdateUI()
     {
-        Explosion.fillAmount = 1 - (we_offcd - Time.time) / we_cd;
+        float remainingCD = we_offcd - Time.time;
+
+        if (chargeStarted)
+        {
+            background.color = new Color32(255, 190, 0, 255);
+        }
+        else if (remainingCD > 0)
+        {
+            background.color = new Color32(100, 100, 100, 255);
+            meter.fillAmount = 1 - remainingCD / we_cd;
+            countdown.text = ((int)(remainingCD) + 1).ToString();
+        }
+        else
+        {
+            background.color = new Color32(255, 255, 255, 255);
+            meter.fillAmount = 0;
+            countdown.text = "";
+        }
     }
 }

@@ -3,6 +3,7 @@ using FishNet.Managing.Timing;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using TMPro;
 
 public class a_windBlast : NetworkBehaviour
 {
@@ -14,7 +15,6 @@ public class a_windBlast : NetworkBehaviour
     [SerializeField] private float blastDelay = 0.2f;
 
     [SerializeField] private Transform proj_spawn;
-    [SerializeField] Image Blast;
     [SerializeField] private Transform cam;
 
     // shows the blast on screen
@@ -34,6 +34,13 @@ public class a_windBlast : NetworkBehaviour
     private float blast_offcd;
     #endregion
 
+    #region UI
+    [SerializeField] Image background;
+    [SerializeField] Image meter;
+    [SerializeField] TMP_Text countdown;
+    private bool chargeStarted;
+    #endregion
+
     // Start is called before the first frame update
     void Start()
     {
@@ -42,6 +49,7 @@ public class a_windBlast : NetworkBehaviour
         clientBlast = clientBlastGM.GetComponent<ParticleSystem>();
         mv = GetComponent<Movement>();
         rb = GetComponent<Rigidbody>();
+        chargeStarted = false;
     }
 
     private void Update()
@@ -53,6 +61,7 @@ public class a_windBlast : NetworkBehaviour
             Invoke("DoDamage", blastDelay);
             ShowBlastAnimServer();
             mv.disableAB = true;
+            chargeStarted = true;
         }
         UpdateUI();
     }
@@ -135,6 +144,7 @@ public class a_windBlast : NetworkBehaviour
         if (base.IsOwner)
         {
             ownerBlast.Play();
+            chargeStarted = false;
             blast_offcd = Time.time + blast_cd;
         }
         else
@@ -147,6 +157,23 @@ public class a_windBlast : NetworkBehaviour
 
     private void UpdateUI()
     {
-        Blast.fillAmount = 1 - (blast_offcd - Time.time) / blast_cd;
+        float remainingCD = blast_offcd - Time.time;
+
+        if (chargeStarted)
+        {
+            background.color = new Color32(255, 190, 0, 255);
+        }
+        else if (remainingCD > 0)
+        {
+            background.color = new Color32(100, 100, 100, 255);
+            meter.fillAmount = 1 - remainingCD / blast_cd;
+            countdown.text = ((int)(remainingCD) + 1).ToString();
+        }
+        else
+        {
+            background.color = new Color32(255, 255, 255, 255);
+            meter.fillAmount = 0;
+            countdown.text = "";
+        }
     }
 }

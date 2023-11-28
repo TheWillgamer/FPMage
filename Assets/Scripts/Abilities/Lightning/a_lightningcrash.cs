@@ -3,6 +3,7 @@ using FishNet.Managing.Timing;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using TMPro;
 
 public class a_lightningcrash : NetworkBehaviour
 {
@@ -19,7 +20,6 @@ public class a_lightningcrash : NetworkBehaviour
     [SerializeField] private float radius;
     [SerializeField] private float height;
     [SerializeField] private float timeTillStrike;
-    [SerializeField] Image Crash;
 
     private Movement mv;
     private Vector3 crashLoc1;
@@ -30,6 +30,13 @@ public class a_lightningcrash : NetworkBehaviour
     #region cooldowns
     [SerializeField] private float crash_cd;
     private float crash_offcd;
+    #endregion
+
+    #region UI
+    [SerializeField] Image background;
+    [SerializeField] Image meter;
+    [SerializeField] Image meter2;
+    [SerializeField] TMP_Text countdown;
     #endregion
 
     // Start is called before the first frame update
@@ -146,17 +153,28 @@ public class a_lightningcrash : NetworkBehaviour
 
     private void UpdateUI()
     {
-        if (charges == 2)
-            Crash.color = new Color32(255, 210, 80, 255);
-        else if (charges == 1)
+        float remainingCD = crash_offcd - Time.time;
+
+        if (charges == 1)
         {
-            Crash.fillAmount = 1;
-            Crash.color = new Color32(255, 255, 255, 255);
+            background.color = new Color32(255, 255, 255, 255);
+            meter.fillAmount = 0;
+            meter2.fillAmount = 1 - remainingCD / crash_cd;
+            countdown.text = "";
         }
-        else
+        else if (charges == 2)
         {
-            Crash.fillAmount = 1 - (crash_offcd - Time.time) / crash_cd;
-            Crash.color = new Color32(255, 255, 255, 255);
+            background.color = new Color32(255, 255, 255, 255);
+            meter.fillAmount = 0;
+            meter2.fillAmount = 1;
+            countdown.text = "";
+        }
+        else if (remainingCD > 0)
+        {
+            background.color = new Color32(100, 100, 100, 255);
+            meter.fillAmount = 1 - remainingCD / crash_cd;
+            meter2.fillAmount = 0;
+            countdown.text = ((int)(remainingCD) + 1).ToString();
         }
     }
 }

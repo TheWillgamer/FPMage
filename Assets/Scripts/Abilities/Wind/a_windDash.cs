@@ -3,6 +3,7 @@ using FishNet.Managing.Timing;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using TMPro;
 
 public class a_windDash : NetworkBehaviour, Dash
 {
@@ -26,7 +27,10 @@ public class a_windDash : NetworkBehaviour, Dash
     #endregion
 
     #region UI
-    [SerializeField] Image Wind;
+    [SerializeField] Image background;
+    [SerializeField] Image meter;
+    [SerializeField] Image meter2;
+    [SerializeField] TMP_Text countdown;
     #endregion
 
     void Start()
@@ -135,19 +139,29 @@ public class a_windDash : NetworkBehaviour, Dash
 
     private void UpdateUI()
     {
-        if (dashCharges == 2)
-            Wind.color = new Color32(255, 210, 80, 255);
-        else if (dashCharges == 1)
+        float remainingCD = dash_offcd - Time.time;
+
+        if (dashCharges == 1)
         {
-            Wind.fillAmount = 1;
-            Wind.color = new Color32(255, 255, 255, 255);
+            background.color = new Color32(255, 255, 255, 255);
+            meter.fillAmount = 0;
+            meter2.fillAmount = 1 - remainingCD / dash_cd;
+            countdown.text = "";
         }
-        else
+        else if (dashCharges == 2)
         {
-            Wind.fillAmount = 1 - (dash_offcd - Time.time) / dash_cd;
-            Wind.color = new Color32(255, 255, 255, 255);
+            background.color = new Color32(255, 255, 255, 255);
+            meter.fillAmount = 0;
+            meter2.fillAmount = 1;
+            countdown.text = "";
         }
-            
+        else if (remainingCD > 0)
+        {
+            background.color = new Color32(100, 100, 100, 255);
+            meter.fillAmount = 1 - remainingCD / dash_cd;
+            meter2.fillAmount = 0;
+            countdown.text = ((int)(remainingCD) + 1).ToString();
+        }
     }
 
     public virtual void CancelDash()

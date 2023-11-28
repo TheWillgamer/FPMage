@@ -84,7 +84,7 @@ public class a_windSlash : NetworkBehaviour
                 turnOffShootingAnimServer();
 
                 ws_charge = 100f;
-                WindSlash.color = new Color32(255, 210, 80, 180);
+                WindSlash.color = new Color32(0, 255, 112, 180);
                 coolingDown = true;
             }
         }

@@ -4,6 +4,7 @@ using DigitalRuby.ThunderAndLightning;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using TMPro;
 
 public class a_lightningstrike : NetworkBehaviour
 {
@@ -37,14 +38,13 @@ public class a_lightningstrike : NetworkBehaviour
     #endregion
 
     #region UI
-    //[SerializeField] GameObject cdRepresentation;
-    [SerializeField] Image LightningStrike;
+    [SerializeField] Image background;
+    [SerializeField] Image meter;
+    [SerializeField] TMP_Text countdown;
     #endregion
 
     void Start()
     {
-        //ownerMeteor = ownerMeteorGM.GetComponent<ParticleSystem>();
-        //clientMeteor = clientMeteorGM.GetComponent<ParticleSystem>();
         ls_offcd = Time.time;
         chargeStarted = false;
         mv = GetComponent<Movement>();
@@ -69,7 +69,6 @@ public class a_lightningstrike : NetworkBehaviour
         {
             mv.disableAB = false;
             chargeStarted = false;
-            //ownerMeteorGM.SetActive(false);
             ls_offcd = Time.time + ls_cd;
 
             ShootRaycast(true);
@@ -129,7 +128,6 @@ public class a_lightningstrike : NetworkBehaviour
     [ServerRpc]
     private void shootLightning(Vector3 hitLoc, Vector3 dir, PlayerHealth ph = null)
     {
-        //endMeteorGM();
         playShootSound();
         ShowLightning(hitLoc);
 
@@ -153,6 +151,23 @@ public class a_lightningstrike : NetworkBehaviour
 
     private void UpdateUI()
     {
-        LightningStrike.fillAmount = 1 - (ls_offcd - Time.time) / ls_cd;
+        float remainingCD = ls_offcd - Time.time;
+
+        if (chargeStarted)
+        {
+            background.color = new Color32(255, 190, 0, 255);
+        }
+        else if (remainingCD > 0)
+        {
+            background.color = new Color32(100, 100, 100, 255);
+            meter.fillAmount = 1 - remainingCD / ls_cd;
+            countdown.text = ((int)(remainingCD) + 1).ToString();
+        }
+        else
+        {
+            background.color = new Color32(255, 255, 255, 255);
+            meter.fillAmount = 0;
+            countdown.text = "";
+        }
     }
 }

@@ -3,13 +3,12 @@ using FishNet.Managing.Timing;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using TMPro;
 
 public class a_lightningblink : NetworkBehaviour
 {
     [SerializeField] private float maxDistance;
     [SerializeField] private float endVelocityMultiplier;
-
-    [SerializeField] Image Blink;
 
     private Movement mv;
     private Rigidbody rb;
@@ -21,6 +20,12 @@ public class a_lightningblink : NetworkBehaviour
     [SerializeField] private float blink_cd;
     private float blink_offcd;
     private GameObject spawned;     // effect that is spawned
+    #endregion
+
+    #region UI
+    [SerializeField] Image background;
+    [SerializeField] Image meter;
+    [SerializeField] TMP_Text countdown;
     #endregion
 
     // Start is called before the first frame update
@@ -78,6 +83,19 @@ public class a_lightningblink : NetworkBehaviour
 
     private void UpdateUI()
     {
-        Blink.fillAmount = 1 - (blink_offcd - Time.time) / blink_cd;
+        float remainingCD = blink_offcd - Time.time;
+
+        if (remainingCD > 0)
+        {
+            background.color = new Color32(100, 100, 100, 255);
+            meter.fillAmount = 1 - (blink_offcd - Time.time) / blink_cd;
+            countdown.text = ((int)(remainingCD) + 1).ToString();
+        }
+        else
+        {
+            background.color = new Color32(255, 255, 255, 255);
+            meter.fillAmount = 0;
+            countdown.text = "";
+        }
     }
 }

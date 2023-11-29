@@ -4928,8 +4928,8 @@ MonoBehaviour:
   <ChildNetworkObjects>k__BackingField: []
   SerializedTransformProperties:
     Position: {x: 0, y: 0, z: 0}
-    Rotation: {x: 0, y: 0, z: 0, w: 0}
-    LocalScale: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    LocalScale: {x: 1, y: 1, z: 1}
   _isNetworked: 1
   _isGlobal: 0
   _initializeOrder: 0
@@ -4971,7 +4971,7 @@ MonoBehaviour:
   damage: 15
   knockback_amount: 25
   knockback_growth: 32
-  hitImpact: {fileID: 2916528441304133865, guid: 96f92734b9b44ec459032d2511f619b2, type: 3}
+  hitImpact: {fileID: 1602576334016845995, guid: 76de26573d313324ea8e9257a6765b3c, type: 3}
   aliveTime: 3
 --- !u!114 &2164252731766674324
 MonoBehaviour:

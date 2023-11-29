@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 973426491917828441}
   m_LocalRotation: {x: 1, y: 0, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0.5}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 5235100203749423830}
@@ -169,7 +169,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 400
+      scalar: 200
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -4897,7 +4897,7 @@ Transform:
   m_GameObject: {fileID: 973426493328539516}
   m_LocalRotation: {x: 1, y: 0, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0.5}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 5235100203749423830}
@@ -5039,7 +5039,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 400
+      scalar: 200
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -9750,7 +9750,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5235100203749423830}
   m_Layer: 0
-  m_Name: LighntingImpact
+  m_Name: LighntingImpactHitscan
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

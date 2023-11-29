@@ -23,6 +23,7 @@ public class a_lightningstrike : NetworkBehaviour
 
     [SerializeField] private ParticleSystem ownerCharge;
     [SerializeField] private ParticleSystem clientCharge;
+    [SerializeField] private GameObject hitImpact;
     [SerializeField] private Animator animator;
     [SerializeField] private AudioSource charge;
     [SerializeField] private AudioSource fire;
@@ -146,6 +147,7 @@ public class a_lightningstrike : NetworkBehaviour
         else
             SpellStart.transform.position = clientSpawn.position;
         SpellEnd.transform.position = end;
+        Instantiate(hitImpact, end, cam.rotation);
         spell.Trigger();
     }
 

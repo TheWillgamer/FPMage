@@ -18787,6 +18787,7 @@ MonoBehaviour:
   SpellEnd: {fileID: 7492923311113678924}
   ownerCharge: {fileID: 5514418972205236691}
   clientCharge: {fileID: 5035830308578867868}
+  hitImpact: {fileID: 1602576334016845995, guid: dacebd96a345353478a604df1bec4534, type: 3}
   animator: {fileID: 5417174284041810863}
   charge: {fileID: 2346778304779313421}
   fire: {fileID: 3870589099496393808}

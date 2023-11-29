@@ -223,7 +223,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 1, b: 1, a: 1}
+      maxColor: {r: 0.6745098, g: 1, b: 0.89411765, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -4971,8 +4971,7 @@ MonoBehaviour:
   damage: 9
   knockback_amount: 15
   knockback_growth: 40
-  hitImpact: {fileID: 5545544019769316540, guid: f73673624a146d74bb145d3b6865c8e4, type: 3}
-  perpendicular: 1
+  hitImpact: {fileID: 1773989772425506781, guid: db9b76fe529234348956fb4edaaa1ce6, type: 3}
   aliveTime: 0.12
 --- !u!114 &2164252731766674324
 MonoBehaviour:
@@ -4996,7 +4995,7 @@ MonoBehaviour:
     Rotation: 1
     Scale: 0
   _interpolation: 2
-  _extrapolation: 2
+  _extrapolation: 0
   _enableTeleport: 0
   _teleportThreshold: 1
   _scaleThreshold: 1

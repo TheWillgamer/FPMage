@@ -43,8 +43,8 @@ public class a_windSlash : NetworkBehaviour
     public override void OnStartClient()
     {
         base.OnStartClient();
-        if (IsOwner)
-            cdRepresentation.SetActive(true);
+        //if (IsOwner)
+            //cdRepresentation.SetActive(true);
     }
 
     void Start()

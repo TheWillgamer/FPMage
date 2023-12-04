@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using System.Collections;
 using TMPro;
 
-public class a_windDash : NetworkBehaviour, Dash
+public class a_windDash : NetworkBehaviour, Dash, Ability
 {
     [SerializeField] private float dashTime;
     [SerializeField] private float dashDistance;
@@ -171,5 +171,11 @@ public class a_windDash : NetworkBehaviour, Dash
 
         endDash(Vector3.zero);
         mv.EndDash();
+    }
+
+    public void Reset()
+    {
+        dash_offcd = Time.time;
+        dashCharges = 2;
     }
 }

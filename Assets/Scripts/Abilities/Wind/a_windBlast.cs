@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using System.Collections;
 using TMPro;
 
-public class a_windBlast : NetworkBehaviour
+public class a_windBlast : NetworkBehaviour, Ability
 {
     [SerializeField] private float dashSpeed;
     [SerializeField] private float directionModifier;
@@ -141,7 +141,7 @@ public class a_windBlast : NetworkBehaviour
     private void showBlast()
     {
         blast.Play();
-        if (base.IsOwner)
+        if (base.IsOwner && chargeStarted)
         {
             ownerBlast.Play();
             chargeStarted = false;
@@ -175,5 +175,11 @@ public class a_windBlast : NetworkBehaviour
             meter.fillAmount = 0;
             countdown.text = "";
         }
+    }
+
+    public void Reset()
+    {
+        blast_offcd = Time.time;
+        chargeStarted = false;
     }
 }

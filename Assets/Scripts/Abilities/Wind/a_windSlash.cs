@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
-public class a_windSlash : NetworkBehaviour
+public class a_windSlash : NetworkBehaviour, Ability
 {
     [SerializeField] private GameObject ws;
     [SerializeField] private GameObject wsr;
@@ -154,5 +154,13 @@ public class a_windSlash : NetworkBehaviour
     private void UpdateUI()
     {
         WindSlash.fillAmount = ws_charge / 100f;
+    }
+
+    public void Reset()
+    {
+        shooting = false;
+        ws_charge = 0f;
+        turnOffShootingAnimServer();
+        ws_offcd = Time.time;
     }
 }

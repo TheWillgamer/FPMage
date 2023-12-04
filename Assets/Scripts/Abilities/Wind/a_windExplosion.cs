@@ -6,7 +6,7 @@ using System.Collections;
 using System.Net;
 using TMPro;
 
-public class a_windExplosion : NetworkBehaviour
+public class a_windExplosion : NetworkBehaviour, Ability
 {
     [SerializeField] private GameObject we;
     [SerializeField] private GameObject wec;
@@ -152,5 +152,12 @@ public class a_windExplosion : NetworkBehaviour
             meter.fillAmount = 0;
             countdown.text = "";
         }
+    }
+
+    public void Reset()
+    {
+        chargeStarted = false;
+        we_offcd = Time.time;
+        letGo = false;
     }
 }

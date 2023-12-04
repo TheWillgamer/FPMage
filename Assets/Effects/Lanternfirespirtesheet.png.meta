@@ -115,7 +115,175 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Lanternfirespirtesheet_0
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 39
+        width: 555
+        height: 546
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8e669ec3b59c4164b991bb1653bf7c67
+      internalID: -1930772919
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lanternfirespirtesheet_1
+      rect:
+        serializedVersion: 2
+        x: 620
+        y: 39
+        width: 555
+        height: 546
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6ca83331bd96ef24aa9f573e710c1ce8
+      internalID: 435882024
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lanternfirespirtesheet_2
+      rect:
+        serializedVersion: 2
+        x: 1264
+        y: 34
+        width: 497
+        height: 513
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d9199f86b6ed2dc4cba4ee917b43d954
+      internalID: -1918447383
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lanternfirespirtesheet_3
+      rect:
+        serializedVersion: 2
+        x: 1864
+        y: 34
+        width: 497
+        height: 513
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fede95cf9dd45554d9f152a617092d8a
+      internalID: 1562850066
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lanternfirespirtesheet_4
+      rect:
+        serializedVersion: 2
+        x: 2434
+        y: 34
+        width: 558
+        height: 562
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5d861a828ee09a946aafee49e815df36
+      internalID: 2013972073
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lanternfirespirtesheet_5
+      rect:
+        serializedVersion: 2
+        x: 3034
+        y: 34
+        width: 558
+        height: 562
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0affa1d187f8a014a895f6f8fa015c72
+      internalID: 275015909
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lanternfirespirtesheet_6
+      rect:
+        serializedVersion: 2
+        x: 3639
+        y: 39
+        width: 550
+        height: 532
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cc483e784ca069e47aacda5bd001e2bb
+      internalID: -2131752162
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lanternfirespirtesheet_7
+      rect:
+        serializedVersion: 2
+        x: 4239
+        y: 39
+        width: 550
+        height: 532
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a37856b0cf2b77849b4ba7fb5e265094
+      internalID: -1355226970
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -126,7 +294,15 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Lanternfirespirtesheet_3: 1562850066
+      Lanternfirespirtesheet_5: 275015909
+      Lanternfirespirtesheet_2: -1918447383
+      Lanternfirespirtesheet_4: 2013972073
+      Lanternfirespirtesheet_1: 435882024
+      Lanternfirespirtesheet_6: -2131752162
+      Lanternfirespirtesheet_7: -1355226970
+      Lanternfirespirtesheet_0: -1930772919
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -18528,6 +18528,7 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 8227743508398521442}
   _networkObjectCache: {fileID: 4575299771133537037}
   dmgScreen: {fileID: 1733089372414222686}
+  dashable: 0
   cam: {fileID: 8227743508193196329}
   invulnerable: 0
   baseFireGM: {fileID: 7264439022253585056}
@@ -18595,7 +18596,7 @@ MonoBehaviour:
   radius: 6
   height: 20
   timeTillStrike: 1.2
-  crash_cd: 3
+  crash_cd: 5
   background: {fileID: 8012989213054258335}
   meter: {fileID: 3943552729220183280}
   meter2: {fileID: 7344375363777070652}

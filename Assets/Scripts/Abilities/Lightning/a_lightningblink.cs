@@ -5,13 +5,14 @@ using UnityEngine.UI;
 using System.Collections;
 using TMPro;
 
-public class a_lightningblink : NetworkBehaviour
+public class a_lightningblink : NetworkBehaviour, Ability
 {
     [SerializeField] private float maxDistance;
     [SerializeField] private float endVelocityMultiplier;
 
     private Movement mv;
     private Rigidbody rb;
+    private PlayerHealth ph;
 
     [SerializeField] private AudioSource fire;
     [SerializeField] private GameObject lightningBlink;
@@ -34,13 +35,14 @@ public class a_lightningblink : NetworkBehaviour
         blink_offcd = Time.deltaTime;
         mv = GetComponent<Movement>();
         rb = GetComponent<Rigidbody>();
+        ph = GetComponent<PlayerHealth>();
     }
 
     private void Update()
     {
         if (!IsOwner) return;
 
-        if (Input.GetButtonDown("Fire3") && Time.time > blink_offcd)
+        if (ph.dashable && Input.GetButtonDown("Fire3") && Time.time > blink_offcd)
         {
             Teleport();
             blink_offcd = Time.time + blink_cd;
@@ -97,5 +99,10 @@ public class a_lightningblink : NetworkBehaviour
             meter.fillAmount = 0;
             countdown.text = "";
         }
+    }
+
+    public void Reset()
+    {
+        blink_offcd = Time.time;
     }
 }

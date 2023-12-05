@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using System.Collections;
 using TMPro;
 
-public class a_lightningstrike : NetworkBehaviour
+public class a_lightningstrike : NetworkBehaviour, Ability
 {
     [SerializeField] private int damage = 15;
     [SerializeField] private float range = 200f;
@@ -171,5 +171,15 @@ public class a_lightningstrike : NetworkBehaviour
             meter.fillAmount = 0;
             countdown.text = "";
         }
+    }
+
+    public void Reset()
+    {
+        charge.Stop();
+        clientCharge.Stop();
+        ownerCharge.Stop();
+
+        ls_offcd = Time.time;
+        chargeStarted = false;
     }
 }

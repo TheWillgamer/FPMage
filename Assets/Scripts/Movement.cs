@@ -305,6 +305,7 @@ public class Movement : NetworkBehaviour
     {
         disableAB = false;
         disableMV = false;
+        GetComponent<PlayerHealth>().dashable = true;
     }
 
     private void TimeManager_OnPostTick()

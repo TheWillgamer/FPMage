@@ -18,6 +18,7 @@ public class PlayerHealth : NetworkBehaviour
     private Dash dh;
     private bool alive;
     private bool moving;
+    public bool dashable;
     private GameplayManager gm;
     [SerializeField] private Transform cam;
     private float respawnTime = 1f;
@@ -76,6 +77,7 @@ public class PlayerHealth : NetworkBehaviour
         alive = true;
         moving = true;
         invulnerable = false;
+        dashable = false;
     }
 
     private void OnDestroy()
@@ -347,6 +349,7 @@ public class PlayerHealth : NetworkBehaviour
         if (base.IsOwner)
         {
             Transform mct = GameObject.FindWithTag("MainCamera").transform;
+            dashable = respawning ? true : false;
 
             // Reset Abilities
             Ability[] abilites = GetComponents<Ability>();
@@ -364,11 +367,13 @@ public class PlayerHealth : NetworkBehaviour
                 invulnerable = true;
                 Invoke("ReenableGravity", dropDownTime);
                 gm.playerHp.text = "0%";
+                mv.disableAB = false;
             }
             else
             {
                 mct.parent = null;
                 gm.playerHp.text = "";
+                mv.disableAB = true;
             }
         }
         else

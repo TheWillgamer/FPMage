@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
-public class a_lightningbolt : NetworkBehaviour
+public class a_lightningbolt : NetworkBehaviour, Ability
 {
     [SerializeField] private GameObject lb;
     [SerializeField] private GameObject lbc;
@@ -172,5 +172,19 @@ public class a_lightningbolt : NetworkBehaviour
     private void UpdateUI()
     {
         LightningBolt.fillAmount = lb_charge / 100f;
+    }
+
+    public void Reset()
+    {
+        start.Stop();
+        charge.Stop();
+        stopChargeSoundServer();
+
+        ownerCharge.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        ownerFullCharge.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+
+        chargeStarted = false;
+        lb_charge = 0f;
+        LightningBolt.color = new Color32(255, 255, 255, 180);
     }
 }

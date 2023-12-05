@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using System.Collections;
 using TMPro;
 
-public class a_lightningcrash : NetworkBehaviour
+public class a_lightningcrash : NetworkBehaviour, Ability
 {
     [SerializeField] private int damage = 15;
     [SerializeField] private float knockback_amount = 1f;
@@ -176,5 +176,11 @@ public class a_lightningcrash : NetworkBehaviour
             meter2.fillAmount = 0;
             countdown.text = ((int)(remainingCD) + 1).ToString();
         }
+    }
+
+    public void Reset()
+    {
+        crash_offcd = Time.time;
+        charges = 2;
     }
 }

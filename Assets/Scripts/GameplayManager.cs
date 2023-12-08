@@ -24,6 +24,7 @@ public class GameplayManager : MonoBehaviour
     private Movement[] pm = new Movement[4];                    // playerMovement
     private bool gameEnded;                                     // to prevent 2 winners
 
+    // UI stuff
     public TMP_Text playerHp;
     public TMP_Text oppoHp;
     public GameObject[] playerLives;

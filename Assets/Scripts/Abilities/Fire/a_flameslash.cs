@@ -23,6 +23,7 @@ public class a_flameslash : NetworkBehaviour, Ability
 
     private Movement mv;
     [SerializeField] private Animator animator;
+    [SerializeField] private Animator handAnimator;
     [SerializeField] private AudioSource hitted;
     [SerializeField] private AudioSource missed;
 
@@ -60,7 +61,7 @@ public class a_flameslash : NetworkBehaviour, Ability
             slashStarted = true;
             Invoke("slashEnded", 0.25f);
 
-            //animator.SetTrigger("Claw");
+            handAnimator.SetTrigger("Claw");
             DoDamage(proj_spawn.position, proj_spawn.rotation, base.Owner.ClientId);
             slash_offcd = Time.time + slash_cd;
         }

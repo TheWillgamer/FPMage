@@ -21,6 +21,7 @@ public class a_meteor : NetworkBehaviour, Ability
     private TimeManager tm;
     private GameObject clientObj;
     [SerializeField] private Animator animator;
+    [SerializeField] private Animator handAnimator;
     [SerializeField] private AudioSource charge;
     [SerializeField] private AudioSource fire;
 
@@ -64,7 +65,7 @@ public class a_meteor : NetworkBehaviour, Ability
                 chargeStarted = true;
                 ownerMeteor.Play();
                 charge.Play();
-                //animator.SetTrigger("Meteor");
+                handAnimator.SetTrigger("Meteor");
                 startMeteorGMServer();
                 chargeReady = Time.time + chargeTime;
             }

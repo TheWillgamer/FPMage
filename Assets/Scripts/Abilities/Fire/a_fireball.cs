@@ -17,6 +17,7 @@ public class a_fireball : NetworkBehaviour, Ability
     private TimeManager tm;
     Queue<GameObject> clientObjs = new Queue<GameObject>();
     [SerializeField] private Animator animator;
+    [SerializeField] private Animator handAnimator;
     private AudioClip fireSound;
     [SerializeField] private AudioSource fire;
 
@@ -60,7 +61,7 @@ public class a_fireball : NetworkBehaviour, Ability
             clientObjs.Enqueue(clientObj);
             MoveProjectileClient proj = clientObj.GetComponent<MoveProjectileClient>();
             proj.Initialize(proj_spawn.forward * proj_force, Mathf.Min(180f, (float)tm.RoundTripTime) / 1000f);
-            //animator.SetTrigger("Shoot");
+            handAnimator.SetTrigger("Shoot");
 
             shootFireball(base.TimeManager.GetPreciseTick(TickType.Tick), proj_spawn.position, proj_spawn.rotation);
             fb_charges--;

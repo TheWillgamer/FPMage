@@ -161,6 +161,7 @@ public class Movement : NetworkBehaviour
     private bool paused;
 
     [SerializeField] private Animator animator;
+    [SerializeField] private Animator handAnimator;
 
     public override void OnStartClient()
     {
@@ -460,6 +461,7 @@ public class Movement : NetworkBehaviour
     {
         readyToJump = false;
         _rigidbody.drag = 0;
+        handAnimator.SetTrigger("Jump");
 
         if (canGroundJump)
         {
@@ -565,6 +567,7 @@ public class Movement : NetworkBehaviour
         _rigidbody.drag = 0;
         grounded = false;
         animator.SetBool("inAir", true);
+        handAnimator.SetBool("inAir", true);
     }
 
     private bool cancellingGrounded;
@@ -583,6 +586,7 @@ public class Movement : NetworkBehaviour
                     _rigidbody.drag = (dashing || !canGroundJump) ? 0f : counterMovement;
                     grounded = true;
                     animator.SetBool("inAir", false);
+                    handAnimator.SetBool("inAir", false);
                     canGroundJump = true;
                     normalVector = normal;
                     jumpCharge = tripleJump ? 2 : 1;
@@ -605,6 +609,7 @@ public class Movement : NetworkBehaviour
         _rigidbody.drag = 0;
         grounded = false;
         animator.SetBool("inAir", true);
+        handAnimator.SetBool("inAir", true);
         Invoke(nameof(CancelCoyoteTime), coyoteTime);
     }
 

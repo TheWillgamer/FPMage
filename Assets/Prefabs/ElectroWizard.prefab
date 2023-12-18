@@ -12835,7 +12835,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2453685789366709306
 RectTransform:
   m_ObjectHideFlags: 0
@@ -18415,8 +18415,8 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 4575299771133537037}
   _networkObjectCache: {fileID: 4575299771133537037}
   cam: {fileID: 8227743508193196329}
-  jumpForce: 15
-  secondJumpForce: 12
+  jumpForce: 14
+  secondJumpForce: 11
   tripleJump: 0
   canFloat: 1
   floatFallRate: 15

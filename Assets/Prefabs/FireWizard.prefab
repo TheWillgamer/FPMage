@@ -42078,7 +42078,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6805431168953434116
 Transform:
   m_ObjectHideFlags: 0
@@ -42381,7 +42381,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2453685789366709306
 RectTransform:
   m_ObjectHideFlags: 0
@@ -48243,7 +48243,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 99d682231f1985c408bf146bc2004478, type: 3}
   waitingForPlayers: {fileID: 3203664840954753226}
   animator: {fileID: 5957392600329058165}
-  handAnimator: {fileID: 848941603178606162}
 --- !u!114 &2151619510686421276
 MonoBehaviour:
   m_ObjectHideFlags: 0

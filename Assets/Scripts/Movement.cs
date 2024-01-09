@@ -100,6 +100,8 @@ public class Movement : NetworkBehaviour
     private bool hoverSoundPlaying = false;
     [SerializeField] private ParticleSystem hoverClient;
     [SerializeField] private ParticleSystem hoverOwner;
+    private float hoverCharge;
+    [SerializeField] private float hoverRate;
     #endregion
 
     #region Private.
@@ -135,6 +137,7 @@ public class Movement : NetworkBehaviour
     private Vector2 mag;
     [SerializeField] GameObject jumpIcon;
     [SerializeField] GameObject jumpIcon2;
+    [SerializeField] Image hoverIcon;
     #endregion
 
     /// <summary>
@@ -177,6 +180,7 @@ public class Movement : NetworkBehaviour
         _rigidbody = GetComponent<Rigidbody>();
         InstanceFinder.TimeManager.OnTick += TimeManager_OnTick;
         InstanceFinder.TimeManager.OnPostTick += TimeManager_OnPostTick;
+        hoverCharge = 100f;
         gravity = true;
         dashing = false;
         //disableCM = true;
@@ -367,7 +371,7 @@ public class Movement : NetworkBehaviour
         //Extra gravity
         if (gravity)
         {
-            if (_rigidbody.velocity.y > 0 || !md.Floating)
+            if (_rigidbody.velocity.y > 0 || !md.Floating || hoverCharge <= 0f)
             {
                 _rigidbody.AddForce(Vector3.down * 40);
                 if (hoverSoundPlaying)
@@ -379,6 +383,7 @@ public class Movement : NetworkBehaviour
             else if (_rigidbody.velocity.y > floatFallStopper)      // doesnt exceed a certain velocity while floating
             {
                 _rigidbody.AddForce(Vector3.down * floatFallRate);
+                hoverCharge -= hoverRate * Time.deltaTime;
                 if (!hoverSoundPlaying && !grounded)
                 {
                     PlayHoverSound();
@@ -388,6 +393,7 @@ public class Movement : NetworkBehaviour
             else
             {
                 _rigidbody.velocity = new Vector3(_rigidbody.velocity.x, floatFallStopper, _rigidbody.velocity.z);
+                hoverCharge -= hoverRate * Time.deltaTime;
                 if (!hoverSoundPlaying && !grounded)
                 {
                     PlayHoverSound();
@@ -590,6 +596,7 @@ public class Movement : NetworkBehaviour
                     canGroundJump = true;
                     normalVector = normal;
                     jumpCharge = tripleJump ? 2 : 1;
+                    hoverCharge = 100f;
                     cancellingGrounded = false;
                     CancelInvoke(nameof(StopGrounded));
                 }
@@ -625,6 +632,8 @@ public class Movement : NetworkBehaviour
     {
         if (base.IsOwner)
         {
+            if (canFloat)
+                hoverIcon.fillAmount = hoverCharge / 200f;
             jumpIcon.SetActive(jumpCharge > 0);
             if (tripleJump)
                 jumpIcon2.SetActive(jumpCharge > 1);

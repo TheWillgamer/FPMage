@@ -18437,7 +18437,7 @@ MonoBehaviour:
   hoverSound: {fileID: 7297538212645022212}
   hoverClient: {fileID: 8199401703192450688}
   hoverOwner: {fileID: 8199401703192450688}
-  hoverRate: 80
+  hoverRate: 120
   jumpCharge: 0
   mag: {x: 0, y: 0}
   jumpIcon: {fileID: 5564680090461193183}

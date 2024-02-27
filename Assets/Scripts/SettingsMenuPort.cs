@@ -59,7 +59,7 @@ public class SettingsMenuPort : MonoBehaviour
         GameObject player = GameObject.FindWithTag("Player");
         if (player != null)
         {
-            //player.GetComponent<PlayerMovement>().ChangeSens(val);
+           //replace "PlayerMovement" with wherever the current sens is controlled //player.GetComponent<PlayerMovement>().ChangeSens(val);
         }
         Debug.Log("Set sensitivity to " + val);
     }
@@ -93,7 +93,7 @@ public class SettingsMenuPort : MonoBehaviour
 
     public void SetVolume (float volume)
     {
-        audioMixer.SetFloat("Volume", volume);
+        audioMixer.SetFloat("volume", volume);
 
     }
 

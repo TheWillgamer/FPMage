@@ -67,7 +67,7 @@ public class CharacterSelector : NetworkBehaviour
     [ObserversRpc]
     private void SetNameObser(string name)
     {
-        gm.SetName(IsOwner, name);
+        gm.SetName(Owner, name);
     }
 
     [ServerRpc]

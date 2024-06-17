@@ -48109,6 +48109,7 @@ GameObject:
   - component: {fileID: 2221468856058139811}
   - component: {fileID: 6827716296904414418}
   - component: {fileID: 6005679133245696967}
+  - component: {fileID: 5786576803273498815}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -48225,10 +48226,12 @@ MonoBehaviour:
   hoverSound: {fileID: 0}
   hoverClient: {fileID: 0}
   hoverOwner: {fileID: 0}
+  hoverRate: 0
   jumpCharge: 0
   mag: {x: 0, y: 0}
   jumpIcon: {fileID: 5564680090461193183}
   jumpIcon2: {fileID: 0}
+  hoverIcon: {fileID: 0}
   dashModifier: 0
   dashDuration: 0
   gravity: 0
@@ -48462,6 +48465,19 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 4575299771133537037}
   _networkObjectCache: {fileID: 4575299771133537037}
   parent: {fileID: 3572671795729662434}
+--- !u!114 &5786576803273498815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6383162011746621452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b784ab76b06a5f246a57a6120b157c66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pauseMenuUI: {fileID: 0}
 --- !u!1 &6419652599645852342
 GameObject:
   m_ObjectHideFlags: 0

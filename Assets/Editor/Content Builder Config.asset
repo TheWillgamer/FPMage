@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c7c695651be6f340a32fef05a7d7c9a, type: 3}
+  m_Name: Content Builder Config
+  m_EditorClassIdentifier: 
+  username: SAEPniB3YeV29TK6xPfoL4QMQcQ2cCZQDLu1248BQ0VnC3R9NwUkQuRlKup294tL3uXfuynWdRntILdTnxWDlZe2/+pFtONkTi+nlsJGlGxUIdojCAyZKxVBhE2BgAQy
+  rememberPassword: 1
+  password: jwP6qsk+ku4z+w+6mkStu7eirxAQIvmSKZajHMBVwF1mOZ68tcN4cUkE4j2dGXFLMq2iVwQwkWut5QA+hFtLeVw4ZMMmLzPFtFS79haegr6qPyLZgIJ2SBWj3q0ki/JY
+  targetApp: 1366480
+  lastDepot: 0
+  depots:
+  - name: test
+    id: 0
+    target: 19
+    extension: .exe

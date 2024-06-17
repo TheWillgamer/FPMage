@@ -14,6 +14,9 @@ public class GameplayManager : MonoBehaviour
 {
     public event Action<NetworkObject> OnSpawned;
 
+    // Connects the connection with the player number index and type of wizard that was spawned
+    Dictionary<NetworkConnection, (int, int)> playerList = new Dictionary<NetworkConnection, (int, int)>();
+
     public Transform[] StartingSpawns = new Transform[0];       // where they spawn
     public Transform finalCamLoc;
     public Transform winningPlayerLoc;
@@ -36,6 +39,7 @@ public class GameplayManager : MonoBehaviour
     public Image blackScreen;
 
     private NetworkManager _networkManager;
+    public int numPlayers = 1;
 
     private void Start()
     {
@@ -137,6 +141,35 @@ public class GameplayManager : MonoBehaviour
             Invoke("StartGame", .1f);
     }
 
+    public void SpawnWizards()
+    {
+        foreach (KeyValuePair<NetworkConnection, (int, int)> player in playerList)
+        {
+            Vector3 position;
+            Quaternion rotation;
+            SetSpawn(playerPrefabs[0].transform, out position, out rotation);
+
+            NetworkObject nob = Instantiate(playerPrefabs[player.Value.Item2], position, rotation);
+            pm[player.Value.Item1] = nob.transform.GetChild(0).GetComponent<Movement>();
+            _networkManager.ServerManager.Spawn(nob, player.Key);
+            _networkManager.SceneManager.AddOwnerToDefaultScene(nob);
+
+            OnSpawned?.Invoke(nob);
+        }
+
+        Invoke("StartGame", .5f);
+    }
+
+    public void SetWizard(NetworkConnection conn, int type)
+    {
+        playerList[conn] = (playerCounter, type);
+        Debug.Log(conn);
+
+        playerCounter++;
+        if (playerCounter == numPlayers)
+            SpawnWizards();
+    }
+
     public void SetLives(bool owner, int lives)
     {
         if (owner)
@@ -145,12 +178,12 @@ public class GameplayManager : MonoBehaviour
             oppoLives[lives].SetActive(false);
     }
 
-    public void SetName(bool owner, string name)
+    public void SetName(NetworkConnection owner, string name)
     {
-        if (owner)
-            playerName.text = name;
-        else
-            oppoName.text = name;
+//        if (owner)
+//            playername.text = name;
+//        else
+//            opponame.text = name;
     }
 
     private void SetSpawn(Transform prefab, out Vector3 pos, out Quaternion rot)

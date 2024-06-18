@@ -134,9 +134,9 @@ Material:
     - _VertexColorsEnabled: 0
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0, g: 1, b: 0.22494936, a: 1}
+    - _BaseColor: {r: 0.020485133, g: 0.3584906, b: 0, a: 1}
     - _Color: {r: 0.05228728, g: 0.36088175, b: 0.4433962, a: 1}
-    - _ColorDim: {r: 0.41509432, g: 0.3426486, b: 0.3426486, a: 1}
+    - _ColorDim: {r: 0, g: 0.3018868, b: 0.06773103, a: 1}
     - _ColorDimCurve: {r: 0.85023, g: 0.85034, b: 0.85045, a: 0.85056}
     - _ColorDimExtra: {r: 0.85023, g: 0.85034, b: 0.85045, a: 0.85056}
     - _ColorDimSteps: {r: 0.85023, g: 0.85034, b: 0.85045, a: 0.85056}

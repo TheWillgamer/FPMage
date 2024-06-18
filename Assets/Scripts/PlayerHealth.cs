@@ -1,3 +1,4 @@
+using FishNet.Connection;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
 using FishNet.Managing.Logging;
@@ -7,6 +8,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
+using Steamworks;
 
 public class PlayerHealth : NetworkBehaviour
 {
@@ -51,6 +53,9 @@ public class PlayerHealth : NetworkBehaviour
 
     // Death Splash
     [SerializeField] private GameObject deathSplash;
+
+    // Connects the connection with the position in the health ui
+    public Dictionary<NetworkConnection, int> uipos = new Dictionary<NetworkConnection, int>();
 
     void Awake()
     {
@@ -221,18 +226,24 @@ public class PlayerHealth : NetworkBehaviour
         if (base.IsServer)
         {
             ObserversTakeDamage(amt, oldHp);
-            if (base.IsOwner)
-            {
-                StartCoroutine(HitBlink());
-                gm.playerHp.text = hp.ToString() + "%";
-                if (amt > 3)
-                    StartCoroutine(Fade());
-            }
-            else
-            {
-                gm.oppoHp.text = hp.ToString() + "%";
-                StartCoroutine(HitBlink());
-            }
+            //if (base.IsOwner)
+            //{
+            //    StartCoroutine(HitBlink());
+            //    gm.playerHp.text = hp.ToString() + "%";
+            //    if (amt > 3)
+            //        StartCoroutine(Fade());
+            //}
+            //else
+            //{
+            //    gm.oppoHp.text = hp.ToString() + "%";
+            //    StartCoroutine(HitBlink());
+            //}
+
+            if (base.IsOwner && amt > 3)
+                StartCoroutine(Fade());
+
+            StartCoroutine(HitBlink());
+            gm.hpPercentage[uipos[base.Owner]].text = hp.ToString() + "%";
         }
     }
 
@@ -383,6 +394,10 @@ public class PlayerHealth : NetworkBehaviour
             else
                 gm.oppoHp.text = "";
         }
+        if (respawning)
+            gm.hpPercentage[uipos[base.Owner]].text = "0%";
+        else
+            gm.hpPercentage[uipos[base.Owner]].text = "";
     }
 
     private void Respawn()
@@ -431,5 +446,29 @@ public class PlayerHealth : NetworkBehaviour
             shield.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
         else
             shield.Play();
+    }
+
+    public void SetUIIndex(NetworkConnection[] conns)
+    {
+        SetUIIndexClients(conns);
+    }
+
+    [ObserversRpc]
+    public void SetUIIndexClients(NetworkConnection[] conns)
+    {
+        int index;
+        foreach (NetworkConnection conn in conns)
+        {
+            if (conn == base.Owner)
+            {
+                uipos[conn] = 1;
+                gm.SetCasterUI(conn, uipos[conn], "YOU");
+            }
+            else
+            {
+                uipos[conn] = 2;
+                gm.SetCasterUI(conn, uipos[conn], SteamFriends.GetPersonaName());
+            }
+        }
     }
 }

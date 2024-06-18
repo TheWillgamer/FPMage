@@ -9,6 +9,7 @@ using UnityEngine.UI;
 using UnityEngine.Serialization;
 using TMPro;
 using System.Collections;
+using System.Linq;
 
 public class GameplayManager : MonoBehaviour
 {
@@ -16,9 +17,6 @@ public class GameplayManager : MonoBehaviour
 
     // Connects the connection with the player number index and type of wizard that was spawned
     Dictionary<NetworkConnection, (int, int)> playerList = new Dictionary<NetworkConnection, (int, int)>();
-
-    // Connects the connection with the position in the health ui
-    Dictionary<NetworkConnection, int> uipos = new Dictionary<NetworkConnection, int>();
 
     public Transform[] StartingSpawns = new Transform[0];       // where they spawn
     public Transform finalCamLoc;
@@ -28,12 +26,13 @@ public class GameplayManager : MonoBehaviour
     [SerializeField] private NetworkObject[] playerPrefabs;     // what is spawned
     [SerializeField] private GameObject[] characterModels;      // for the end game screen
     private Movement[] pm = new Movement[4];                    // playerMovement
+    private PlayerHealth[] ph = new PlayerHealth[4];                    // playerHealth
     private bool gameEnded;                                     // to prevent 2 winners
 
     // UI stuff
     public Image[] casterMaster;
     public TMP_Text[] hpPercentage;
-    public GameObject[] lifeCounter;
+    public Transform[] lifeCounter;
     public TMP_Text[] displayName;
 
     public TMP_Text playerHp;
@@ -72,6 +71,7 @@ public class GameplayManager : MonoBehaviour
         for (int i = 0; i < playerCounter; i++)
         {
             pm[i].CountdownStart();
+            ph[i].SetUIIndex(playerList.Keys.ToArray());
         }
     }
 
@@ -159,6 +159,7 @@ public class GameplayManager : MonoBehaviour
 
             NetworkObject nob = Instantiate(playerPrefabs[player.Value.Item2], position, rotation);
             pm[player.Value.Item1] = nob.transform.GetChild(0).GetComponent<Movement>();
+            ph[player.Value.Item1] = nob.transform.GetChild(0).GetComponent<PlayerHealth>();
             _networkManager.ServerManager.Spawn(nob, player.Key);
             _networkManager.SceneManager.AddOwnerToDefaultScene(nob);
 
@@ -184,14 +185,6 @@ public class GameplayManager : MonoBehaviour
             playerLives[lives].SetActive(false);
         else
             oppoLives[lives].SetActive(false);
-    }
-
-    public void SetName(NetworkConnection owner, string name)
-    {
-//        if (owner)
-//            playername.text = name;
-//        else
-//            opponame.text = name;
     }
 
     private void SetSpawn(Transform prefab, out Vector3 pos, out Quaternion rot)
@@ -233,5 +226,21 @@ public class GameplayManager : MonoBehaviour
         {
             other.GetComponent<PlayerHealth>().Die();
         }
+    }
+
+    // Sets the Caster UI for the given index
+    public void SetCasterUI(NetworkConnection conn, int index, string name)
+    {
+        Color c = casterMaster[index].color;
+        c.a = 1;
+        casterMaster[index].color = c;
+
+        hpPercentage[index].text = "0%";
+        for (int i = 0; i < 4; i++)
+        {
+            lifeCounter[index].GetChild(i).gameObject.SetActive(true);
+        }
+
+        displayName[index].text = name;
     }
 }

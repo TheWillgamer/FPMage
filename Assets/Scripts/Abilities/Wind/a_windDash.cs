@@ -117,7 +117,8 @@ public class a_windDash : NetworkBehaviour, Dash, Ability
 
     private void endDashTrail()
     {
-        clientObj.transform.parent = null;
+        if (clientObj != null)
+            clientObj.transform.parent = null;
     }
 
     // For any dash effects

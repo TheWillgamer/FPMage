@@ -12,14 +12,14 @@ using Steamworks;
 public class CharacterSpawner : NetworkBehaviour
 {
     private GameplayManager gm;
-    private int chosenWizard = 1;
 
     public override void OnStartClient()
     {
         base.OnStartClient();
 
         gm = GameObject.FindWithTag("GameplayManager").GetComponent<GameplayManager>();
-        SetWizardOnServer(base.Owner, chosenWizard);
+        int type = PlayerPrefs.GetInt("Character", 0);
+        SetWizardOnServer(base.Owner, type);
         SetNameServer(base.Owner, SteamFriends.GetPersonaName());
     }
 

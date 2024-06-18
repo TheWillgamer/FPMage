@@ -25,6 +25,6 @@ public class CharacterPreview : MonoBehaviour
         }
 
         int type = PlayerPrefs.GetInt("Character", 0);
-        wizardDemo = Instantiate(characterModels[type], transform.position, transform.rotation);
+        wizardDemo = Instantiate(characterModels[type], this.transform);
     }
 }

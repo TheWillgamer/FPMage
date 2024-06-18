@@ -17,6 +17,9 @@ public class GameplayManager : MonoBehaviour
     // Connects the connection with the player number index and type of wizard that was spawned
     Dictionary<NetworkConnection, (int, int)> playerList = new Dictionary<NetworkConnection, (int, int)>();
 
+    // Connects the connection with the position in the health ui
+    Dictionary<NetworkConnection, int> uipos = new Dictionary<NetworkConnection, int>();
+
     public Transform[] StartingSpawns = new Transform[0];       // where they spawn
     public Transform finalCamLoc;
     public Transform winningPlayerLoc;
@@ -28,6 +31,11 @@ public class GameplayManager : MonoBehaviour
     private bool gameEnded;                                     // to prevent 2 winners
 
     // UI stuff
+    public Image[] casterMaster;
+    public TMP_Text[] hpPercentage;
+    public GameObject[] lifeCounter;
+    public TMP_Text[] displayName;
+
     public TMP_Text playerHp;
     public TMP_Text oppoHp;
     public GameObject[] playerLives;

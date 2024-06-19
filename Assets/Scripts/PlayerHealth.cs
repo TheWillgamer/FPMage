@@ -456,16 +456,15 @@ public class PlayerHealth : NetworkBehaviour
 
     public void SetUIIndex(NetworkConnection[] conns)
     {
-        SetUIIndexClients(conns);
+        SetUIIndexClients(base.Owner, conns);
     }
 
-    [ObserversRpc]
-    public void SetUIIndexClients(NetworkConnection[] conns)
+    [TargetRpc]
+    public void SetUIIndexClients(NetworkConnection target, NetworkConnection[] conns)
     {
-        if (!base.IsOwner)
-            return;
-
         int index;
+
+        Debug.Log(conns);
         foreach (NetworkConnection conn in conns)
         {
             if (conn == base.Owner)

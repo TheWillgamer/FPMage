@@ -286,17 +286,23 @@ public class PlayerHealth : NetworkBehaviour
         hp = priorHealth;
 
         TakeDamage(value);
-        if (base.IsOwner)
-        {
-            gm.playerHp.text = hp.ToString() + "%";
-            if (value > 3)
-                StartCoroutine(Fade());
-        }
-        else
-        {
-            gm.oppoHp.text = hp.ToString() + "%";
-            StartCoroutine(HitBlink());
-        }
+        //if (base.IsOwner)
+        //{
+        //    gm.playerHp.text = hp.ToString() + "%";
+        //    if (value > 3)
+        //        StartCoroutine(Fade());
+        //}
+        //else
+        //{
+        //    gm.oppoHp.text = hp.ToString() + "%";
+        //    StartCoroutine(HitBlink());
+        //}
+
+        if (base.IsOwner && value > 3)
+            StartCoroutine(Fade());
+
+        StartCoroutine(HitBlink());
+        gm.hpPercentage[uipos[base.Owner]].text = hp.ToString() + "%";
     }
 
     IEnumerator Fade()
@@ -462,12 +468,12 @@ public class PlayerHealth : NetworkBehaviour
             if (conn == base.Owner)
             {
                 uipos[conn] = 1;
-                gm.SetCasterUI(conn, uipos[conn], "YOU");
+                gm.SetCasterUI(conn, uipos[conn]);
             }
             else
             {
                 uipos[conn] = 2;
-                gm.SetCasterUI(conn, uipos[conn], SteamFriends.GetPersonaName());
+                gm.SetCasterUI(conn, uipos[conn]);
             }
         }
     }

@@ -19,12 +19,12 @@ public class CharacterSpawner : NetworkBehaviour
 
         gm = GameObject.FindWithTag("GameplayManager").GetComponent<GameplayManager>();
         int type = PlayerPrefs.GetInt("Character", 0);
-        SetWizardOnServer(base.Owner, type);
+        SetWizardOnServer(base.Owner, type, SteamFriends.GetPersonaName());
     }
 
     [ServerRpc]
-    private void SetWizardOnServer(NetworkConnection conn, int type)
+    private void SetWizardOnServer(NetworkConnection conn, int type, string name)
     {
-        gm.SetWizard(conn, type);
+        gm.SetWizard(conn, type, name);
     }
 }

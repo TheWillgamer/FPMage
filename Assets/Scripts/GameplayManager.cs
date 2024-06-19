@@ -16,7 +16,7 @@ public class GameplayManager : MonoBehaviour
     public event Action<NetworkObject> OnSpawned;
 
     // Connects the connection with the player number index and type of wizard that was spawned
-    Dictionary<NetworkConnection, (int, int)> playerList = new Dictionary<NetworkConnection, (int, int)>();
+    Dictionary<NetworkConnection, (int, int, string)> playerList = new Dictionary<NetworkConnection, (int, int, string)>();
 
     public Transform[] StartingSpawns = new Transform[0];       // where they spawn
     public Transform finalCamLoc;
@@ -151,7 +151,7 @@ public class GameplayManager : MonoBehaviour
 
     public void SpawnWizards()
     {
-        foreach (KeyValuePair<NetworkConnection, (int, int)> player in playerList)
+        foreach (KeyValuePair<NetworkConnection, (int, int, string)> player in playerList)
         {
             Vector3 position;
             Quaternion rotation;
@@ -169,10 +169,9 @@ public class GameplayManager : MonoBehaviour
         Invoke("StartGame", .5f);
     }
 
-    public void SetWizard(NetworkConnection conn, int type)
+    public void SetWizard(NetworkConnection conn, int type, string name)
     {
-        playerList[conn] = (playerCounter, type);
-        Debug.Log(conn);
+        playerList[conn] = (playerCounter, type, name);
 
         playerCounter++;
         if (playerCounter == numPlayers)
@@ -229,7 +228,7 @@ public class GameplayManager : MonoBehaviour
     }
 
     // Sets the Caster UI for the given index
-    public void SetCasterUI(NetworkConnection conn, int index, string name)
+    public void SetCasterUI(NetworkConnection conn, int index)
     {
         Color c = casterMaster[index].color;
         c.a = 1;
@@ -241,6 +240,6 @@ public class GameplayManager : MonoBehaviour
             lifeCounter[index].GetChild(i).gameObject.SetActive(true);
         }
 
-        displayName[index].text = name;
+        displayName[index].text = playerList[conn].Item3;
     }
 }

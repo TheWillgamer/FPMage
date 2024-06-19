@@ -462,6 +462,7 @@ public class PlayerHealth : NetworkBehaviour
     [TargetRpc]
     public void SetUIIndexClients(NetworkConnection target, NetworkConnection[] conns)
     {
+        Debug.Log(base.Owner.ClientId);
         int index;
         foreach (NetworkConnection conn in conns)
         {

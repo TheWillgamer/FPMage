@@ -228,7 +228,7 @@ public class GameplayManager : MonoBehaviour
     }
 
     // Sets the Caster UI for the given index
-    public void SetCasterUI(NetworkConnection conn, int index)
+    public void SetCasterUI(NetworkConnection conn, int index, string name)
     {
         Color c = casterMaster[index].color;
         c.a = 1;
@@ -240,6 +240,6 @@ public class GameplayManager : MonoBehaviour
             lifeCounter[index].GetChild(i).gameObject.SetActive(true);
         }
 
-        displayName[index].text = playerList[conn].Item3;
+        displayName[index].text = name;
     }
 }

@@ -468,7 +468,7 @@ public class PlayerHealth : NetworkBehaviour
             if (conn == base.Owner)
             {
                 uipos[conn] = 1;
-                gm.SetCasterUI(conn, 1);
+                gm.SetCasterUI(conn, 1, SteamFriends.GetPersonaName());
             }
             else
             {

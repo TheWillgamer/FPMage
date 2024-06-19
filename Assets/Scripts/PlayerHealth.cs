@@ -462,7 +462,7 @@ public class PlayerHealth : NetworkBehaviour
     [ObserversRpc]
     public void SetUIIndexClients(NetworkConnection[] conns)
     {
-        //if (!base.IsOwner)
+        if (!base.IsOwner)
             return;
 
         int index;
@@ -471,12 +471,12 @@ public class PlayerHealth : NetworkBehaviour
             if (conn == base.Owner)
             {
                 uipos[conn] = 1;
-                gm.SetCasterUI(conn, uipos[conn]);
+                //gm.SetCasterUI(conn, uipos[conn]);
             }
             else
             {
                 uipos[conn] = 2;
-                gm.SetCasterUI(conn, uipos[conn]);
+                //gm.SetCasterUI(conn, uipos[conn]);
             }
         }
     }

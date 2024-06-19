@@ -468,7 +468,7 @@ public class PlayerHealth : NetworkBehaviour
             if (conn == base.Owner)
             {
                 uipos[conn] = 1;
-                gm.SetCasterUI(conn, uipos[conn]);
+                gm.SetCasterUI(conn, 1);
             }
             else
             {

@@ -462,15 +462,13 @@ public class PlayerHealth : NetworkBehaviour
     [TargetRpc]
     public void SetUIIndexClients(NetworkConnection target, NetworkConnection[] conns)
     {
-        Debug.Log(base.Owner.ClientId);
         int index;
         foreach (NetworkConnection conn in conns)
         {
-            Debug.Log(conn.ClientId);
             if (conn == base.Owner)
             {
                 uipos[conn] = 1;
-                //gm.SetCasterUI(conn, uipos[conn]);
+                gm.SetCasterUI(conn, uipos[conn]);
             }
             else
             {

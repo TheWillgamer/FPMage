@@ -463,10 +463,9 @@ public class PlayerHealth : NetworkBehaviour
     public void SetUIIndexClients(NetworkConnection target, NetworkConnection[] conns)
     {
         int index;
-
-        Debug.Log(conns);
         foreach (NetworkConnection conn in conns)
         {
+            Debug.Log(conn.ClientId);
             if (conn == base.Owner)
             {
                 uipos[conn] = 1;

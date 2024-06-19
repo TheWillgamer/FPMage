@@ -462,7 +462,7 @@ public class PlayerHealth : NetworkBehaviour
     [ObserversRpc]
     public void SetUIIndexClients(NetworkConnection[] conns)
     {
-        if (!base.IsOwner)
+        //if (!base.IsOwner)
             return;
 
         int index;
